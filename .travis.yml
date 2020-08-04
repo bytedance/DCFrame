@@ -23,9 +23,9 @@ env:
    - IOS_SCHEME="DCFrame"
    - EXAMPLE_SCHEME="DCFrame_Example"
 
-   - IOS_SDK=iphonesimulator13.2
+   - IOS_SDK=iphonesimulator
    - IOS_EXAMPLE_WORKSPACE="Example/DCFrame.xcworkspace
-   - IOS_DESTINATION_12="OS=12.2,name=iPhone Xʀ"
+   - IOS_DESTINATION="OS=13.2,name=iPhone Xʀ"
 
 before_install:
   - rvm install ruby-2.7.0
@@ -46,8 +46,8 @@ jobs:
     # Build example projects
     - &build-examples
       stage: build examples
-      name: "iOS 12.2"
-      env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
+      name: "iOS 13.2"
+      env: DESTINATION="$IOS_DESTINATION" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
       script:
         - set -o pipefail
         - xcodebuild -version -sdk
@@ -55,8 +55,8 @@ jobs:
 
     # UI Tests
     - stage: tests
-      name: "UI Tests: iOS 12.2"
-      env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$EXAMPLE_SCHEME"
+      name: "UI Tests: iOS 13.2"
+      env: DESTINATION="$IOS_DESTINATION" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$EXAMPLE_SCHEME"
       script:
         - set -o pipefail
         - xcodebuild build test -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO;
@@ -64,8 +64,8 @@ jobs:
     # Unit Tests
     - &unit-tests
       stage: tests
-      name: "Tests: iOS 12.2"
-      env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE"  SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
+      name: "Tests: iOS 13.2"
+      env: DESTINATION="$IOS_DESTINATION" WORKSPACE="$IOS_EXAMPLE_WORKSPACE"  SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
       script:
         - set -o pipefail
         - xcodebuild build build-for-testing -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES;
