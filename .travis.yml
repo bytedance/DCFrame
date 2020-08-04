@@ -23,7 +23,7 @@ env:
    - IOS_SCHEME="DCFrame"
    - EXAMPLE_SCHEME="DCFrame_Example"
 
-   - IOS_SDK=iphonesimulator12.2
+   - IOS_SDK=iphonesimulator13.2
    - IOS_EXAMPLE_WORKSPACE="Example/DCFrame.xcworkspace
    - IOS_DESTINATION_12="OS=12.2,name=iPhone Xʀ"
 
@@ -70,12 +70,6 @@ jobs:
         - set -o pipefail
         - xcodebuild build build-for-testing -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES;
         - xcodebuild analyze test-without-building -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES;
-      after_success:
-        - bundle exec slather
-
-    - <<: *unit-tests
-      name: "Tests: iOS 11.3"
-      env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE"  SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
 
 stages:
   - pod lint
