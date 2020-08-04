@@ -32,8 +32,13 @@ env:
    - IOS_DESTINATION_12="OS=12.2,name=iPhone Xʀ"
 
 before_install:
+  - rvm install ruby-2.7.0
+  - rvm use 2.7.0
+  - rvm gemset create DCFrame
+  - rvm use 2.7.0@DCFrame
   - gem update --system
   - gem install bundler
+  - bundle install
 
 jobs:
   include:
