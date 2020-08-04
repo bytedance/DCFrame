@@ -1,0 +1,16 @@
+PODS:
+  - DCFrame (0.1.0)
+
+DEPENDENCIES:
+  - DCFrame (from `../`)
+
+EXTERNAL SOURCES:
+  DCFrame:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  DCFrame: 9774a5ba0165094ace561a2fd65ee4d935a41db2
+
+PODFILE CHECKSUM: 172e54d52ac7140482527094ddaab5c302d3bf9a
+
+COCOAPODS: 1.9.1
