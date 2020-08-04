@@ -31,6 +31,7 @@ before_install:
   - gem update --system
   - gem install bundler
   - bundle install
+  - pod install
 
 jobs:
   include:
