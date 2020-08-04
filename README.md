@@ -98,7 +98,7 @@ We can tell that each CellModel can represent a list Cell, but displaying the Ce
 
 If you put this in the context of the original `UITableView`:
 
-- *`**DCFrame` introduces two **View** components: `DCCell` and `DCContainerTableView`***
+- *`DCFrame` introduces two **View** components: `DCCell` and `DCContainerTableView`*
   - *`DCCell` inherits from `UITableViewCell` and represents the actual elements in the list*
   - *`DCContainerTableView` inherits from `UITableView` and is the container for `DCCell`*
 
