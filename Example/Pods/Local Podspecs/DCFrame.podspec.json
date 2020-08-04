@@ -1,0 +1,22 @@
+{
+  "name": "DCFrame",
+  "version": "0.1.0",
+  "summary": "A short description of DCFrame.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/bytedance/DCFrame",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhangzhengzhen": "wytiankong@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/bytedance/DCFrame.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "DCFrame/Classes/**/*"
+}

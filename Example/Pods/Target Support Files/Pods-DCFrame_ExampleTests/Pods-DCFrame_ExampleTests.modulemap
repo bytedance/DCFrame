@@ -1,0 +1,6 @@
+framework module Pods_DCFrame_ExampleTests {
+  umbrella header "Pods-DCFrame_ExampleTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

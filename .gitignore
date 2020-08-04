@@ -20,7 +20,7 @@ DerivedData
 *.ipa
 
 # CocoaPods
-Example/Pods/
+# Example/Pods/
 
 # Bundler
 .bundle
