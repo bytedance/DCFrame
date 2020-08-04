@@ -7,7 +7,7 @@
 
 [中文版 README](./README_CN.md)
 
-DCFrame is a Model-driven UI framing structure with applications in the following areas: assmeblying and arranging complex views with ease; reusing and rearranging view components at no cost; communication between views without couplings.
+DCFrame is a Model-driven UI framework with applications in the following areas: assmeblying and arranging complex views with ease; reusing and rearranging view components at no cost; communication between views without couplings.
 
 DCFrame has advantages in the following areas when compared with [IGListKit](https://github.com/Instagram/IGListKit)  by Instagram:
 
