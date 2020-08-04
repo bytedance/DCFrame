@@ -25,10 +25,6 @@ env:
 
    - IOS_SDK=iphonesimulator12.2
    - IOS_EXAMPLE_WORKSPACE="Example/DCFrame.xcworkspace
-
-   - IOS_DESTINATION_9="OS=9.3,name=iPad Air 2"
-   - IOS_DESTINATION_10="OS=10.3.1,name=iPhone 7"
-   - IOS_DESTINATION_11="OS=11.3,name=iPhone X"
    - IOS_DESTINATION_12="OS=12.2,name=iPhone Xʀ"
 
 before_install:
@@ -55,19 +51,7 @@ jobs:
       script:
         - set -o pipefail
         - xcodebuild -version -sdk
-        - xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO | bundle exec xcpretty -c;
-
-    - <<: *build-examples
-      name: "iOS 11.3"
-      env: DESTINATION="$IOS_DESTINATION_11" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
-
-    - <<: *build-examples
-      name: "iOS 10.3.1"
-      env: DESTINATION="$IOS_DESTINATION_10" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
-
-    - <<: *build-examples
-      name: "iOS 9.3"
-      env: DESTINATION="$IOS_DESTINATION_9" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
+        - xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO;
 
     # UI Tests
     - stage: tests
@@ -75,7 +59,7 @@ jobs:
       env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE" SDK="$IOS_SDK" SCHEME="$EXAMPLE_SCHEME"
       script:
         - set -o pipefail
-        - xcodebuild build test -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO | bundle exec xcpretty -c;
+        - xcodebuild build test -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO;
 
     # Unit Tests
     - &unit-tests
@@ -84,21 +68,16 @@ jobs:
       env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE"  SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
       script:
         - set -o pipefail
-        - xcodebuild build build-for-testing -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES | bundle exec xcpretty -c;
-        - xcodebuild analyze test-without-building -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES | bundle exec xcpretty -c;
+        - xcodebuild build build-for-testing -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES;
+        - xcodebuild analyze test-without-building -workspace "$WORKSPACE" -scheme "$SCHEME" -sdk "$SDK" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO CODE_SIGNING_REQUIRED=NO GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES ONLY_ACTIVE_ARCH=YES;
       after_success:
         - bundle exec slather
 
     - <<: *unit-tests
       name: "Tests: iOS 11.3"
-      env: DESTINATION="$IOS_DESTINATION_11" WORKSPACE="$IOS_EXAMPLE_WORKSPACE"  SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
-
-    # Danger
-    - stage: Danger
-      script: bundle exec danger --verbose
+      env: DESTINATION="$IOS_DESTINATION_12" WORKSPACE="$IOS_EXAMPLE_WORKSPACE"  SDK="$IOS_SDK" SCHEME="$IOS_SCHEME"
 
 stages:
   - pod lint
   - build examples
   - tests
-  - danger

@@ -1,6 +1,6 @@
 # DCFrame
 
-[![CI Status](https://api.travis-ci.org/Bytedance/DCFrame.svg?branch=master&style=flat)](https://travis-ci.org/github/bytedance/DCFrame)
+[![CI Status](https://travis-ci.org/bytedance/DCFrame.svg?branch=master)](https://travis-ci.org/github/bytedance/DCFrame)
 [![Version](https://img.shields.io/cocoapods/v/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
 [![License](https://img.shields.io/cocoapods/l/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
 [![Platform](https://img.shields.io/cocoapods/p/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
