@@ -7,14 +7,11 @@
 
 [中文版 README](./README_CN.md)
 
-DCFrame is a Model-driven UI framework with applications in the following areas: assmeblying and arranging complex views with ease; reusing and rearranging view components at no cost; communication between views without couplings.
+DCFrame is a Model-driven UI framework, it can be easily achieved:
 
-DCFrame has advantages in the following areas when compared with [IGListKit](https://github.com/Instagram/IGListKit)  by Instagram:
-
-1. Less-weigted: only 3.4K lines of code
-2. Allowing composite models: managing and arranging complex views individually
-3. Low learning cost:  easily accessing protocols with a Model-driven view structure, managing data without using delegates
-4. Zero coupling in communications: provided a complete event sending and data sharing mechanism to achieve communication between view components with zero coupling.
+1. Assemble and manage complex UI modules; 
+2. Reuse and migrate UI modules at no cost;
+3. Communication between UI modules without coupling.
 
 ## Requirements
 
@@ -37,6 +34,12 @@ pod 'DCFrame'
 For those who are already familiar with the IGListKit to quickly get started with DCFrame, we provided the same example set as [IGListKit](https://github.com/Instagram/IGListKit) for reference. Simply pull the repo and run `pod install` under the 'Example' folder to run the Demo.
 
 <img src="./Docs/examples.gif" alt="examples" width="300" />
+
+> DCFrame has advantages in the following areas when compared with [IGListKit](https://github.com/Instagram/IGListKit)  by Instagram:
+>
+> 1. Less-weigted: only 3K lines of code
+> 2. Allowing composite models: managing and arranging complex views individually
+> 3. Zero coupling in communications: provided a complete event sending and data sharing mechanism to achieve communication between view components with zero coupling.
 
 ### Creating a simple list
 

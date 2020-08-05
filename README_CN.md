@@ -5,14 +5,11 @@
 [![License](https://img.shields.io/cocoapods/l/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
 [![Platform](https://img.shields.io/cocoapods/p/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
 
-DCFrame是一个由Model驱动的界面组合框架，通过使用该框架可以实现：轻松组装和管理复杂界面；0成本进行界面模块的复用和迁移；0耦合进行界面模块间的通信。
+DCFrame是一个由Model驱动的界面组合框架，通过使用该框架可以实现：
 
-DCFrame和[IGListKit](https://github.com/Instagram/IGListKit)相比具有如下优势：
-
-1. 更加轻量级：代码行数3K；
-2. 支持Model组合：分而治之管理和组合复杂界面；
-3. 上手门槛低： 接口简洁易用，直接Model驱动界面，告别代理方式进行数据管理；
-4. 模块0耦合通信：提供了完善的模块间事件传递和数据共享机制，可实现模块间0耦合通信。
+1. 轻松组装和管理复杂界面；
+2. 0成本进行界面模块的复用和迁移；
+3. 0耦合进行界面模块间的通信。
 
 ## 环境要求
 
@@ -33,6 +30,12 @@ pod 'DCFrame'
 为了便于已经熟悉IGListKit的同学快速上手DCFrame，这里提供了和 [IGListKit](https://github.com/Instagram/IGListKit) 一样的例子供大家参考。拉取该仓库，在Example文件夹下执行`pod install`来运行Example项目。
 
 <img src="./Docs/examples.gif" alt="examples" width="300" />
+
+> DCFrame和[IGListKit](https://github.com/Instagram/IGListKit)相比具有如下优势：
+>
+> 1. 更加轻量级：代码行数3K；
+> 2. 支持Model组合：分而治之管理和组合复杂界面；
+> 3. 模块0耦合通信：提供了完善的模块间事件传递和数据共享机制，可实现模块间0耦合通信。
 
 ### 创建一个简单列表
 
