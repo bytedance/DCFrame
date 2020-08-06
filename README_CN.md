@@ -1,9 +1,27 @@
-# DCFrame
+<p align="center">
+  <img src="./Docs/title.png" alt="title" width="800" />
+</p>
 
-[![CI Status](https://travis-ci.org/bytedance/DCFrame.svg?branch=master&style=flat)](https://travis-ci.org/github/bytedance/DCFrame)
-[![Version](https://img.shields.io/cocoapods/v/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
-[![License](https://img.shields.io/cocoapods/l/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
-[![Platform](https://img.shields.io/cocoapods/p/DCFrame.svg?style=flat)](https://cocoapods.org/pods/DCFrame)
+<p align="center">
+    <a href="https://travis-ci.org/github/bytedance/DCFrame">
+        <img src="https://travis-ci.org/bytedance/DCFrame.svg?branch=master"
+             alt="CI Status">
+    </a>
+    <a href="https://cocoapods.org/pods/DCFrame">
+      <img src="https://img.shields.io/cocoapods/v/DCFrame.svg?style=flat"
+           alt="Version" />
+    </a>
+    <a href="https://cocoapods.org/pods/DCFrame">
+        <img src="https://img.shields.io/cocoapods/l/DCFrame.svg?style=flat"
+             alt="License">
+    </a>
+    <a href="https://cocoapods.org/pods/DCFrame">
+        <img src="https://img.shields.io/cocoapods/p/DCFrame.svg?style=flat"
+             alt="Platform">
+    </a>
+</p>
+
+------
 
 DCFrame是一个由Model驱动的界面组合框架，通过使用该框架可以实现：
 
