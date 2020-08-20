@@ -30,6 +30,7 @@
     @objc optional func dc_didSelectedCellModel(_ cellModel: DCBaseCellModel)
     @objc optional func dc_gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
     @objc optional func dc_tableViewDataWillReload(_ tableView: UITableView)
+    @objc optional func dc_tableViewDataDidReload(_ tableView: UITableView)
     @objc optional func dc_beginAnimateUpdate(_ tableView: UITableView)
     @objc optional func dc_endAnimateUpdate(_ tableView: UITableView)
 }

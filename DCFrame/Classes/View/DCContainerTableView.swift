@@ -245,6 +245,7 @@ open class DCContainerTableView: UITableView {
         dc_delegate?.dc_tableViewDataWillReload?(self)
         reloadData()
         hoverViewsManager.updateHoverDCViews()
+        dc_delegate?.dc_tableViewDataDidReload?(self)
     }
     
     private func animateDiffRows() -> (deletes: [IndexPath], inserts: [IndexPath], moves: [(from: IndexPath, to: IndexPath)]) {
@@ -464,6 +465,7 @@ extension DCContainerTableView: DCBaseOperationProtocol {
             }
             completion()
             dc_delegate?.dc_endAnimateUpdate?(self)
+            dc_delegate?.dc_tableViewDataDidReload?(self)
         }
         
         func animateUpdate() {
