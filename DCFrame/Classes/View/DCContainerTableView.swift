@@ -57,6 +57,12 @@ open class DCContainerTableView: UITableView {
     private lazy var isNeedAnimateUpdate = false
     
     private lazy var hoverViewsManager = DCHoverViewManager()
+    
+    private lazy var updateDataLock: pthread_mutex_t = {
+        var mutexLock = pthread_mutex_t()
+        pthread_mutex_init(&mutexLock, nil)
+        return mutexLock
+    }()
 
     var assert_tableViewDataWillReload = false
     var assert_tableViewCellForRowing = false
@@ -241,11 +247,17 @@ open class DCContainerTableView: UITableView {
     }
     
     private func tableViewReloadData() {
+        pthread_mutex_lock(&updateDataLock)
+        
         updateDataController()
         dc_delegate?.dc_tableViewDataWillReload?(self)
+        
         reloadData()
+        
         hoverViewsManager.updateHoverDCViews()
         dc_delegate?.dc_tableViewDataDidReload?(self)
+        
+        pthread_mutex_unlock(&updateDataLock)
     }
     
     private func animateDiffRows() -> (deletes: [IndexPath], inserts: [IndexPath], moves: [(from: IndexPath, to: IndexPath)]) {
@@ -356,6 +368,7 @@ open class DCContainerTableView: UITableView {
     deinit {
         delegate = nil
         dataSource = nil
+        pthread_mutex_destroy(&updateDataLock)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -472,15 +485,17 @@ extension DCContainerTableView: DCBaseOperationProtocol {
             for view in getVisibleCells() where view.isHidden {
                 view.cellModelDidUpdate()
             }
-            
-            let diffs = animateDiffRows()
-            
+  
             CATransaction.begin()
             CATransaction.setCompletionBlock({
                 endAnimateUpdate()
             })
             
+            pthread_mutex_lock(&updateDataLock)
             beginUpdates()
+            
+            let diffs = animateDiffRows()
+            
             if diffs.deletes.count > 0 {
                 deleteRows(at: diffs.deletes, with: animation)
             }
@@ -490,7 +505,9 @@ extension DCContainerTableView: DCBaseOperationProtocol {
             diffs.moves.forEach {
                 moveRow(at: $0.from, to: $0.to)
             }
+            
             endUpdates()
+            pthread_mutex_unlock(&updateDataLock)
             
             CATransaction.commit()
             
