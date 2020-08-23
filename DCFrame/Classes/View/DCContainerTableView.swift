@@ -58,7 +58,7 @@ open class DCContainerTableView: UITableView {
     
     private lazy var hoverViewsManager = DCHoverViewManager()
     
-    private lazy var updateDataLock: pthread_mutex_t = {
+    private lazy var animateUpdateLock: pthread_mutex_t = {
         var mutexLock = pthread_mutex_t()
         pthread_mutex_init(&mutexLock, nil)
         return mutexLock
@@ -141,9 +141,13 @@ open class DCContainerTableView: UITableView {
         let tmpDataController = DCListDataController()
         setupDataController(tmpDataController, containerModel)
         
-        self.p_dataController.write {
+        pthread_mutex_lock(&animateUpdateLock)
+        
+        p_dataController.write {
             $0 = tmpDataController
         }
+        
+        pthread_mutex_unlock(&animateUpdateLock)
     }
     
     private func setupDataController(_ dataController: DCListDataController, _ parentCM: DCContainerModel) {
@@ -247,8 +251,6 @@ open class DCContainerTableView: UITableView {
     }
     
     private func tableViewReloadData() {
-        pthread_mutex_lock(&updateDataLock)
-        
         updateDataController()
         dc_delegate?.dc_tableViewDataWillReload?(self)
         
@@ -256,8 +258,6 @@ open class DCContainerTableView: UITableView {
         
         hoverViewsManager.updateHoverDCViews()
         dc_delegate?.dc_tableViewDataDidReload?(self)
-        
-        pthread_mutex_unlock(&updateDataLock)
     }
     
     private func animateDiffRows() -> (deletes: [IndexPath], inserts: [IndexPath], moves: [(from: IndexPath, to: IndexPath)]) {
@@ -293,7 +293,7 @@ open class DCContainerTableView: UITableView {
             }
         }
         
-        self.p_dataController.write {
+        p_dataController.write {
             $0 = newDataController
         }
         
@@ -368,7 +368,7 @@ open class DCContainerTableView: UITableView {
     deinit {
         delegate = nil
         dataSource = nil
-        pthread_mutex_destroy(&updateDataLock)
+        pthread_mutex_destroy(&animateUpdateLock)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -491,7 +491,7 @@ extension DCContainerTableView: DCBaseOperationProtocol {
                 endAnimateUpdate()
             })
             
-            pthread_mutex_lock(&updateDataLock)
+            pthread_mutex_lock(&animateUpdateLock)
             beginUpdates()
             
             let diffs = animateDiffRows()
@@ -507,7 +507,7 @@ extension DCContainerTableView: DCBaseOperationProtocol {
             }
             
             endUpdates()
-            pthread_mutex_unlock(&updateDataLock)
+            pthread_mutex_unlock(&animateUpdateLock)
             
             CATransaction.commit()
             
