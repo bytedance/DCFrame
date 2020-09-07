@@ -45,6 +45,21 @@ open class DCContainerTableView: UITableView {
         return p_dataController.directValue
     }
     
+    /// Option for automatic height estimation
+    public var isAutomaticDimension: Bool = false {
+        didSet {
+            if isAutomaticDimension {
+                estimatedRowHeight = UITableView.automaticDimension
+                estimatedSectionFooterHeight = UITableView.automaticDimension
+                estimatedSectionHeaderHeight = UITableView.automaticDimension
+            } else {
+                estimatedRowHeight = 0
+                estimatedSectionFooterHeight = 0
+                estimatedSectionHeaderHeight = 0
+            }
+        }
+    }
+    
     /// CM of the current ContainerTableView
     public private(set) var containerModel = DCContainerModel()
     public private(set) var isTableViewScrolling = false
@@ -73,16 +88,21 @@ open class DCContainerTableView: UITableView {
     
     public init(frame: CGRect) {
         super.init(frame: frame, style: .plain)
+        
         clipsToBounds = true
         
         delegate = self
         dataSource = self
         separatorStyle = .none
         
+        estimatedRowHeight = 0
+        estimatedSectionFooterHeight = 0
+        estimatedSectionHeaderHeight = 0
+        
         if #available(iOS 11.0, *) {
             contentInsetAdjustmentBehavior = .never
         }
-        
+
         hoverViewsManager.containerTableView = self
         
         subscribeEvent(DCBaseCell.dc_selectedCell) { [weak self] (data: Any?) in
@@ -579,7 +599,7 @@ extension DCContainerTableView: UITableViewDataSource, UITableViewDelegate, UIGe
             }
             if cellHeight > CGFloat.ulpOfOne {
                 return cellHeight
-            } else if baseCellModel.isAutomaticDimension {
+            } else if isAutomaticDimension && baseCellModel.isAutomaticDimension {
                 return UITableView.automaticDimension
             }
         }
