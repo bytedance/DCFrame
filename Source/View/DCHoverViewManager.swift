@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+import UIKit
+
 class DCHoverViewManager: NSObject {
     public weak var containerTableView: DCContainerTableView?
 

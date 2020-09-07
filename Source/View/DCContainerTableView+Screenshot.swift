@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+import UIKit
+
 extension DCContainerTableView {
     /// Get screenshot of the current `UITableView`
     /// - Returns: screenshot of the `UITableView`

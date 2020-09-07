@@ -3,7 +3,9 @@ This application makes use of the following third party libraries:
 
 ## DCFrame
 
-Copyright (c) 2019 zhangzhengzhen <wytiankong@gmail.com>
+MIT License
+
+Copyright (c) Bytedance Inc. and its affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

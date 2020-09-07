@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+import UIKit
+
 struct DCDuration {
     static let Normal: TimeInterval = 0.30
     static let Short: TimeInterval = 0.25

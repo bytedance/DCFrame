@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-import Foundation
+import UIKit
 
 /// CellModel Container class, abbreviated as CM
 /// A `DCContainerModel` can include both `DCBaseCellModel` and `DCContainerModel`

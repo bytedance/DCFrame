@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-import Foundation
+import UIKit
 
 open class DCCellModel: DCBaseCellModel {
     public required override init() {

@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+import UIKit
+
 @objc public protocol DCTableViewDelegate: NSObjectProtocol {
     /// tableView related protocol inheritance
     @objc optional func dc_tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell?

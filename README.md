@@ -39,10 +39,20 @@ DCFrame is a Model-driven UI framework, it can be easily achieved:
 
 ## Installation
 
-#### Cocoapods
+### Cocoapods
+
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate DCFrame into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'DCFrame'
+pod 'DCFrame' ~> 1.0.3
+```
+
+### Carthage
+
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate DCFrame into your Xcode project using Carthage, specify it in your `Cartfile`:
+
+```swift
+github "bytedance/DCFrame" ~> 1.0.3
 ```
 
 ## Getting Started

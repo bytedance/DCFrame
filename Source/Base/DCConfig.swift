@@ -5,7 +5,7 @@
 // LICENSE file in the root directory of this source tree.
 //
 
-import Foundation
+import UIKit
 
 /// Configure default separator height, color, selected cell color, and cell background color
 final public class DCConfig {

@@ -5,6 +5,8 @@
 // LICENSE file in the root directory of this source tree.
 //
 
+import UIKit
+
 extension Array {
     subscript (dc_safe index: Int) -> Element? {
         if index < count && index >= 0 {
