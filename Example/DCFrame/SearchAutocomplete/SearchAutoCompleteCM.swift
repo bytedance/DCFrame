@@ -57,7 +57,7 @@ class SearchAutoCompleteCM: DCContainerModel {
     private func loadWords(_ words: [String]) {
         listCM.removeAllSubmodels()
         for word in words {
-            let model = LabelModel()
+            let model = DiffLabelCellModel()
             model.text = word
             listCM.addSubmodel(model)
         }

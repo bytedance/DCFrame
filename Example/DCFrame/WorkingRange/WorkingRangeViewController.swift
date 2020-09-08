@@ -24,12 +24,15 @@ class WorkingRangeViewController: DCViewController {
         
         for height in heights {
             let urlString = mockUrlString(height)
-            listCM.addXibCell(LabelCell.self, data: urlString)
             
-            let model = ImageCellModel()
-            model.cellHeight = CGFloat(height)
-            model.urlString = urlString
-            listCM.addSubmodel(model)
+            let titleModel = SimpleLabelModel()
+            titleModel.text = urlString
+            
+            let imageModel = ImageCellModel()
+            imageModel.cellHeight = CGFloat(height)
+            imageModel.urlString = urlString
+            
+            listCM.addSubmodels([titleModel, imageModel])
         }
         
         loadCM(listCM)

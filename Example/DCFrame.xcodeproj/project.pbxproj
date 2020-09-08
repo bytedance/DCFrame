@@ -12,6 +12,8 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		9BFB86445EBC73E2127DE39F /* Pods_DCFrame_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3F860F0BCBA48E6225DADB6 /* Pods_DCFrame_Example.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		BC1A222C25073411004EB910 /* DiffLabelCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1A222B25073411004EB910 /* DiffLabelCellModel.swift */; };
+		BC1A223625074560004EB910 /* ShareDataLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1A223525074560004EB910 /* ShareDataLabelCell.swift */; };
 		BC3267CA248F545F008A9B48 /* MonthTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267C9248F545F008A9B48 /* MonthTitleCell.swift */; };
 		BC3267CC248F5506008A9B48 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267CB248F5506008A9B48 /* CalendarView.swift */; };
 		BC3267D0248F7423008A9B48 /* ShareDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267CF248F7423008A9B48 /* ShareDataViewController.swift */; };
@@ -27,15 +29,17 @@
 		BC364136242F011500B20760 /* DCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC364135242F011500B20760 /* DCViewController.swift */; };
 		BC407C46242FA6F8007F8B8C /* DCFrame_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC407C45242FA6F8007F8B8C /* DCFrame_ExampleUITests.swift */; };
 		BC407C5324306A9F007F8B8C /* EventDataControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC407C5224306A9F007F8B8C /* EventDataControllerTests.swift */; };
+		BC768C3825066E3D00409CA6 /* SimpleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC768C3725066E3D00409CA6 /* SimpleListViewController.swift */; };
+		BC768C3A25066E6E00409CA6 /* SimpleLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC768C3925066E6E00409CA6 /* SimpleLabelCell.swift */; };
+		BC768C3E25072F4100409CA6 /* LabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC768C3C25072F4100409CA6 /* LabelCell.xib */; };
+		BC768C3F25072F4100409CA6 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC768C3D25072F4100409CA6 /* LabelCell.swift */; };
+		BC768C4125072F6600409CA6 /* SimpleListXibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC768C4025072F6600409CA6 /* SimpleListXibViewController.swift */; };
 		BC8139C824A876F60084378C /* DCRefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8139C724A876F60084378C /* DCRefreshViewController.swift */; };
 		BC8139CA24A8ABF30084378C /* RefreshCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8139C924A8ABF30084378C /* RefreshCM.swift */; };
-		BC8139CC24A8AC720084378C /* SimpleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC8139CB24A8AC720084378C /* SimpleListViewController.swift */; };
-		BC854069242E43F400D42E16 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC854067242E43F400D42E16 /* LabelCell.swift */; };
 		BC997E9D2490C46500E5F891 /* DCFrame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC997E9C2490C46500E5F891 /* DCFrame.framework */; };
 		BC997E9F2490E44600E5F891 /* DiffTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC997E9E2490E44600E5F891 /* DiffTableViewController.swift */; };
 		BC997EA12490FCFF00E5F891 /* WorkingRangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC997EA02490FCFF00E5F891 /* WorkingRangeViewController.swift */; };
 		BC997EA3249104D800E5F891 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC997EA2249104D800E5F891 /* ImageCell.swift */; };
-		BC997EA52492072100E5F891 /* LabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC997EA42492072100E5F891 /* LabelCell.xib */; };
 		BCBEADE3248E2A8100C401E1 /* SearchAutoCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEADE2248E2A8100C401E1 /* SearchAutoCompleteViewController.swift */; };
 		BCBEADE5248E2CD400C401E1 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEADE4248E2CD400C401E1 /* SearchCell.swift */; };
 		BCBEADE7248E2F0600C401E1 /* SearchAutoCompleteCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCBEADE6248E2F0600C401E1 /* SearchAutoCompleteCM.swift */; };
@@ -83,6 +87,8 @@
 		62F856678C886F1138590C49 /* Pods-DCFrame_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DCFrame_ExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-DCFrame_ExampleTests/Pods-DCFrame_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		84A0DC99F9F023D1AA523209 /* Pods-DCFrame_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DCFrame_Example.debug.xcconfig"; path = "Target Support Files/Pods-DCFrame_Example/Pods-DCFrame_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		92213781D417229C93444446 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		BC1A222B25073411004EB910 /* DiffLabelCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffLabelCellModel.swift; sourceTree = "<group>"; };
+		BC1A223525074560004EB910 /* ShareDataLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataLabelCell.swift; sourceTree = "<group>"; };
 		BC3267C9248F545F008A9B48 /* MonthTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthTitleCell.swift; sourceTree = "<group>"; };
 		BC3267CB248F5506008A9B48 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		BC3267CF248F7423008A9B48 /* ShareDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDataViewController.swift; sourceTree = "<group>"; };
@@ -102,15 +108,17 @@
 		BC407C45242FA6F8007F8B8C /* DCFrame_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCFrame_ExampleUITests.swift; sourceTree = "<group>"; };
 		BC407C47242FA6F8007F8B8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC407C5224306A9F007F8B8C /* EventDataControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataControllerTests.swift; sourceTree = "<group>"; };
+		BC768C3725066E3D00409CA6 /* SimpleListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleListViewController.swift; sourceTree = "<group>"; };
+		BC768C3925066E6E00409CA6 /* SimpleLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLabelCell.swift; sourceTree = "<group>"; };
+		BC768C3C25072F4100409CA6 /* LabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelCell.xib; sourceTree = "<group>"; };
+		BC768C3D25072F4100409CA6 /* LabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		BC768C4025072F6600409CA6 /* SimpleListXibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleListXibViewController.swift; sourceTree = "<group>"; };
 		BC8139C724A876F60084378C /* DCRefreshViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DCRefreshViewController.swift; sourceTree = "<group>"; };
 		BC8139C924A8ABF30084378C /* RefreshCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshCM.swift; sourceTree = "<group>"; };
-		BC8139CB24A8AC720084378C /* SimpleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleListViewController.swift; sourceTree = "<group>"; };
-		BC854067242E43F400D42E16 /* LabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		BC997E9C2490C46500E5F891 /* DCFrame.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DCFrame.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC997E9E2490E44600E5F891 /* DiffTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTableViewController.swift; sourceTree = "<group>"; };
 		BC997EA02490FCFF00E5F891 /* WorkingRangeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingRangeViewController.swift; sourceTree = "<group>"; };
 		BC997EA2249104D800E5F891 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		BC997EA42492072100E5F891 /* LabelCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelCell.xib; sourceTree = "<group>"; };
 		BCBEADE2248E2A8100C401E1 /* SearchAutoCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAutoCompleteViewController.swift; sourceTree = "<group>"; };
 		BCBEADE4248E2CD400C401E1 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		BCBEADE6248E2F0600C401E1 /* SearchAutoCompleteCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAutoCompleteCM.swift; sourceTree = "<group>"; };
@@ -187,7 +195,18 @@
 			isa = PBXGroup;
 			children = (
 				BC364134242F011500B20760 /* Base */,
-				BCCF5C52248E016000D4A131 /* Examples */,
+				BC768C3625066E3D00409CA6 /* SimpleList */,
+				BC768C3B25072F4100409CA6 /* SimpleListXib */,
+				BC1A222A25073364004EB910 /* RefreshAndLoad */,
+				BC1A222D2507376E004EB910 /* SearchAutocomplete */,
+				BC1A222E2507410C004EB910 /* MixedData */,
+				BC1A222F2507419B004EB910 /* EmptyView */,
+				BC1A2230250742E5004EB910 /* WorkingRange */,
+				BC1A22312507439F004EB910 /* DiffAlgorithm */,
+				BC1A2232250743EC004EB910 /* Calendar */,
+				BC1A2234250744CB004EB910 /* ShareData */,
+				BC1A2237250747BF004EB910 /* PostList */,
+				BC1A223825074837004EB910 /* MergeExample */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -212,6 +231,107 @@
 				4AFD2CCF1CD26ED226EEE5DD /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		BC1A222A25073364004EB910 /* RefreshAndLoad */ = {
+			isa = PBXGroup;
+			children = (
+				BCCF5C53248E019D00D4A131 /* RefreshViewController.swift */,
+				BC8139C924A8ABF30084378C /* RefreshCM.swift */,
+			);
+			path = RefreshAndLoad;
+			sourceTree = "<group>";
+		};
+		BC1A222D2507376E004EB910 /* SearchAutocomplete */ = {
+			isa = PBXGroup;
+			children = (
+				BCBEADE2248E2A8100C401E1 /* SearchAutoCompleteViewController.swift */,
+				BCBEADE6248E2F0600C401E1 /* SearchAutoCompleteCM.swift */,
+				BCBEADE4248E2CD400C401E1 /* SearchCell.swift */,
+			);
+			path = SearchAutocomplete;
+			sourceTree = "<group>";
+		};
+		BC1A222E2507410C004EB910 /* MixedData */ = {
+			isa = PBXGroup;
+			children = (
+				BCBEADE8248E462200C401E1 /* MixedDataViewController.swift */,
+				BCBEADEE248E4F5300C401E1 /* ExpandableLabelCell.swift */,
+				BCBEADEA248E4A1A00C401E1 /* GridItemsCell.swift */,
+				BCBEADEC248E4BFB00C401E1 /* UserCell.swift */,
+			);
+			path = MixedData;
+			sourceTree = "<group>";
+		};
+		BC1A222F2507419B004EB910 /* EmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				BCBEADF0248F2FC100C401E1 /* EmptyViewController.swift */,
+				BCBEADF4248F354200C401E1 /* EmptyViewContainerModel.swift */,
+				BCBEADF2248F336700C401E1 /* RemoveCell.swift */,
+			);
+			path = EmptyView;
+			sourceTree = "<group>";
+		};
+		BC1A2230250742E5004EB910 /* WorkingRange */ = {
+			isa = PBXGroup;
+			children = (
+				BC997EA02490FCFF00E5F891 /* WorkingRangeViewController.swift */,
+				BC997EA2249104D800E5F891 /* ImageCell.swift */,
+			);
+			path = WorkingRange;
+			sourceTree = "<group>";
+		};
+		BC1A22312507439F004EB910 /* DiffAlgorithm */ = {
+			isa = PBXGroup;
+			children = (
+				BC997E9E2490E44600E5F891 /* DiffTableViewController.swift */,
+				BC1A222B25073411004EB910 /* DiffLabelCellModel.swift */,
+			);
+			path = DiffAlgorithm;
+			sourceTree = "<group>";
+		};
+		BC1A2232250743EC004EB910 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				BCBEADF6248F3E3300C401E1 /* CalendarViewController.swift */,
+				BCBEADF8248F427000C401E1 /* CalendarContainerModel.swift */,
+				BC3267C9248F545F008A9B48 /* MonthTitleCell.swift */,
+				BC3267CB248F5506008A9B48 /* CalendarView.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		BC1A2234250744CB004EB910 /* ShareData */ = {
+			isa = PBXGroup;
+			children = (
+				BC3267CF248F7423008A9B48 /* ShareDataViewController.swift */,
+				BC1A223525074560004EB910 /* ShareDataLabelCell.swift */,
+			);
+			path = ShareData;
+			sourceTree = "<group>";
+		};
+		BC1A2237250747BF004EB910 /* PostList */ = {
+			isa = PBXGroup;
+			children = (
+				BC3267D1248F82B6008A9B48 /* PostListViewController.swift */,
+				BC3267D3248F82D9008A9B48 /* PostListContainerModel.swift */,
+				BC3267DF248F8F91008A9B48 /* PostInfoContainerModel.swift */,
+				BC3267DD248F8EEA008A9B48 /* PostCommentsContainerModel.swift */,
+				BC3267D5248F8332008A9B48 /* UserInfoCell.swift */,
+				BC3267D7248F87EE008A9B48 /* PhotoCell.swift */,
+				BC3267D9248F8884008A9B48 /* CommentCell.swift */,
+				BC3267DB248F8A15008A9B48 /* InteractiveCell.swift */,
+			);
+			path = PostList;
+			sourceTree = "<group>";
+		};
+		BC1A223825074837004EB910 /* MergeExample */ = {
+			isa = PBXGroup;
+			children = (
+				BC3267E1248F962A008A9B48 /* MergeViewController.swift */,
+			);
+			path = MergeExample;
 			sourceTree = "<group>";
 		};
 		BC364134242F011500B20760 /* Base */ = {
@@ -245,44 +365,24 @@
 			path = DCFrame_ExampleUITests;
 			sourceTree = "<group>";
 		};
-		BCCF5C52248E016000D4A131 /* Examples */ = {
+		BC768C3625066E3D00409CA6 /* SimpleList */ = {
 			isa = PBXGroup;
 			children = (
-				BC8139CB24A8AC720084378C /* SimpleListViewController.swift */,
-				BCCF5C53248E019D00D4A131 /* RefreshViewController.swift */,
-				BC8139C924A8ABF30084378C /* RefreshCM.swift */,
-				BCBEADE2248E2A8100C401E1 /* SearchAutoCompleteViewController.swift */,
-				BCBEADE6248E2F0600C401E1 /* SearchAutoCompleteCM.swift */,
-				BCBEADE8248E462200C401E1 /* MixedDataViewController.swift */,
-				BCBEADF0248F2FC100C401E1 /* EmptyViewController.swift */,
-				BCBEADF4248F354200C401E1 /* EmptyViewContainerModel.swift */,
-				BC997EA02490FCFF00E5F891 /* WorkingRangeViewController.swift */,
-				BC997E9E2490E44600E5F891 /* DiffTableViewController.swift */,
-				BCBEADF6248F3E3300C401E1 /* CalendarViewController.swift */,
-				BCBEADF8248F427000C401E1 /* CalendarContainerModel.swift */,
-				BC3267CF248F7423008A9B48 /* ShareDataViewController.swift */,
-				BC3267D1248F82B6008A9B48 /* PostListViewController.swift */,
-				BC3267D3248F82D9008A9B48 /* PostListContainerModel.swift */,
-				BC3267DF248F8F91008A9B48 /* PostInfoContainerModel.swift */,
-				BC3267DD248F8EEA008A9B48 /* PostCommentsContainerModel.swift */,
-				BC3267E1248F962A008A9B48 /* MergeViewController.swift */,
-				BC854067242E43F400D42E16 /* LabelCell.swift */,
-				BC997EA42492072100E5F891 /* LabelCell.xib */,
-				BCBEADE4248E2CD400C401E1 /* SearchCell.swift */,
-				BC997EA2249104D800E5F891 /* ImageCell.swift */,
-				BCBEADEA248E4A1A00C401E1 /* GridItemsCell.swift */,
-				BCBEADEC248E4BFB00C401E1 /* UserCell.swift */,
-				BCBEADEE248E4F5300C401E1 /* ExpandableLabelCell.swift */,
-				BCBEADF2248F336700C401E1 /* RemoveCell.swift */,
-				BC3267C9248F545F008A9B48 /* MonthTitleCell.swift */,
-				BC3267CB248F5506008A9B48 /* CalendarView.swift */,
-				BC3267D5248F8332008A9B48 /* UserInfoCell.swift */,
-				BC3267D7248F87EE008A9B48 /* PhotoCell.swift */,
-				BC3267D9248F8884008A9B48 /* CommentCell.swift */,
-				BC3267DB248F8A15008A9B48 /* InteractiveCell.swift */,
+				BC768C3725066E3D00409CA6 /* SimpleListViewController.swift */,
+				BC768C3925066E6E00409CA6 /* SimpleLabelCell.swift */,
 			);
-			path = Examples;
-			sourceTree = SOURCE_ROOT;
+			path = SimpleList;
+			sourceTree = "<group>";
+		};
+		BC768C3B25072F4100409CA6 /* SimpleListXib */ = {
+			isa = PBXGroup;
+			children = (
+				BC768C4025072F6600409CA6 /* SimpleListXibViewController.swift */,
+				BC768C3C25072F4100409CA6 /* LabelCell.xib */,
+				BC768C3D25072F4100409CA6 /* LabelCell.swift */,
+			);
+			path = SimpleListXib;
+			sourceTree = "<group>";
 		};
 		E4CBE2342C4450AF4C8CD852 /* Pods */ = {
 			isa = PBXGroup;
@@ -420,7 +520,7 @@
 			files = (
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
-				BC997EA52492072100E5F891 /* LabelCell.xib in Resources */,
+				BC768C3E25072F4100409CA6 /* LabelCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,7 +630,9 @@
 			files = (
 				BC3267D2248F82B6008A9B48 /* PostListViewController.swift in Sources */,
 				BC3267D8248F87EE008A9B48 /* PhotoCell.swift in Sources */,
+				BC768C3825066E3D00409CA6 /* SimpleListViewController.swift in Sources */,
 				BC997EA3249104D800E5F891 /* ImageCell.swift in Sources */,
+				BC1A223625074560004EB910 /* ShareDataLabelCell.swift in Sources */,
 				BC3267DE248F8EEA008A9B48 /* PostCommentsContainerModel.swift in Sources */,
 				BCBEADE7248E2F0600C401E1 /* SearchAutoCompleteCM.swift in Sources */,
 				BC997E9F2490E44600E5F891 /* DiffTableViewController.swift in Sources */,
@@ -542,7 +644,7 @@
 				BCBEADF9248F427000C401E1 /* CalendarContainerModel.swift in Sources */,
 				BC3267D6248F8332008A9B48 /* UserInfoCell.swift in Sources */,
 				BCBEADEB248E4A1A00C401E1 /* GridItemsCell.swift in Sources */,
-				BC8139CC24A8AC720084378C /* SimpleListViewController.swift in Sources */,
+				BC1A222C25073411004EB910 /* DiffLabelCellModel.swift in Sources */,
 				BCCF5C54248E019D00D4A131 /* RefreshViewController.swift in Sources */,
 				BC3267CA248F545F008A9B48 /* MonthTitleCell.swift in Sources */,
 				BC8139C824A876F60084378C /* DCRefreshViewController.swift in Sources */,
@@ -550,17 +652,19 @@
 				BC997EA12490FCFF00E5F891 /* WorkingRangeViewController.swift in Sources */,
 				BCBEADF5248F354200C401E1 /* EmptyViewContainerModel.swift in Sources */,
 				BC3267CC248F5506008A9B48 /* CalendarView.swift in Sources */,
+				BC768C3A25066E6E00409CA6 /* SimpleLabelCell.swift in Sources */,
 				BC3267D4248F82D9008A9B48 /* PostListContainerModel.swift in Sources */,
-				BC854069242E43F400D42E16 /* LabelCell.swift in Sources */,
 				BCBEADE3248E2A8100C401E1 /* SearchAutoCompleteViewController.swift in Sources */,
 				BCBEADED248E4BFB00C401E1 /* UserCell.swift in Sources */,
 				BC364136242F011500B20760 /* DCViewController.swift in Sources */,
 				BCBEADE9248E462200C401E1 /* MixedDataViewController.swift in Sources */,
 				BC3267E0248F8F91008A9B48 /* PostInfoContainerModel.swift in Sources */,
 				BC3267DC248F8A15008A9B48 /* InteractiveCell.swift in Sources */,
+				BC768C3F25072F4100409CA6 /* LabelCell.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				BC3267E2248F962A008A9B48 /* MergeViewController.swift in Sources */,
 				BCBEADF1248F2FC100C401E1 /* EmptyViewController.swift in Sources */,
+				BC768C4125072F6600409CA6 /* SimpleListXibViewController.swift in Sources */,
 				BCBEADEF248E4F5300C401E1 /* ExpandableLabelCell.swift in Sources */,
 				BC8139CA24A8ABF30084378C /* RefreshCM.swift in Sources */,
 			);

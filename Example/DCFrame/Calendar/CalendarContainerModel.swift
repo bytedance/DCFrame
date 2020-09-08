@@ -55,7 +55,9 @@ class CalendarContainerModel: DCContainerModel {
         listCM.removeAllSubmodels()
         if let items = data as? [String] {
             for item in items {
-                listCM.addXibCell(LabelCell.self, data: item)
+                let model = SimpleLabelModel()
+                model.text = item
+                listCM.addSubmodel(model)
             }
         }
     }

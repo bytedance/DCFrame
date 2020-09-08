@@ -25,7 +25,7 @@ class DCViewController: UIViewController {
         dcTableView.frame = view.frame
         dcTableView.contentInset = UIEdgeInsets(top: navbarHeight(), left: 0, bottom: safeBottomMargin(), right: 0)
         dcTableView.contentOffset = CGPoint(x: 0, y: -navbarHeight())
-        
+
         view.addSubview(dcTableView)
     }
     

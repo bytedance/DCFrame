@@ -15,6 +15,7 @@ class ViewController: DCViewController {
     
     private let demosList: [(String, AnyClass)] = [
         ("Simple List", SimpleListViewController.self),
+        ("Simple List With Xib Cell", SimpleListXibViewController.self),
         ("Pull Down Refreshing & Pull Up Loading", RefreshViewController.self),
         ("Search Autocomplete", SearchAutoCompleteViewController.self),
         ("Mixed Data", MixedDataViewController.self),
@@ -24,7 +25,7 @@ class ViewController: DCViewController {
         ("Calendar", CalendarViewController.self),
         ("Share Data", ShareDataViewController.self),
         ("Post List", PostListViewController.self),
-        ("Merge Other ContainerModels", MergeViewController.self)
+        ("Merge Example", MergeViewController.self)
     ]
 
     override func viewDidLoad() {
@@ -32,7 +33,7 @@ class ViewController: DCViewController {
         
         title = "Demos"
 
-        EDC.subscribeEvent(LabelCell.touch, target: self) { [weak self] (title: String) in
+        EDC.subscribeEvent(SimpleLabelCell.touch, target: self) { [weak self] (title: String) in
             guard let `self` = self else {
                 return
             }
@@ -48,10 +49,12 @@ class ViewController: DCViewController {
         
         let cm = DCContainerModel()
         for item in demosList {
-            cm.addXibCell(LabelCell.self, data: item.0) { (model) in
-                model.selectionStyle = .default
-            }
+            let model = SimpleLabelModel()
+            model.selectionStyle = .default
+            model.text = item.0
+            cm.addSubmodel(model)
         }
+        
         loadCM(cm)
     }
 }

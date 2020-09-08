@@ -23,11 +23,11 @@ class PostInfoContainerModel: DCContainerModel {
         super.cmDidLoad()
         
         subscribeEvent(InteractiveCell.likeTouch) { [weak self] (text: String) in
-            self?.shareData((text, UIColor.red), to: PhotoCellModel.data)
+            self?.shareData((text, UIColor.red), to: PhotoCell.data)
         }.and(InteractiveCell.commentTouch) { [weak self] (text: String) in
-            self?.shareData((text, UIColor.yellow), to: PhotoCellModel.data)
+            self?.shareData((text, UIColor.yellow), to: PhotoCell.data)
         }.and(InteractiveCell.shareTouch) { [weak self] (text: String) in
-            self?.shareData((text, UIColor.blue), to: PhotoCellModel.data)
+            self?.shareData((text, UIColor.blue), to: PhotoCell.data)
         }
     }
     

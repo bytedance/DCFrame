@@ -17,8 +17,11 @@ class ShareDataViewController: DCViewController {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAdd))
         
-        for _ in 0..<50 {
-            listCM.addXibCell(LabelCell.self, data: "value: \(numValue)")
+        for _ in 0..<100 {
+            let model = SimpleLabelModel()
+            model.text = "init value"
+            model.cellClass = ShareDataLabelCell.self
+            listCM.addSubmodel(model)
         }
         
         loadCM(listCM)
@@ -26,6 +29,6 @@ class ShareDataViewController: DCViewController {
     
     @objc func onAdd() {
         numValue += 1
-        EDC.shareData("value: \(numValue)", to: LabelCell.text)
+        EDC.shareData("value: \(numValue)", to: ShareDataLabelCell.text)
     }
 }

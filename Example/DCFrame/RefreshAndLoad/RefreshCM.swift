@@ -31,7 +31,9 @@ class RefreshCM: DCRefreshContainerModel {
     private func loadData() {
         for _ in 0...20 {
             currentNumber += 1
-            addXibCell(LabelCell.self, data: "\(currentNumber)")
+            let model = SimpleLabelModel()
+            model.text = "\(currentNumber)"
+            addSubmodel(model)
         }
         needReloadData()
     }

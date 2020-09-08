@@ -9,8 +9,6 @@
 import DCFrame
 
 class PhotoCellModel: DCCellModel {
-    static let data = DCSharedDataID()
-    
     var text = ""
     var color: UIColor = UIColor(red: 4/255.0, green: 170/255.0, blue: 166/255.0, alpha: 1.0)
 
@@ -20,19 +18,11 @@ class PhotoCellModel: DCCellModel {
         cellClass = PhotoCell.self
         cellHeight = 375
     }
-    
-    override func cellModelDidLoad() {
-        super.cellModelDidLoad()
-        
-        subscribeData(Self.data) { [weak self] (text: String, color: UIColor) in
-            self?.text = text
-            self?.color = color
-            self?.needReloadCellData()
-        }
-    }
 }
 
 class PhotoCell: DCCell<PhotoCellModel> {
+    static let data = DCSharedDataID()
+    
     lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
@@ -41,6 +31,20 @@ class PhotoCell: DCCell<PhotoCellModel> {
         contentView.addSubview(label)
         return label
     }()
+    
+    override func cellModelDidLoad() {
+        super.cellModelDidLoad()
+        
+        subscribeData(Self.data) { [weak self] (text: String, color: UIColor) in
+            guard let `self` = self else { return }
+            
+            self.cellModel.text = text
+            self.cellModel.color = color
+            
+            self.infoLabel.text = text
+            self.contentView.backgroundColor = color
+        }
+    }
 
     override func cellModelDidUpdate() {
         super.cellModelDidUpdate()

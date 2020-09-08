@@ -17,6 +17,7 @@ class EmptyViewContainerModel: DCContainerModel {
         
         for number in data {
             addSubCell(RemoveCell.self, data: number) { (model) in
+                model.cellHeight = 40
                 model.bottomSeparator = DCSeparatorModel(color: .clear, height: 10)
             }
         }
@@ -30,6 +31,7 @@ class EmptyViewContainerModel: DCContainerModel {
     public func addModel() {
         tally += 1
         addSubCell(RemoveCell.self, data: tally) { (model) in
+            model.cellHeight = 40
             model.bottomSeparator = DCSeparatorModel(color: .clear, height: 10)
         }
         needAnimateUpdate(with: .left)

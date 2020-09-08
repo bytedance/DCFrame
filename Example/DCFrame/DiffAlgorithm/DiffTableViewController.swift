@@ -57,7 +57,7 @@ class DiffTableViewController: DCViewController {
     private func loadPeople() {
         listCM.removeAllSubmodels()
         for item in people {
-            let model = LabelModel()
+            let model = DiffLabelCellModel()
             model.text = item
             listCM.addSubmodel(model)
         }
