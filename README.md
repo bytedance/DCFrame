@@ -24,7 +24,7 @@
 
 ------
 
-DCFrame is a Model-driven UI framework, it can be easily achieved:
+DCFrame is a UI combination frame, it can be easily achieved:
 
 1. Assemble and manage complex UI modules; 
 2. Reuse and migrate UI modules at no cost;

@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'DCFrame'
   s.version          = '1.0.6'
-  s.summary          = 'A Model-driven UI framework'
+  s.summary          = 'A UI combination frame'
   s.swift_version    = '5.0'
 
 # This description is used to generate tags and improve search results.
