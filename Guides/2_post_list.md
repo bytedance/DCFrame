@@ -10,7 +10,7 @@ Using DCFrame can also easily create a combination list, still need three steps:
 
 1. Define all the Cell and CellModel contained in the UI;
 2. Define ContainerModels to assemble these CellModels;
-3. Use ContainerTableView to load the a root ContainerModel.
+3. Use ContainerTableView to load the root ContainerModel.
 
 ## Define Cells And CellModels
 
@@ -201,9 +201,9 @@ dcContainerTableView.loadCM(postListContainerModel)
 
 The structure of this example is shown in the figure below:
 
-<img src="./Images/post_component_cm.png" alt="post_component_cm" width="700" />
+<img src="./Images/post_list_3.png" alt="post_component_cm" width="700" />
 
-Now we have learned how to use DCFrame to create a complex list, it can be found as simple as creating a simple list. 
+Now we have learned how to use DCFrame to create a complex list, it can be found as simple as creating a simple list:
 
 1. First create each basic UI Cells and CellModels;
 2. Then use ContainerModel to combine CellModels;
