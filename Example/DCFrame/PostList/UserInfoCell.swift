@@ -9,17 +9,12 @@
 import DCFrame
 
 class UserInfoCellModel: DCCellModel {
-    var name: String
+    var name: String!
     
-    init(name: String) {
-        self.name = name
+    required init() {
         super.init()
         cellHeight = 41
         cellClass = UserInfoCell.self
-    }
-    
-    required init() {
-        fatalError("init() has not been implemented")
     }
 }
 

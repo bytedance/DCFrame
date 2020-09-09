@@ -9,17 +9,12 @@
 import DCFrame
 
 class CommentCellModel: DCCellModel {
-    var comment: String
+    var comment: String!
     
-    init(comment: String) {
-        self.comment = comment
+    required init() {
         super.init()
         cellClass = CommentCell.self
         cellHeight = 25
-    }
-    
-    required init() {
-        fatalError("init() has not been implemented")
     }
 }
 

@@ -4,7 +4,7 @@ This document describes how to create a list of a single Cell type through DCFra
 
 <img src="./Images/simple_list_1.png" alt="list" width="300" />
 
-With DCFrame, you can easily create a list in three steps: 
+Using DCFrame can easily create a list, only need the following three steps:
 
 1. Define a `CellModel` type and the corresponding `Cell` type;
 2. Create a `ContainerModel` to wrap `CellModel`;

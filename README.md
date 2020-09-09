@@ -54,14 +54,14 @@ pod 'DCFrame' ~> 1.0.6
 github "bytedance/DCFrame" ~> 1.0.6
 ```
 
-## Examples
+## Guides
 
-We can quickly get started with DCFrame through the following examples:
+We can quickly get started with DCFrame through the following guides:
 
 * [Simple List](./Guides/1_simple_list.md): How to create a simple list through DCFrame;
-* [Post List](): Through this example we learn to create a combined list;
-* [Module Interaction]()：How to perform module event and data sharing in the post list
-* [More Examples](): We provide more examples, simply pull the git repo and run 'DCFrame.xcworkspace' in the 'Example' folder. 
+* [Post List](./Guides/2_post_list.md): Through this example we learn to create a more complex combination list;
+* [Module Interaction]()：How to perform module event and data sharing in the post list;
+* [More Examples](https://github.com/bytedance/DCFrame/tree/master/Example): We provide more examples, simply pull the git repo and run 'DCFrame.xcworkspace' in the 'Example' folder. 
 
 ## License
 

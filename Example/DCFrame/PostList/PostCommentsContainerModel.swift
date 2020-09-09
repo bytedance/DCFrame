@@ -9,10 +9,11 @@
 import DCFrame
 
 class PostCommentsContainerModel: DCContainerModel {
-    func update(with comments: [String]) {
-        removeAllSubmodels()
+    init(with comments: [String]) {
+        super.init()
         for comment in comments {
-            let model = CommentCellModel(comment: comment)
+            let model = CommentCellModel()
+            model.comment = comment
             addSubmodel(model)
         }
     }

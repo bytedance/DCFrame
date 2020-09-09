@@ -24,7 +24,7 @@
 		BC3267DA248F8884008A9B48 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267D9248F8884008A9B48 /* CommentCell.swift */; };
 		BC3267DC248F8A15008A9B48 /* InteractiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267DB248F8A15008A9B48 /* InteractiveCell.swift */; };
 		BC3267DE248F8EEA008A9B48 /* PostCommentsContainerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267DD248F8EEA008A9B48 /* PostCommentsContainerModel.swift */; };
-		BC3267E0248F8F91008A9B48 /* PostInfoContainerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267DF248F8F91008A9B48 /* PostInfoContainerModel.swift */; };
+		BC3267E0248F8F91008A9B48 /* PostItemContainerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267DF248F8F91008A9B48 /* PostItemContainerModel.swift */; };
 		BC3267E2248F962A008A9B48 /* MergeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3267E1248F962A008A9B48 /* MergeViewController.swift */; };
 		BC364136242F011500B20760 /* DCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC364135242F011500B20760 /* DCViewController.swift */; };
 		BC407C46242FA6F8007F8B8C /* DCFrame_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC407C45242FA6F8007F8B8C /* DCFrame_ExampleUITests.swift */; };
@@ -99,7 +99,7 @@
 		BC3267D9248F8884008A9B48 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		BC3267DB248F8A15008A9B48 /* InteractiveCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveCell.swift; sourceTree = "<group>"; };
 		BC3267DD248F8EEA008A9B48 /* PostCommentsContainerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentsContainerModel.swift; sourceTree = "<group>"; };
-		BC3267DF248F8F91008A9B48 /* PostInfoContainerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInfoContainerModel.swift; sourceTree = "<group>"; };
+		BC3267DF248F8F91008A9B48 /* PostItemContainerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostItemContainerModel.swift; sourceTree = "<group>"; };
 		BC3267E1248F962A008A9B48 /* MergeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergeViewController.swift; sourceTree = "<group>"; };
 		BC364135242F011500B20760 /* DCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCViewController.swift; sourceTree = "<group>"; };
 		BC407C35242FA6CB007F8B8C /* DCFrame_ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DCFrame_ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -316,7 +316,7 @@
 			children = (
 				BC3267D1248F82B6008A9B48 /* PostListViewController.swift */,
 				BC3267D3248F82D9008A9B48 /* PostListContainerModel.swift */,
-				BC3267DF248F8F91008A9B48 /* PostInfoContainerModel.swift */,
+				BC3267DF248F8F91008A9B48 /* PostItemContainerModel.swift */,
 				BC3267DD248F8EEA008A9B48 /* PostCommentsContainerModel.swift */,
 				BC3267D5248F8332008A9B48 /* UserInfoCell.swift */,
 				BC3267D7248F87EE008A9B48 /* PhotoCell.swift */,
@@ -658,7 +658,7 @@
 				BCBEADED248E4BFB00C401E1 /* UserCell.swift in Sources */,
 				BC364136242F011500B20760 /* DCViewController.swift in Sources */,
 				BCBEADE9248E462200C401E1 /* MixedDataViewController.swift in Sources */,
-				BC3267E0248F8F91008A9B48 /* PostInfoContainerModel.swift in Sources */,
+				BC3267E0248F8F91008A9B48 /* PostItemContainerModel.swift in Sources */,
 				BC3267DC248F8A15008A9B48 /* InteractiveCell.swift in Sources */,
 				BC768C3F25072F4100409CA6 /* LabelCell.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,

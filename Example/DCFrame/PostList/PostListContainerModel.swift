@@ -35,8 +35,7 @@ class PostListContainerModel: DCContainerModel {
         super.cmDidLoad()
         
         for data in mockData {
-            let infoCM = PostInfoContainerModel()
-            infoCM.update(with: data)
+            let infoCM = PostItemContainerModel(with: data)
             infoCM.bottomSeparator = DCSeparatorModel(color: .clear, height: 10)
             addSubmodel(infoCM)
         }
