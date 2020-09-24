@@ -93,6 +93,15 @@ open class DCBaseCell: UITableViewCell {
         // override
     }
     
+    /// Override `addSubview` function to add the subview to the contentView
+    open override func addSubview(_ view: UIView) {
+        if view !== contentView {
+            contentView.addSubview(view)
+        } else {
+            super.addSubview(view)
+        }
+    }
+    
     /// Cell added by `addSubCell()` and `addXibCell()` can acquire transferred data with this function
     /// - Returns: cellData of the current Cell
     final public func getCellData() -> Any? {
