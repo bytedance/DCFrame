@@ -43,7 +43,7 @@ DCFrame is a UI combination frame, it can be easily achieved:
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate DCFrame into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'DCFrame' ~> 1.0.6
+pod 'DCFrame' ~> 1.0.7
 ```
 
 ### Carthage
@@ -51,7 +51,7 @@ pod 'DCFrame' ~> 1.0.6
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate DCFrame into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ruby
-github "bytedance/DCFrame" ~> 1.0.6
+github "bytedance/DCFrame" ~> 1.0.7
 ```
 
 ## Guides

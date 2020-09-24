@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DCFrame'
-  s.version          = '1.0.6'
+  s.version          = '1.0.7'
   s.summary          = 'A UI combination frame'
   s.swift_version    = '5.0'
 
