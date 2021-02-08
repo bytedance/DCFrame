@@ -21,7 +21,7 @@ public protocol DCRefreshControlProtocol: NSObjectProtocol {
     func setLoadMore(_ isOpen: Bool)
     
     func beginRefreshing()
-    func endReresh()
+    func endRefresh()
     func endLoadMore()
     func endWithNoMoreData()
 }

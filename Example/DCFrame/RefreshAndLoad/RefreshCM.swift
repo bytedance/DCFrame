@@ -45,7 +45,7 @@ class RefreshCM: DCRefreshContainerModel {
             DispatchQueue.main.async {
                 self.loadData()
                 self.refreshHandler?.endLoadMore()
-                self.refreshHandler?.endReresh()
+                self.refreshHandler?.endRefresh()
             }
         }
     }

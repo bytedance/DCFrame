@@ -98,7 +98,7 @@ class DCRefreshViewController: DCViewController, DCRefreshControlProtocol, DCTab
         hasMoreData = true
     }
     
-    final public func endReresh() {
+    final public func endRefresh() {
         if !isRefreshing {
             return
         }

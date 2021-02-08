@@ -7,25 +7,26 @@
 
 import Foundation
 
-/// An `pthread_mutex_t` wrapper.
+/// An `os_unfair_lock_t` wrapper.
 final public class DCAroundLock {
-    private var mutexLock: pthread_mutex_t
+    private let unfairLock: os_unfair_lock_t
 
     public init() {
-        mutexLock = pthread_mutex_t()
-        pthread_mutex_init(&mutexLock, nil)
+        unfairLock = .allocate(capacity: 1)
+        unfairLock.initialize(to: os_unfair_lock())
     }
     
     deinit {
-        pthread_mutex_destroy(&mutexLock)
+        unfairLock.deinitialize(count: 1)
+        unfairLock.deallocate()
     }
 
     private func lock() {
-        pthread_mutex_lock(&mutexLock)
+        os_unfair_lock_lock(unfairLock)
     }
 
     private func unlock() {
-        pthread_mutex_unlock(&mutexLock)
+        os_unfair_lock_unlock(unfairLock)
     }
 
     /// Executes a closure returning a value while acquiring the lock.
