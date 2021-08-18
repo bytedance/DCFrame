@@ -107,17 +107,12 @@ open class DCBaseCellModel: NSObject {
     public var indexPath: IndexPath?
     
     /// Background color of the Cell under selected state
-    public var selectedColor: UIColor
+    public var selectedColor: UIColor?
     
     private(set) var isCellModelLoaded: Bool = false
     private lazy var refreshThrottler = DCThrottler(timeInterval: 0.05)
     
     internal var assert_cellModelDidLoad = true
-    
-    public override init() {
-        selectedColor = DCConfig.shared.selectedColor
-        super.init()
-    }
 
     /// Only called once in a lifecycle
     /// Called only when the Cell loads. Time consuming logics can be put here to reduce loading time of the page
@@ -157,7 +152,7 @@ open class DCBaseCellModel: NSObject {
      * Overriding functions below can achieve dynamically calculating and returning parameters
      */
     
-    open func getSelectedColor() -> UIColor {
+    open func getSelectedColor() -> UIColor? {
         return selectedColor
     }
     
@@ -219,11 +214,6 @@ extension DCBaseCellModel {
     
     public func sendEvent(_ event: DCEventID, data: Any?) {
         eventDataController.sendEvent(event, data: data)
-    }
-    
-    @discardableResult
-    public func subscribeEvent(_ event: DCEventID, completion: @escaping () -> Void) -> DCSubscribeEventAndable {
-        return eventDataController.subscribeEvent(event, target: self, completion: completion)
     }
     
     @discardableResult

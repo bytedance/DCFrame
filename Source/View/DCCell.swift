@@ -79,7 +79,7 @@ open class DCBaseCell: UITableViewCell {
     private func p_init() {
         self.selectedBackgroundView = UIView()
         self.clipsToBounds = true
-        self.backgroundColor = DCConfig.shared.cellBackgroundColor
+        
         self.setupUI()
         if assert_setupUI {
             assert(false, "super.setupUI() has not been called")
@@ -204,8 +204,25 @@ open class DCBaseCell: UITableViewCell {
         assert_cellModelDidUpdate = false
         
         selectionStyle = baseCellModel.getSelectionStyle()
-        selectedBackgroundView?.backgroundColor = baseCellModel.getSelectedColor()
         
+        if backgroundColor == nil {
+            if let color = containerTableView?.cellBackgroundColor {
+                backgroundColor = color
+            } else {
+                backgroundColor = DCConfig.shared.cellBackgroundColor
+            }
+        }
+        
+        if selectedBackgroundView?.backgroundColor == nil {
+            if let color = baseCellModel.getSelectedColor() {
+                selectedBackgroundView?.backgroundColor = color
+            } else if let color = containerTableView?.cellSelectedColor {
+                selectedBackgroundView?.backgroundColor = color
+            } else {
+                selectedBackgroundView?.backgroundColor = DCConfig.shared.selectedColor
+            }
+        }
+ 
         if (sharedData(of: Self.dc_currentSelectModel) as? DCBaseCellModel)  === baseCellModel {
             selectCell(animated: false, scrollPosition: .none)
         }
@@ -270,13 +287,7 @@ extension DCBaseCell {
     public func sendEvent(_ event: DCEventID, data: Any?) {
         eventDataController.sendEvent(event, data: data)
     }
-    
-    @discardableResult
-    public func subscribeEvent(_ event: DCEventID, completion: @escaping () -> Void) -> DCSubscribeEventAndable {
-        isSubscribeEvent = true
-        return eventDataController.subscribeEvent(event, target: self, completion: completion)
-    }
-    
+
     @discardableResult
     public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
         isSubscribeEvent = true

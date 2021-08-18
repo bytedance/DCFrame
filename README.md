@@ -43,7 +43,7 @@ DCFrame is a UI combination frame, it can be easily achieved:
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate DCFrame into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'DCFrame' ~> 1.0.8
+pod 'DCFrame'
 ```
 
 ### Carthage
@@ -51,7 +51,7 @@ pod 'DCFrame' ~> 1.0.8
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate DCFrame into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ruby
-github "bytedance/DCFrame" ~> 1.0.8
+github "bytedance/DCFrame"
 ```
 
 ## Guides
@@ -61,7 +61,7 @@ We can quickly get started with DCFrame through the following guides:
 * [Simple List](./Guides/1_simple_list.md): How to create a simple list through DCFrame;
 * [Post List](./Guides/2_post_list.md): Through this example we learn to create a more complex combination list;
 * [Module Communication](./Guides/3_module_communication.md)：How to perform module event and data sharing in the post list;
-* [More Examples](https://github.com/bytedance/DCFrame/tree/master/Example): We provide more examples, simply pull the git repo and run 'DCFrame.xcworkspace' in the 'Example' folder. 
+* [More Examples](https://github.com/bytedance/DCFrame/tree/master/Example): We provide the same example as [IGListKit](https://github.com/Instagram/IGListKit), simply pull the git repo and run 'DCFrame.xcworkspace' in the 'Example' folder. 
 
 ## License
 

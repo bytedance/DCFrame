@@ -437,12 +437,7 @@ extension DCContainerModel {
     public func sendEvent(_ event: DCEventID, data: Any?) {
         eventDataController.sendEvent(event, data: data)
     }
-    
-    @discardableResult
-    public func subscribeEvent(_ event: DCEventID, completion: @escaping () -> Void) -> DCSubscribeEventAndable {
-        return eventDataController.subscribeEvent(event, target: self, completion: completion)
-    }
-    
+
     @discardableResult
     public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
         return eventDataController.subscribeEvent(event, target: self, completion: completion)

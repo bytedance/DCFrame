@@ -52,11 +52,6 @@ public class DCSubscribeAndable {
 /// Make subscribeEvent() chainable
 final public class DCSubscribeEventAndable: DCSubscribeAndable {
     @discardableResult
-    public func and(_ event: DCEventID, completion: @escaping () -> Void) -> DCSubscribeEventAndable {
-        return edc.subscribeEvent(event, target: target, completion: completion)
-    }
-    
-    @discardableResult
     public func and(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
         return edc.subscribeEvent(event, target: target, completion: completion)
     }
@@ -365,20 +360,7 @@ final public class DCEventDataController: NSObject {
     }
     
     // MARK: - Subscribe to Event
-    
-    /// Subscribe to an Event
-    /// - Parameters:
-    ///   - event: Event ID
-    ///   - target: the class type that handles the Event
-    ///   - completion: response function when the Event is received
-    /// - Returns: a chainable function to subscribe to another Event
-    @discardableResult
-    public func subscribeEvent(_ event: DCEventID, target: NSObject, completion: @escaping () -> Void) -> DCSubscribeEventAndable {
-        return subscribeEvent(event, target: target) { (_) in
-            completion()
-        }
-    }
-    
+
     /// Subscribe to an Event and take in the data that comes with the Event
     @discardableResult
     public func subscribeEvent(_ event: DCEventID, target: NSObject, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
@@ -394,6 +376,8 @@ final public class DCEventDataController: NSObject {
         return subscribeEvent(event, target: target) { (data) in
             if let _data = data as? T {
                 completion(_data)
+            } else if let _completion = completion as? (()) -> Void {
+                _completion(())
             } else {
                 assert(false, "Subscribed Event's data has an unmatched type")
             }

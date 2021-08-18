@@ -69,7 +69,7 @@ class DCHoverViewManager: NSObject {
         guard let tableView = containerTableView else {
             return
         }
-        var offsetY = tableView.contentOffset.y + tableView.contentInset.top
+        var offsetY = tableView.contentOffset.y + (tableView.hoverViewOffset ?? tableView.contentInset.top)
 
         if currentAlwaysHoverViews.count > 0 {
             for (index, indexPath) in alwaysHoverIndexArray.enumerated() {
@@ -191,6 +191,8 @@ class DCHoverViewManager: NSObject {
         if let dcCell = tmpDCCell {
             dcCell.frame = CGRect(x: 0, y: 0, width: containerTableView.frame.width, height: baseCellModel.getCellHeight())
             dcCell.layer.zPosition = baseCellModel.isAlwaysHoverTop ? 2000 : 1000
+            dcCell.addGestureRecognizer(UITapGestureRecognizer())
+            dcCell.addGestureRecognizer(UIPanGestureRecognizer())
             containerTableView.updateCell(dcCell, baseCellModel, isHoverTop: true)
             return dcCell
         } else {
