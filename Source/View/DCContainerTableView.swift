@@ -28,11 +28,20 @@ open class DCContainerTableView: UITableView {
     /// needReloadData access limit with a 0.05 second minimum interval between two calls
     public let refreshThrottler = DCThrottler(timeInterval: 0.05)
     
-    /// Default color for the separator, determines the background color of `DCSeparatorCell`
+    /// Default color for the `DCSeparatorCell`
     public var cellSeparatorColor: UIColor?
     
-    /// Default height of the separator, determines the height of `DCSeparatorCell`
+    /// Default height of the `DCSeparatorCell`
     public var cellSeparatorHeight: CGFloat?
+    
+    /// Default selected color for the `DCCell`
+    public var cellSelectedColor: UIColor?
+    
+    /// Default background color for the `DCCell`
+    public var cellBackgroundColor: UIColor?
+    
+    /// Set hoverView offset
+    public var hoverViewOffset: CGFloat?
     
     /// ContainerTableView doesn't have to conform to this protocol, used for passing through UITableView features
     public weak var dc_delegate: DCTableViewDelegate?
@@ -744,12 +753,7 @@ extension DCContainerTableView {
     public func sendEvent(_ event: DCEventID, data: Any?) {
         eventDataController.sendEvent(event, data: data)
     }
-    
-    @discardableResult
-    public func subscribeEvent(_ event: DCEventID, completion: @escaping () -> Void) -> DCSubscribeEventAndable {
-        return eventDataController.subscribeEvent(event, target: self, completion: completion)
-    }
-    
+
     @discardableResult
     public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
         return eventDataController.subscribeEvent(event, target: self, completion: completion)
