@@ -7,6 +7,7 @@
 //
 
 import DCFrame
+import UIKit
 
 class PostData {
     var username: String
