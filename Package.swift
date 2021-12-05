@@ -11,5 +11,6 @@ let package = Package(
     dependencies: [],
     targets: [
         .target(name: "DCFrame"),
+        .testTarget(name: "DCFrameTests", dependencies: ["DCFrame"]),
     ]
 )
