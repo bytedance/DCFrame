@@ -66,11 +66,13 @@ dependencies: [
 
 ## Guides
 
+![DocC in Xcode](./Resources/DocC_In_Xcode.png)
+
 We can quickly get started with DCFrame through the following guides:
 
-* [Simple List](./Guides/1_simple_list.md): How to create a simple list through DCFrame;
-* [Post List](./Guides/2_post_list.md): Through this example we learn to create a more complex combination list;
-* [Module Communication](./Guides/3_module_communication.md)：How to perform module event and data sharing in the post list;
+* [Simple List](./Sources/DCFrame/DCFrame.docc/DCFrame/1_simple_list.md): How to create a simple list through DCFrame;
+* [Post List](./Sources/DCFrame/DCFrame.docc/DCFrame/2_post_list.md): Through this example we learn to create a more complex combination list;
+* [Module Communication](./Sources/DCFrame/DCFrame.docc/DCFrame/3_module_communication.md)：How to perform module event and data sharing in the post list;
 * [More Examples](https://github.com/bytedance/DCFrame/tree/master/Example): We provide the same example as [IGListKit](https://github.com/Instagram/IGListKit), simply pull the git repo and run 'DCFrame.xcworkspace' in the 'Example' folder. 
 
 ## License

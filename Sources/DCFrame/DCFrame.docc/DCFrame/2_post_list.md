@@ -2,9 +2,7 @@
 
 This document uses 'Post List' as an example to create a more complex combination list, as shown below:
 
-<img src="./Images/post_list_1.png" alt="post_list" width="300" />
-
-
+![post_list](post_list_1.png)
 
 Using DCFrame can also easily create a combination list, still need three steps:
 
@@ -16,9 +14,7 @@ Using DCFrame can also easily create a combination list, still need three steps:
 
 There are 4 types of cells in the Post List, as shown in the figure below:
 
-<img src="./Images/post_list_2.png" alt="post_item" width="600" />
-
-
+![post_item](post_list_2.png)
 
 **UserCell and UserModel:** 
 
@@ -189,7 +185,7 @@ class PostListContainerModel: DCContainerModel {
 
 ## Load ContainerModel
 
-Loading ContainerModel is similar to [Simple List](./1_simple_list.md), only create a DCContainerTableView and call the loadCM method to display the UI list.
+Loading ContainerModel is similar to <doc:1_simple_list>, only create a DCContainerTableView and call the loadCM method to display the UI list.
 
 ```swift
 let dcContainerTableView = DCContainerTableView()
@@ -201,7 +197,7 @@ dcContainerTableView.loadCM(postListContainerModel)
 
 The structure of this example is shown in the figure below:
 
-<img src="./Images/post_list_3.png" alt="post_component_cm" width="700" />
+![post_component_cm](post_list_3.png)
 
 Now we have learned how to use DCFrame to create a complex list, it can be found as simple as creating a simple list:
 
@@ -209,4 +205,4 @@ Now we have learned how to use DCFrame to create a complex list, it can be found
 2. Then use ContainerModel to combine CellModels;
 3. Finally use ContainerTableView to load it. 
 
-The power of ContainerModel is that it can not only assemble CellModel but also another ContainerModel. 
+The power of ContainerModel is that it can not only assemble CellModel but also another ContainerModel.

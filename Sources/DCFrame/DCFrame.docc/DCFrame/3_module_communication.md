@@ -1,10 +1,8 @@
 # Module Communication
 
-
-
 This document continues to expand the 'Post List' example, we try to communicate between modules, as shown below:
 
-<img src="./Images/module_communication_1.gif" alt="post_item_click" width="300" />
+![post_item_click](module_communication_1.gif)
 
 DCFrame provides powerful **event sending** and **data sharing** capabilities, which can easily implement communication problems between different modules. To achieve the above functions, we need the following three steps:
 
@@ -141,9 +139,7 @@ In DCFrame, the `sendEvent()` method will pass the event to the ContainerModel t
 
 For shared data, it is generally from ContainerModel to Cell or CellModel. Therefore, the communication between two modules need to coordination through ContainerModel, avoid dependencies between modules, as shown below:
 
-
-
-<img src="./Images/module_communication_2.png" alt="event_data" width="500" />
+![event_data](module_communication_2.png)
 
 In this example, the interaction between `InteractiveCell` and `PhotoCell` can be placed in `PostItemContainerModel`. Because `PostItemContainerModel` is the nearest CM that can handle the event.
 

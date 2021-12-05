@@ -2,7 +2,7 @@
 
 This document describes how to create a list of a single Cell type through DCFrame, as shown in the following figure:
 
-<img src="./Images/simple_list_1.png" alt="list" width="300" />
+![list](simple_list_1.png)
 
 Using DCFrame can easily create a list, only need the following three steps:
 
