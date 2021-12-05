@@ -54,6 +54,16 @@ pod 'DCFrame'
 github "bytedance/DCFrame"
 ```
 
+### Swift Package Manager
+
+[Swift Package Manager](https://github.com/apple/swift-package-manager) is a tool for managing the distribution of Swift code. It’s integrated with the Swift build system to automate the process of downloading, compiling, and linking dependencies. To integrate DCFrame into your Xcode project using Swift Package Manager, add it to the dependencies value of your Package.swift:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/bytedance/DCFrame.git", .upToNextMajor(from: "1.0.9"))
+]
+```
+
 ## Guides
 
 We can quickly get started with DCFrame through the following guides:
