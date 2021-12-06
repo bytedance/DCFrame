@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '11.0'
 
-  s.source_files = 'Source/**/*.swift'
+  s.source_files = 'Sources/**/*.swift'
   
   # s.resource_bundles = {
   #   'DCFrame' => ['DCFrame/Assets/*.png']
