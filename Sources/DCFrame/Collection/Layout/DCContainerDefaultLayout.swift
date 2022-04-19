@@ -78,6 +78,23 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
             layoutData.attributes.append(attributes)
             layoutData.contentBounds = layoutData.contentBounds.union(curFrame)
             
+            if model.getIsHoverTop(), let hoverIndexPath = model.hoverIndexPath {
+                attributes.isHidden = true
+                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCCollectionView.elementKindHoverTop, with: hoverIndexPath)
+                hoverAttributes.zIndex = 10
+                hoverAttributes.frame = curFrame
+                layoutData.hoverAttributes.append(hoverAttributes)
+                layoutData.originHoverAttributes.append(hoverAttributes.copy() as? UICollectionViewLayoutAttributes ?? hoverAttributes)
+                let offsetY = collectionView.contentOffset.y + (collectionView.hoverViewOffset ?? collectionView.contentInset.top)
+                if let curHoverAttributes = layoutData.currentHoverAttributes, curFrame.origin.y < curHoverAttributes.frame.height + offsetY {
+                    curHoverAttributes.frame.origin.y = curFrame.origin.y - curHoverAttributes.frame.height
+                }
+                if curFrame.origin.y < offsetY {
+                    hoverAttributes.frame.origin.y = offsetY
+                    layoutData.currentHoverAttributes = hoverAttributes
+                }
+            }
+            
             if let currentLineAttributes = layoutData.lineAttributesArray.last {
                 currentLineAttributes.itemIndexPaths.append(indexPath)
                 currentLineAttributes.lineFrame = currentLineAttributes.lineFrame.union(curFrame)
@@ -164,6 +181,23 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
             attributes.frame = curFrame
             layoutData.attributes.append(attributes)
             layoutData.contentBounds = layoutData.contentBounds.union(curFrame)
+
+            if model.getIsHoverTop(), let hoverIndexPath = model.hoverIndexPath {
+                attributes.isHidden = true
+                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCCollectionView.elementKindHoverTop, with: hoverIndexPath)
+                hoverAttributes.zIndex = 10
+                hoverAttributes.frame = curFrame
+                layoutData.hoverAttributes.append(hoverAttributes)
+                layoutData.originHoverAttributes.append(hoverAttributes.copy() as? UICollectionViewLayoutAttributes ?? hoverAttributes)
+                let offsetX = collectionView.contentOffset.x + (collectionView.hoverViewOffset ?? collectionView.contentInset.left)
+                if let curHoverAttributes = layoutData.currentHoverAttributes, curFrame.origin.x < curHoverAttributes.frame.width + offsetX {
+                    curHoverAttributes.frame.origin.x = curFrame.origin.x - curHoverAttributes.frame.width
+                }
+                if curFrame.origin.x < offsetX {
+                    hoverAttributes.frame.origin.x = offsetX
+                    layoutData.currentHoverAttributes = hoverAttributes
+                }
+            }
                 
             if let currentLineAttributes = layoutData.lineAttributesArray.last {
                 currentLineAttributes.itemIndexPaths.append(indexPath)

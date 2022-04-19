@@ -50,9 +50,9 @@ open class DCCellModel: NSObject, DCModelable {
 
     /// Boolean for whether the Cell hovers above the view
     public var isHoverTop: Bool = false
-
-    /// Boolean for whether the Cell always hovers above the view. After assigned, other Cells that have `isHoverTop` set to be true would hover below the current Cell
-    public var isAlwaysHoverTop: Bool = false
+    
+    /// The corresponding IndexPath of the hoverTopCell in the CollectionView
+    public var hoverIndexPath: IndexPath?
 
     /// The EDC of the current Model with a default value of the ContainerModel's EDC
     public var eventDataController: DCEventDataController {
@@ -119,12 +119,6 @@ open class DCCellModel: NSObject, DCModelable {
                     self.dcCell?.cellModelDidUpdate()
                 }
             }
-
-            if (self.getIsHoverTop() || self.getIsAlwaysHoverTop()), let currentHoverCell = self.dcContainerModel?.dcCollectionView?.currentHoverView {
-                if currentHoverCell.baseCellModel === self {
-                    currentHoverCell.cellModelDidUpdate()
-                }
-            }
         }
     }
 
@@ -172,9 +166,6 @@ open class DCCellModel: NSObject, DCModelable {
     open func getIsHoverTop() -> Bool {
         return isHoverTop
     }
-
-    open func getIsAlwaysHoverTop() -> Bool {
-        return isAlwaysHoverTop
     
     func getCellSize(collectionViewWidth: CGFloat) -> CGSize {
         let cellSize = getCellSize()

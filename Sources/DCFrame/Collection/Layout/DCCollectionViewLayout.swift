@@ -37,11 +37,51 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         guard let collectionView = collectionView else {
             return false
         }
-        return !newBounds.size.equalTo(collectionView.bounds.size)
+        
+        if layoutData.hoverAttributes.isEmpty {
+            return !newBounds.size.equalTo(collectionView.bounds.size)
+        } else {
+            return true
+        }
+    }
+    
+    override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
+        let context = super.invalidationContext(forBoundsChange: newBounds)
+        
+        if let visibleHoverIndexPaths = (collectionView as? DCCollectionView)?.indexPathsForVisibleSupplementaryElements(ofKind: DCCollectionView.elementKindHoverTop), !visibleHoverIndexPaths.isEmpty {
+            context.invalidateSupplementaryElements(ofKind: DCCollectionView.elementKindHoverTop, at: visibleHoverIndexPaths)
+        }
+        return context
     }
 
+    override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
+        super.invalidateLayout(with: context)
+
+        guard let indexPaths = context.invalidatedSupplementaryIndexPaths?[DCCollectionView.elementKindHoverTop], !indexPaths.isEmpty else { return }
+        
+        handleHoverIndexPaths(indexPaths)
+    }
+    
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return layoutData.attributes[dc_safe: indexPath.item]
+    }
+    
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard elementKind == DCCollectionView.elementKindHoverTop else { return nil }
+        
+        return layoutData.hoverAttributes[dc_safe: indexPath.item]
+    }
+    
+    override func indexPathsToInsertForSupplementaryView(ofKind elementKind: String) -> [IndexPath] {
+        guard let collectionView = collectionView as? DCCollectionView, elementKind == DCCollectionView.elementKindHoverTop else { return [IndexPath]() }
+                
+        return collectionView.indexPathsToInsertForSupplementaryView
+    }
+    
+    override func indexPathsToDeleteForSupplementaryView(ofKind elementKind: String) -> [IndexPath] {
+        guard let collectionView = collectionView as? DCCollectionView, elementKind == DCCollectionView.elementKindHoverTop else { return [IndexPath]() }
+                
+        return collectionView.indexPathsToDeleteForSupplementaryView
     }
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -73,6 +113,20 @@ class DCCollectionViewLayout: UICollectionViewLayout {
             handleLineAttributes(lineIndexPaths: lineAttributes.itemIndexPaths)
         }
         
+        if let lastHoverIndex = layoutData.hoverAttributes.indices.last, let firstMatchHoverIndex = binSearch(rect, collectionView, start: 0, end: lastHoverIndex, hoverStyle: true) {
+            for hoverAttributes in layoutData.hoverAttributes[..<firstMatchHoverIndex].reversed() {
+                guard hoverAttributes.frame.intersects(rect) else { break }
+                
+                attributesArray.append(hoverAttributes)
+            }
+            
+            for hoverAttributes in layoutData.hoverAttributes[firstMatchHoverIndex...] {
+                guard hoverAttributes.frame.intersects(rect) else { break }
+                
+                attributesArray.append(hoverAttributes)
+            }
+        }
+        
         layoutData.backgroundCellIndexPaths.forEach { indexPath in
             if let matchAttributes = layoutData.attributes[dc_safe: indexPath.item], matchAttributes.frame.intersects(rect) {
                 attributesArray.append(matchAttributes)
@@ -80,6 +134,95 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         }
 
         return attributesArray
+    }
+    
+    private func handleHoverIndexPaths(_ indexPaths: [IndexPath]) {
+        guard let collectionView = collectionView as? DCCollectionView else { return }
+        
+        if collectionView.scrollDirection == .vertical {
+            handleVerticalHover(collectionView, indexPaths)
+        } else if collectionView.scrollDirection == .horizontal {
+            handleHorizontalHover(collectionView, indexPaths)
+        }
+    }
+    
+    private func handleVerticalHover(_ collectionView: DCCollectionView, _ indexPaths: [IndexPath]) {
+        let offsetY = collectionView.contentOffset.y + (collectionView.hoverViewOffset ?? collectionView.contentInset.top)
+        
+        var tmpCur: IndexPath?
+        var tmpNext: IndexPath?
+        for indexPath in indexPaths {
+            guard let attributes = layoutData.originHoverAttributes[dc_safe: indexPath.item] else { continue }
+            
+            if attributes.frame.origin.y >= offsetY { // search next
+                if let _tmpNext = tmpNext, _tmpNext.item <= indexPath.item {
+                    continue
+                }
+                tmpNext = indexPath
+            } else { // search cur
+                if let _tmpCur = tmpCur, _tmpCur.item >= indexPath.item {
+                    continue
+                }
+                tmpCur = indexPath
+            }
+        }
+        
+        if let oldCurHoverAttributes = layoutData.currentHoverAttributes, let originAttributes = layoutData.originHoverAttributes[dc_safe: oldCurHoverAttributes.indexPath.item] {
+            if let nextHoverIndexPath = tmpNext, oldCurHoverAttributes.indexPath == nextHoverIndexPath {
+                oldCurHoverAttributes.frame.origin.y = originAttributes.frame.origin.y
+            }
+            if tmpCur == nil {
+                layoutData.currentHoverAttributes = nil
+            }
+        }
+        
+        if let curHoverIndexPath = tmpCur, let curHoverAttributes = layoutData.hoverAttributes[dc_safe: curHoverIndexPath.item] {
+            layoutData.currentHoverAttributes = curHoverAttributes
+            if let nextIndexPath = tmpNext, let nextTopY = layoutData.originHoverAttributes[dc_safe: nextIndexPath.item]?.frame.origin.y, let hoverViewHeight = layoutData.originHoverAttributes[dc_safe: curHoverIndexPath.item]?.frame.height, nextTopY < hoverViewHeight + offsetY {
+                curHoverAttributes.frame.origin.y = nextTopY - hoverViewHeight
+            } else {
+                curHoverAttributes.frame.origin.y = offsetY
+            }
+        }
+    }
+    
+    private func handleHorizontalHover(_ collectionView: DCCollectionView, _ indexPaths: [IndexPath]) {
+        let offsetX = collectionView.contentOffset.x + (collectionView.hoverViewOffset ?? collectionView.contentInset.left)
+        
+        var tmpCur: IndexPath?
+        var tmpNext: IndexPath?
+        for indexPath in indexPaths {
+            guard let attributes = layoutData.originHoverAttributes[dc_safe: indexPath.item] else { continue }
+            if attributes.frame.origin.x >= offsetX { // search next
+                if let _tmpNext = tmpNext, _tmpNext.item <= indexPath.item {
+                    continue
+                }
+                tmpNext = indexPath
+            } else { // search cur
+                if let _tmpCur = tmpCur, _tmpCur.item >= indexPath.item {
+                    continue
+                }
+                tmpCur = indexPath
+            }
+        }
+        
+        if let oldCurHoverAttributes = layoutData.currentHoverAttributes, let originAttributes = layoutData.originHoverAttributes[dc_safe: oldCurHoverAttributes.indexPath.item] {
+            if let nextHoverIndexPath = tmpNext, oldCurHoverAttributes.indexPath == nextHoverIndexPath {
+                oldCurHoverAttributes.frame.origin.x = originAttributes.frame.origin.x
+            }
+            if tmpCur == nil {
+                layoutData.currentHoverAttributes = nil
+            }
+        }
+        
+        if let curHoverIndexPath = tmpCur, let curHoverAttributes = layoutData.hoverAttributes[dc_safe: curHoverIndexPath.item] {
+            layoutData.currentHoverAttributes = curHoverAttributes
+            if let nextIndexPath = tmpNext, let nextTopX = layoutData.originHoverAttributes[dc_safe: nextIndexPath.item]?.frame.origin.x, let hoverViewWidth = layoutData.originHoverAttributes[dc_safe: curHoverIndexPath.item]?.frame.width, nextTopX < hoverViewWidth + offsetX {
+                curHoverAttributes.frame.origin.y = nextTopX - hoverViewWidth
+            } else {
+                curHoverAttributes.frame.origin.x = offsetX
+            }
+        }
     }
     
     private func binSearch(_ rect: CGRect, _ collectionView: DCCollectionView, start: Int, end: Int, hoverStyle: Bool = false) -> Int? {

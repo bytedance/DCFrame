@@ -9,7 +9,9 @@ import UIKit
 
 public class DCContainerLayoutData {
     public var backgroundCellIndexPaths = [IndexPath]()
+    public var originHoverAttributes = [UICollectionViewLayoutAttributes]()
     public var hoverAttributes = [UICollectionViewLayoutAttributes]()
+    public var currentHoverAttributes: UICollectionViewLayoutAttributes?
     public var contentBounds = CGRect.zero
     public var attributes = [UICollectionViewLayoutAttributes]()
     public var lineAttributesArray = [LineAttributes]()

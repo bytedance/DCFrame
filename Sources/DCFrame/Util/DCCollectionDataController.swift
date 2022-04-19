@@ -9,6 +9,7 @@ import Foundation
 
 public class DCCollectionDataController: NSObject {
     public var objects = [DCCellModel]()
+    public var hoverObjects = [DCCellModel]()
 
     public func objectAtIndexPath(_ indexPath: IndexPath) -> DCCellModel? {
         guard let object = objects[dc_safe: indexPath.item] else {
