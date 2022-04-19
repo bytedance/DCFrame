@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="./Resources/title.png" alt="title" width="800" />
+  <img src="./Images/title.png" alt="title" width="800" />
 </p>
+
 
 
 <p align="center">
@@ -24,7 +25,7 @@
 
 ------
 
-DCFrame is a UI combination frame, it can be easily achieved:
+DCFrame is a powerful UI collecion framework, it can be easily achieved:
 
 1. Assemble and manage complex UI modules; 
 2. Reuse and migrate UI modules at no cost;
@@ -60,20 +61,13 @@ github "bytedance/DCFrame"
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/bytedance/DCFrame.git", .upToNextMajor(from: "1.0.9"))
+    .package(url: "https://github.com/bytedance/DCFrame.git", .upToNextMajor(from: "1.1.0"))
 ]
 ```
 
-## Guides
+## Examples
 
-![DocC in Xcode](./Resources/DocC_In_Xcode.png)
-
-We can quickly get started with DCFrame through the following guides:
-
-* [Simple List](./Sources/DCFrame/DCFrame.docc/DCFrame/1_simple_list.md): How to create a simple list through DCFrame;
-* [Post List](./Sources/DCFrame/DCFrame.docc/DCFrame/2_post_list.md): Through this example we learn to create a more complex combination list;
-* [Module Communication](./Sources/DCFrame/DCFrame.docc/DCFrame/3_module_communication.md)：How to perform module event and data sharing in the post list;
-* [More Examples](https://github.com/bytedance/DCFrame/tree/master/DCFrameExample): We provide the same example as [IGListKit](https://github.com/Instagram/IGListKit), simply pull the git repo and open 'DCFrameExample.xcodeproj' in the 'DCFrameExample' folder. 
+We can quickly get started with DCFrame through the Examples. We provide some examples in the project, simply pull the git repo and open 'DCFrameExample.xcodeproj' in the 'DCFrameExample' folder. 
 
 ## License
 

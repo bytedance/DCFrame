@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DCFrame'
-  s.version          = '1.0.9'
-  s.summary          = 'A UI combination frame'
+  s.version          = '1.1.0'
+  s.summary          = 'A powerful UI collecion framework'
   s.swift_version    = '5.0'
 
 # This description is used to generate tags and improve search results.
