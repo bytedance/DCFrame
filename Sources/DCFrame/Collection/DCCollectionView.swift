@@ -57,6 +57,8 @@ open class DCCollectionView: UICollectionView {
     /// ContainerModel of the current DCCollectionView
     public private(set) var containerModel = DCContainerModel()
     public private(set) var isCollectionViewScrolling = false
+    
+    private(set) var layoutContainerModel = DCContainerModel()
 
     private var p_dataController = DCProtector<DCCollectionDataController>(DCCollectionDataController())
 
@@ -98,6 +100,11 @@ open class DCCollectionView: UICollectionView {
     /// Load ContainerModel
     /// - Parameter containerModel: ContainerModel to be loaded
     public func loadContainerModel(_ containerModel: DCContainerModel) {
+        #if DEBUG
+        if assert_collectionViewCellForRowing {
+            assert(false, "Synchronously calling loadContainerModel() in cellDidLoad() or cellModelDidUpdate() is prohibited")
+        }
+        #endif
         self.containerModel = containerModel
         DCThrottler.executeInMainThread {
             self.collectionViewReloadData()
@@ -160,8 +167,7 @@ open class DCCollectionView: UICollectionView {
         assert_collectionViewDataWillReload = false
         #endif
 
-        let tmpDataController = DCCollectionDataController()
-        setupDataController(tmpDataController, containerModel)
+        let tmpDataController = getDataController(containerModel)
 
         objc_sync_enter(self)
 
@@ -171,8 +177,20 @@ open class DCCollectionView: UICollectionView {
 
         objc_sync_exit(self)
     }
+    
+    private func getDataController(_ currentContainerModel: DCContainerModel) -> DCCollectionDataController {
+        let dataController = DCCollectionDataController()
+        let layoutCM = handleDataController(dataController, currentContainerModel)
+        layoutContainerModel = layoutCM
+        
+        return dataController
+    }
+    
+    private func handleDataController(_ dataController: DCCollectionDataController, _ currentContainerModel: DCContainerModel) -> DCContainerModel {
+        let layoutCM = DCContainerModel()
+        layoutCM.customLayout = currentContainerModel.customLayout
+        layoutCM.layoutContext = currentContainerModel.layoutContext
 
-    private func setupDataController(_ dataController: DCCollectionDataController, _ currentContainerModel: DCContainerModel) {
         func addCellModel(_ model: DCCellModel) {
             model.dcContainerModel = currentContainerModel
             model.dcHandler = self
@@ -181,6 +199,7 @@ open class DCCollectionView: UICollectionView {
             if !model.getIsHidden() {
                 model.indexPath = IndexPath.init(item: dataController.objects.count, section: 0)
                 dataController.addObject(model)
+                layoutCM.addSubmodel(model)
             }
 
             if let cellClass = model.getCellClass() as? UICollectionViewCell.Type {
@@ -204,7 +223,9 @@ open class DCCollectionView: UICollectionView {
             #endif
 
             if !childContainerModel.isHidden {
-                setupDataController(dataController, childContainerModel)
+                let childLayoutCM = handleDataController(dataController, childContainerModel)
+                layoutCM.addSubmodel(childLayoutCM)
+                childLayoutCM.parentContainerModel = layoutCM
             }
         }
 
@@ -215,6 +236,8 @@ open class DCCollectionView: UICollectionView {
                 addContainerModel(containerModel)
             }
         }
+        
+        return layoutCM
     }
 
     private func getCellModel(_ indexPath: IndexPath?) -> DCCellModel? {
@@ -238,8 +261,7 @@ open class DCCollectionView: UICollectionView {
         var deletes = [IndexPath]()
         var inserts = [IndexPath]()
 
-        let newDataController = DCCollectionDataController()
-        setupDataController(newDataController, containerModel)
+        let newDataController = getDataController(containerModel)
 
         var newModelSet = Set<DCCellModel>()
         newDataController.forEach { (model: DCCellModel, _: IndexPath) in
@@ -298,10 +320,24 @@ open class DCCollectionView: UICollectionView {
 
         if !baseCellModel.isCellModelLoaded || dcCell.isNeedReCreated || isReusing  {
             if !baseCellModel.isCellModelLoaded {
+                
                 baseCellModel.cellModelDidLoad()
-
                 #if DEBUG
                 if baseCellModel.assert_cellModelDidLoad {
+                    assert(false, "super.cellModelDidLoad() has not been called")
+                }
+                #endif
+                
+                dcCell.cellModelDidLoad()
+                #if DEBUG
+                if dcCell.assert_cellModelDidLoad {
+                    assert(false, "super.cellModelDidLoad() has not been called")
+                }
+                #endif
+            } else if dcCell.isNeedReCreated {
+                dcCell.cellModelDidLoad()
+                #if DEBUG
+                if dcCell.assert_cellModelDidLoad {
                     assert(false, "super.cellModelDidLoad() has not been called")
                 }
                 #endif
@@ -348,6 +384,12 @@ extension DCCollectionView: DCBaseOperationable {
     }
 
     final public func needUpdateLayoutAnimated(completion: @escaping () -> Void) {
+        #if DEBUG
+        if assert_collectionViewCellForRowing {
+            assert(false, "Synchronously calling needUpdateLayoutAnimated() in cellDidLoad() or cellModelDidUpdate() is prohibited")
+        }
+        #endif
+
         dcDelegate?.dcBeginAnimateUpdate?(self)
         dcDelegate?.dcCollectionViewWillUpdate?(self)
 
@@ -442,7 +484,7 @@ extension DCCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let baseCellModel = getCellModel(indexPath) {
-            return baseCellModel.getCellSize()
+            return baseCellModel.getCellSize(collectionViewWidth: collectionView.dc_width)
         }
         return .zero
     }

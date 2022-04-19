@@ -14,19 +14,14 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
 
     public var fixedColumnCount = 2
 
-    public func layoutAttributes(_ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) -> DCContainerLayoutData? {
+    public func layoutAttributes(_ layoutData: DCContainerLayoutData, _ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) {
         assert(collectionView.scrollDirection == .vertical, "WaterFlowLayout does not support horizontal")
 
-        var layoutData = DCContainerLayoutData()
         var curOrigin = startOrigin
-
-        layoutData.contentBounds.origin = curOrigin
-        layoutData.contentBounds.size.height += containerModel.getTopMargin() ?? 0
-
         curOrigin.y += containerModel.getTopMargin() ?? 0
+        layoutData.contentBounds.size.height += containerModel.getTopMargin() ?? 0
         
         var curFrame: CGRect = CGRect(origin: curOrigin, size: .zero)
-        var isNewContainerModel = true
 
         let cvSize = collectionView.bounds.size
         let cellHorizontalSpacing = containerModel.getHorizontalInterval(true) ?? 0
@@ -34,20 +29,32 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
         let leftMargin = containerModel.getLeftMargin(true) ?? 0
         let rightMargin = containerModel.getRightMargin(true) ?? 0
         var preLineFrames = [CGRect]()
+        
+        var preLineFrameMaxY = CGFloat.leastNormalMagnitude
+        var preLineItemCount = 0
+        
+        var isNewContainerModel = true
+        var needResizeCellIndexs = [IndexPath]()
 
         func handleModelLayout(_ model: DCCellModel) {
             guard let indexPath = model.indexPath else { return }
 
-            let cellSize = model.getCellSize()
+            let cellSize = model.getCellSize(collectionViewWidth: collectionView.dc_width)
 
             if model.isBackgroundCell {
+                assert(!model.getIsHoverTop(), "The `isBackgroundCell` and `isHoverTop` cannot be set to true at the same time")
                 let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-                attributes.frame = CGRect(origin: CGPoint(x: 0, y: curOrigin.y), size: cellSize)
+                attributes.frame = CGRect(origin: CGPoint(x: 0, y: startOrigin.y), size: cellSize)
                 attributes.zIndex = -1
-
                 layoutData.attributes.append(attributes)
-                layoutData.contentBounds = layoutData.contentBounds.union(attributes.frame)
-
+                layoutData.backgroundCellIndexPaths.append(indexPath)
+                
+                if cellSize == .zero {
+                    needResizeCellIndexs.append(indexPath)
+                } else {
+                    layoutData.contentBounds = layoutData.contentBounds.union(attributes.frame)
+                }
+                
                 return
             }
 
@@ -56,7 +63,7 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
             } else {
                 curFrame.origin.x += curFrame.size.width + cellHorizontalSpacing
             }
-            curFrame.size = model.getCellSize()
+            curFrame.size = cellSize
 
             if preLineFrames.count < fixedColumnCount {
                 preLineFrames.append(curFrame)
@@ -76,36 +83,50 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
                 curFrame = CGRect(origin: CGPoint(x: minFrame.minX, y: minFrame.maxY + cellVerticalSpacing), size: cellSize)
                 preLineFrames[minYIndex] = curFrame
             }
+            
+            let isNewLine = (preLineItemCount >= fixedColumnCount && curFrame.maxY > preLineFrameMaxY) || isNewContainerModel
+            if isNewLine {
+                layoutData.lineAttributesArray.append(DCContainerLayoutData.LineAttributes(lineFrame: curFrame))
+                preLineItemCount = 0
+            }
 
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = curFrame
-            curOrigin.y = max(curOrigin.y, curFrame.maxY)
-
             layoutData.attributes.append(attributes)
-            layoutData.contentBounds = layoutData.contentBounds.union(attributes.frame)
+            layoutData.contentBounds = layoutData.contentBounds.union(curFrame)
+            
+            
+            if let currentLineAttributes = layoutData.lineAttributesArray.last {
+                currentLineAttributes.itemIndexPaths.append(indexPath)
+                currentLineAttributes.lineFrame = currentLineAttributes.lineFrame.union(curFrame)
+                preLineFrameMaxY = currentLineAttributes.lineFrame.maxY
+                preLineItemCount += 1
+            }
 
+            curOrigin.y = max(curOrigin.y, curFrame.maxY)
             isNewContainerModel = false
         }
 
         for item in containerModel.modelArray {
-            if let model = item as? DCCellModel, !model.isHidden {
+            if let model = item as? DCCellModel {
                 handleModelLayout(model)
-            } else if let containerModel = item as? DCContainerModel, !containerModel.isHidden,
-                      let ld = containerModel.getCustomLayout().layoutAttributes(
-                        collectionView,
-                        containerModel: containerModel,
-                        startOrigin: CGPoint(x: curOrigin.x, y: layoutData.contentBounds.maxY)) {
-                layoutData.attributes.append(contentsOf: ld.attributes)
-                layoutData.contentBounds = layoutData.contentBounds.union(ld.contentBounds)
-
-                curOrigin.y = max(curOrigin.y, ld.contentBounds.maxY)
+            } else if let containerModel = item as? DCContainerModel {
+                containerModel.getCustomLayout().layoutAttributes(
+                    layoutData,
+                    collectionView,
+                    containerModel: containerModel,
+                    startOrigin: CGPoint(x: curOrigin.x, y: layoutData.contentBounds.maxY))
+                curOrigin.y = max(curOrigin.y, layoutData.contentBounds.maxY)
                 isNewContainerModel = true
             }
         }
 
         layoutData.contentBounds.size.height += containerModel.getBottomMargin() ?? 0
-        containerModel.contentFrame = layoutData.contentBounds
-
-        return layoutData
+        
+        needResizeCellIndexs.forEach { indexPath in
+            if let bgCellAttributes = layoutData.attributes[dc_safe: indexPath.item] {
+                bgCellAttributes.frame.size = CGSize(width: cvSize.width, height: layoutData.contentBounds.size.height - startOrigin.y)
+            }
+        }
     }
 }

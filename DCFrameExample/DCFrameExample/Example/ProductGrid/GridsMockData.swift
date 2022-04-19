@@ -45,6 +45,17 @@ class GridsMockData {
 
         return [item1, item2, item3]
     }
+    
+    static func getReorderData() -> GridItemsData {
+        var item1 = GridItemsData()
+        item1.title = "Drag Reorder"
+        item1.type = .category
+        for index in 1...20 {
+            item1.items.append("\(index)")
+        }
+
+        return item1
+    }
 }
 
 

@@ -15,6 +15,7 @@ public class DCHorizontalScrollCellModel: DCCellModel {
         super.init()
 
         cellHeight = height
+        reuseIdentifier = "\(reuseIdentifier)_\(DCEDCUniqueID().ID)"
     }
 
     public required init() {
@@ -44,6 +45,13 @@ open class DCHorizontalScrollCell: DCCell<DCHorizontalScrollCellModel> {
     open override func cellModelDidUpdate() {
         super.cellModelDidUpdate()
 
-        collectionView.loadContainerModel(cellModel.containerModel)
+        if collectionView.eventDataController.parentEDC !== eventDataController {
+            eventDataController.addChildEDC(collectionView.eventDataController)
+        }
+        
+        if cellModel.containerModel !== collectionView.containerModel {
+            collectionView.frame = contentView.bounds
+            collectionView.loadContainerModel(cellModel.containerModel)
+        }
     }
 }

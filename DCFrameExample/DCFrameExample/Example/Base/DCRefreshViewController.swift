@@ -32,6 +32,7 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
         super.viewDidLoad()
         dcCollectionView.dcDelegate = self
         originalInsets = dcCollectionView.contentInset
+        setLoadMore(true)
     }
 
     override func loadContainerModel(_ containerModel: DCContainerModel) {
@@ -63,13 +64,11 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
             if activityIndicator.superview == nil {
                 scrollView.addSubview(activityIndicator)
             }
-            activityIndicator.center = CGPoint(x: scrollView.bounds.midX, y: scrollView.contentSize.height + 25)
 
-            if distance > 50 {
-                activityIndicator.startAnimating()
-                dcCollectionView.contentInset.bottom = originalInsets.bottom + 50
-                loadMore()
-            }
+            activityIndicator.center = CGPoint(x: scrollView.bounds.midX, y: scrollView.contentSize.height + 25)
+            activityIndicator.startAnimating()
+
+            loadMore()
         }
 
         let upDistance = scrollView.contentOffset.y + originalInsets.top
@@ -96,6 +95,10 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
         isLoadMoreOpen = isOpen
         isLoading = false
         hasMoreData = true
+
+        if let originalInsets = self.originalInsets {
+            dcCollectionView.contentInset.bottom = originalInsets.bottom + (isOpen ? 50 : 0)
+        }
     }
 
     final public func endRefresh() {
@@ -113,22 +116,15 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
         }
     }
 
-    final public func endLoadMore() {
+    final public func endLoadMore(_ state: DCEndLoadMoreState) {
         if !isLoading {
             return
         }
         isLoading = false
         activityIndicator.removeFromSuperview()
-        if let insets = self.originalInsets {
-            self.dcCollectionView.contentInset = insets
-        }
     }
 
     final public func beginRefreshing() {
-        //
-    }
-
-    final public func endWithNoMoreData() {
         //
     }
 }

@@ -7,6 +7,12 @@
 
 import Foundation
 
+public enum DCEndLoadMoreState {
+    case hasMoreData
+    case noMoreData
+    case error
+}
+
 public protocol DCRefreshControlProtocol: AnyObject {
     var isRefreshing: Bool { get }
     var isLoading: Bool { get }
@@ -17,6 +23,5 @@ public protocol DCRefreshControlProtocol: AnyObject {
 
     func beginRefreshing()
     func endRefresh()
-    func endLoadMore()
-    func endWithNoMoreData()
+    func endLoadMore(_ state: DCEndLoadMoreState)
 }

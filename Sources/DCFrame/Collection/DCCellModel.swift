@@ -26,13 +26,18 @@ open class DCCellModel: NSObject, DCModelable {
     /// Whether the current cell is a background cell, the background cell will be sent to back of other cells
     public var isBackgroundCell = false
 
+    /// Whether the current cell is laid out on a new line
+    public var isNewLine = false
+
     /// An identifier for reusing a Cell, default as the class name of the Cell, used by `dequeueReusableCell()` to acquire reusable Cell
     public var reuseIdentifier: String {
         get {
             if let id = p_reuseIdentifier {
                 return id
             }
-            return String(describing: getCellClass())
+            let reuseIdentifier = String(describing: getCellClass())
+            p_reuseIdentifier = reuseIdentifier
+            return reuseIdentifier
         }
         set {
             p_reuseIdentifier = newValue
@@ -63,7 +68,7 @@ open class DCCellModel: NSObject, DCModelable {
             p_eventDataController = newValue
         }
     }
-    private var p_eventDataController: DCEventDataController?
+    private weak var p_eventDataController: DCEventDataController?
 
     /// Cell object that the current Model belongs to. This parameter will stay nil until Cell is displayed, usage is not recommended
     public weak var dcCell: DCBaseCell?
@@ -157,17 +162,6 @@ open class DCCellModel: NSObject, DCModelable {
     }
 
     open func getCellSize() -> CGSize {
-        if cellSize != .zero {
-            return cellSize
-        }
-
-        let cellHeight = getCellHeight()
-        if let width = dcContainerModel?.dcCollectionView?.dc_width, cellHeight > 0 {
-            return CGSize(width: width, height: getCellHeight())
-        } else {
-            assert(false, "cellSize and cellHeight cannot be smaller than zero")
-        }
-
         return cellSize
     }
 
@@ -181,6 +175,23 @@ open class DCCellModel: NSObject, DCModelable {
 
     open func getIsAlwaysHoverTop() -> Bool {
         return isAlwaysHoverTop
+    
+    func getCellSize(collectionViewWidth: CGFloat) -> CGSize {
+        let cellSize = getCellSize()
+        if cellSize != .zero {
+            return cellSize
+        }
+        
+        let cellHeight = getCellHeight()
+        if cellHeight > 0 {
+            return CGSize(width: collectionViewWidth, height: cellHeight)
+        }
+        
+        if !isBackgroundCell {
+            assert(false, "cellSize and cellHeight cannot be smaller than zero")
+        }
+        
+        return cellSize
     }
 }
 

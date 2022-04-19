@@ -16,14 +16,11 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         guard let collectionView = collectionView as? DCCollectionView else {
             return
         }
-
-        let containerModel = collectionView.containerModel
-
-        if let layoutData = containerModel
-            .getCustomLayout()
-            .layoutAttributes(collectionView, containerModel: containerModel, startOrigin: .zero) {
-            self.layoutData = layoutData
-        }
+        
+        let containerModel = collectionView.layoutContainerModel
+        let tmpLayoutData = DCContainerLayoutData()
+        containerModel.getCustomLayout().layoutAttributes(tmpLayoutData, collectionView, containerModel: containerModel, startOrigin: .zero)
+        self.layoutData = tmpLayoutData
 
         if collectionView.scrollDirection == .vertical {
             layoutData.contentBounds.size.width = min(layoutData.contentBounds.size.width, collectionView.bounds.size.width)
@@ -49,50 +46,67 @@ class DCCollectionViewLayout: UICollectionViewLayout {
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let collectionView = collectionView as? DCCollectionView,
-              let lastIndex = layoutData.attributes.indices.last,
-              let firstMatchIndex = binSearch(rect, start: 0, end: lastIndex) else {
+              let lastIndex = layoutData.lineAttributesArray.indices.last,
+              let firstMatchLineIndex = binSearch(rect, collectionView, start: 0, end: lastIndex) else {
                   return nil
               }
 
         var attributesArray = [UICollectionViewLayoutAttributes]()
-
-        for attributes in layoutData.attributes[..<firstMatchIndex].reversed() {
-            guard (collectionView.scrollDirection == .vertical && attributes.frame.maxY >= rect.minY)
-                    || (collectionView.scrollDirection == .horizontal && attributes.frame.maxX >= rect.minX) else {
-                        break
-                    }
-            attributesArray.append(attributes)
+        
+        func handleLineAttributes(lineIndexPaths: [IndexPath]) {
+            lineIndexPaths.forEach { indexPath in
+                if let attributes = layoutData.attributes[dc_safe: indexPath.item], attributes.frame.intersects(rect) {
+                    attributesArray.append(attributes)
+                }
+            }
         }
-
-        for attributes in layoutData.attributes[firstMatchIndex...] {
-            guard (collectionView.scrollDirection == .vertical && attributes.frame.minY <= rect.maxY)
-                    || (collectionView.scrollDirection == .horizontal && attributes.frame.minX <= rect.maxX) else {
-                        break
-                    }
-            attributesArray.append(attributes)
+        
+        for lineAttributes in layoutData.lineAttributesArray[..<firstMatchLineIndex].reversed() {
+            guard lineAttributes.lineFrame.intersects(rect) else { break }
+            
+            handleLineAttributes(lineIndexPaths: lineAttributes.itemIndexPaths)
+        }
+        
+        for lineAttributes in layoutData.lineAttributesArray[firstMatchLineIndex...] {
+            guard lineAttributes.lineFrame.intersects(rect) else { break }
+            
+            handleLineAttributes(lineIndexPaths: lineAttributes.itemIndexPaths)
+        }
+        
+        layoutData.backgroundCellIndexPaths.forEach { indexPath in
+            if let matchAttributes = layoutData.attributes[dc_safe: indexPath.item], matchAttributes.frame.intersects(rect) {
+                attributesArray.append(matchAttributes)
+            }
         }
 
         return attributesArray
     }
-
-    private func binSearch(_ rect: CGRect, start: Int, end: Int) -> Int? {
-        guard let collectionView = collectionView as? DCCollectionView, end >= start else {
+    
+    private func binSearch(_ rect: CGRect, _ collectionView: DCCollectionView, start: Int, end: Int, hoverStyle: Bool = false) -> Int? {
+        guard end >= start else {
             return nil
         }
-
+        
         let mid = (start + end) / 2
-        guard let attr = layoutData.attributes[dc_safe: mid] else {
+        let targetFrame: CGRect?
+        if hoverStyle {
+            targetFrame = layoutData.hoverAttributes[dc_safe: mid]?.frame
+        } else {
+            targetFrame = layoutData.lineAttributesArray[dc_safe: mid]?.lineFrame
+        }
+        
+        guard let targetFrame = targetFrame else {
             return nil
         }
-
-        if attr.frame.intersects(rect) {
+        
+        if targetFrame.intersects(rect) {
             return mid
         } else {
-            let isRight = collectionView.scrollDirection == .vertical ? (attr.frame.maxY < rect.minY) : (attr.frame.maxX < rect.minX)
-            if isRight {
-                return binSearch(rect, start: (mid + 1), end: end)
+            let isAfter = collectionView.scrollDirection == .vertical ? (targetFrame.maxY < rect.minY) : (targetFrame.maxX < rect.minX)
+            if isAfter {
+                return binSearch(rect, collectionView, start: (mid + 1), end: end, hoverStyle: hoverStyle)
             } else {
-                return binSearch(rect, start: start, end: (mid - 1))
+                return binSearch(rect, collectionView, start: start, end: (mid - 1), hoverStyle: hoverStyle)
             }
         }
     }

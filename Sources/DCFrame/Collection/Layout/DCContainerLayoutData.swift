@@ -7,20 +7,32 @@
 
 import UIKit
 
-public struct DCContainerLayoutData {
+public class DCContainerLayoutData {
+    public var backgroundCellIndexPaths = [IndexPath]()
+    public var hoverAttributes = [UICollectionViewLayoutAttributes]()
     public var contentBounds = CGRect.zero
     public var attributes = [UICollectionViewLayoutAttributes]()
+    public var lineAttributesArray = [LineAttributes]()
 
+    public class LineAttributes {
+        public var lineFrame = CGRect.zero
+        public var itemIndexPaths = [IndexPath]()
+        
+        public init(lineFrame: CGRect) {
+            self.lineFrame = lineFrame
+        }
+    }
+    
     public init() {}
 }
 
-public struct DCContainerLayoutContext {
+public class DCContainerLayoutContext {
     public var topMargin: CGFloat?
     public var bottomMargin: CGFloat?
     public var leftMargin: CGFloat?
     public var rightMargin: CGFloat?
     public var verticalInterval: CGFloat?
     public var horizontalInterval: CGFloat?
-
+    
     public init() {}
 }

@@ -84,11 +84,7 @@ final public class DCEventDataController: NSObject {
 
         handleChildEDCQueue.async {
             self.childsEDCList.write {
-                for index in (0..<$0.count).reversed() {
-                    if let item = $0[dc_safe: index], item.childEDC == nil {
-                        $0.remove(at: index)
-                    }
-                }
+                $0 = $0.filter({ $0.childEDC != nil })
             }
         }
     }
@@ -444,13 +440,7 @@ final public class DCEventDataController: NSObject {
             handleItemQueue.async {
                 self.dict.write {
                     if let items = $0[uniqueID.ID] {
-                        var tmpItems = items
-                        for index in (0..<items.count).reversed() {
-                            if let item = items[dc_safe: index], item.target == nil {
-                                tmpItems.remove(at: index)
-                            }
-                        }
-                        $0[uniqueID.ID] = tmpItems
+                        $0[uniqueID.ID] = items.filter({ $0.target != nil })
                     }
                 }
             }
@@ -471,13 +461,7 @@ final public class DCEventDataController: NSObject {
         func removeAll(from target: NSObject) {
             self.dict.write {
                 for (key, items) in $0 {
-                    var tmpItems = items
-                    for index in (0..<items.count).reversed() {
-                        if let item = items[dc_safe: index], (item.target === target || item.target == nil) {
-                            tmpItems.remove(at: index)
-                        }
-                    }
-                    $0[key] = tmpItems
+                    $0[key] = items.filter({ $0.target !== target && $0.target != nil })
                 }
             }
         }

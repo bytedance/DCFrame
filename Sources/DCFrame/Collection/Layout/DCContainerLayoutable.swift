@@ -8,5 +8,5 @@
 import UIKit
 
 public protocol DCContainerLayoutable: AnyObject {
-    func layoutAttributes(_ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) -> DCContainerLayoutData?
+    func layoutAttributes(_ layoutData: DCContainerLayoutData, _ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint)
 }
