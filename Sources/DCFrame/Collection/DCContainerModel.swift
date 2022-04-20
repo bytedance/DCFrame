@@ -27,9 +27,6 @@ open class DCContainerModel: NSObject, DCModelable {
     /// The parent of the current ContainerModel
     public weak var parentContainerModel: DCContainerModel?
 
-    /// The union frame of the cells in the ContainerModel
-    public var contentFrame: CGRect?
-
     /// Display status of the current ContainerModel. If set to true, reloadData() in DCCollectionView will not load this ContainerModel
     public var isHidden: Bool = false
 

@@ -47,6 +47,7 @@ open class DCBaseCell: UICollectionViewCell {
     public var eventDataController: DCEventDataController {
         return baseCellModel.eventDataController
     }
+    private var eventDataSubscribed: (event: Bool, data: Bool) = (false, false)
 
     /// Perform operations on the CollectionView through this parameter, like updating data, scrolling to a specific position, etc
     public weak var dcHandler: DCBaseOperationable?
@@ -60,6 +61,7 @@ open class DCBaseCell: UICollectionViewCell {
     private(set) var isNeedReCreated = true // UICollectionView will release reusable stack when receiving a memory warning, so adding a flag on the view is required to recreate the Cell
 
     #if DEBUG
+    var assert_cellModelDidLoad = true
     var assert_cellModelDidUpdate = true
     var assert_setupUI = true
     var assert_didSelect = true
@@ -162,6 +164,29 @@ open class DCBaseCell: UICollectionViewCell {
 
         dcCollectionView?.selectItem(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
+    
+    /// Called only once when the cellModel is ready. The methods `subscribeData` and `subscribeEvent` can be called here
+    open func cellModelDidLoad() {
+        #if DEBUG
+        assert_cellModelDidLoad = false
+        #endif
+        
+        if isNeedReCreated {
+            isNeedReCreated = false
+        } else {
+            if eventDataSubscribed.event {
+                eventDataController.removeAllSubscribeEvent(frome: self)
+                eventDataSubscribed.event = false
+            }
+            
+            if eventDataSubscribed.data {
+                eventDataController.removeAllSubscribeData(frome: self)
+                eventDataSubscribed.data = false
+            }
+        }
+        
+        // override
+    }
 
     /// Data related to UI update should be assigned in this function. It is not recommended to put complex logic calculations here, it will affect the scrolling performance
     open func cellModelDidUpdate() {
@@ -188,12 +213,6 @@ open class DCBaseCell: UICollectionViewCell {
         } else {
             selectedBackgroundView?.backgroundColor = nil
         }
-
-        if baseCellModel.isBackgroundCell {
-            isUserInteractionEnabled = false
-        }
-
-        isNeedReCreated = false
 
         // override
     }
@@ -236,5 +255,47 @@ extension DCBaseCell {
 
     public func sendEvent(_ event: DCEventID, data: Any?) {
         eventDataController.sendEvent(event, data: data)
+    }
+
+    @discardableResult
+    public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
+        eventDataSubscribed.event = true
+        return eventDataController.subscribeEvent(event, target: self, completion: completion)
+    }
+
+    @discardableResult
+    public func subscribeEvent<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndable {
+        eventDataSubscribed.event = true
+        return eventDataController.subscribeEvent(event, target: self, completion: completion)
+    }
+
+    @discardableResult
+    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndable {
+        eventDataSubscribed.event = true
+        return eventDataController.subscribeEvents(events, target: self, completion: completion)
+    }
+
+    @discardableResult
+    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndable {
+        eventDataSubscribed.event = true
+        return eventDataController.subscribeEvents(events, target: self, completion: completion)
+    }
+
+    @discardableResult
+    public func subscribeEvents<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndable {
+        eventDataSubscribed.event = true
+        return eventDataController.subscribeEvents(events, target: self, completion: completion)
+    }
+
+    @discardableResult
+    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> EDCSubscribeDataAndable {
+        eventDataSubscribed.data = true
+        return eventDataController.subscribeData(sd, target: self, completion: completion)
+    }
+
+    @discardableResult
+    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> EDCSubscribeDataAndable {
+        eventDataSubscribed.data = true
+        return eventDataController.subscribeData(sd, target: self, completion: completion, emptyCall: emptyCall)
     }
 }

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		27696B8C275D14AE00040681 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27696B57275D14AE00040681 /* Images.xcassets */; };
+		2BCACAEA280EA94B00110F51 /* ReorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCACAE9280EA94B00110F51 /* ReorderViewController.swift */; };
+		2BCACAEC280EAB2600110F51 /* DCCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCACAEB280EAB2600110F51 /* DCCollectionController.swift */; };
+		2BCACAEE280EAB3300110F51 /* DCRefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCACAED280EAB3300110F51 /* DCRefreshViewController.swift */; };
 		BC1BFD70280E76990024CB73 /* RefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD40280E76990024CB73 /* RefreshViewController.swift */; };
 		BC1BFD71280E76990024CB73 /* RefreshMockDataAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD41280E76990024CB73 /* RefreshMockDataAPI.swift */; };
 		BC1BFD72280E76990024CB73 /* RefreshContainerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD42280E76990024CB73 /* RefreshContainerModel.swift */; };
@@ -45,10 +48,8 @@
 		BC1BFD92280E76990024CB73 /* SimpleLabelCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD69280E76990024CB73 /* SimpleLabelCellModel.swift */; };
 		BC1BFD93280E76990024CB73 /* DemosExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD6A280E76990024CB73 /* DemosExtensions.swift */; };
 		BC1BFD94280E76990024CB73 /* DemosLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD6B280E76990024CB73 /* DemosLabelCell.swift */; };
-		BC1BFD95280E76990024CB73 /* MGCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD6C280E76990024CB73 /* MGCollectionController.swift */; };
 		BC1BFD96280E76990024CB73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD6D280E76990024CB73 /* AppDelegate.swift */; };
 		BC1BFD97280E76990024CB73 /* DemosData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD6E280E76990024CB73 /* DemosData.swift */; };
-		BC1BFD98280E76990024CB73 /* MGRefreshViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1BFD6F280E76990024CB73 /* MGRefreshViewController.swift */; };
 		BC1BFD9D280E88DF0024CB73 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = BC1BFD9C280E88DF0024CB73 /* Then */; };
 		BC1BFDA0280E89310024CB73 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = BC1BFD9F280E89310024CB73 /* SnapKit */; };
 		BC5C9A39280E8A7D0014C2C2 /* DCFrame in Frameworks */ = {isa = PBXBuildFile; productRef = BC5C9A38280E8A7D0014C2C2 /* DCFrame */; };
@@ -60,6 +61,9 @@
 		27696B4B275D14AE00040681 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27696B57275D14AE00040681 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		27696B5D275D14AE00040681 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		2BCACAE9280EA94B00110F51 /* ReorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReorderViewController.swift; sourceTree = "<group>"; };
+		2BCACAEB280EAB2600110F51 /* DCCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCCollectionController.swift; sourceTree = "<group>"; };
+		2BCACAED280EAB3300110F51 /* DCRefreshViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DCRefreshViewController.swift; sourceTree = "<group>"; };
 		BC1BFD40280E76990024CB73 /* RefreshViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshViewController.swift; sourceTree = "<group>"; };
 		BC1BFD41280E76990024CB73 /* RefreshMockDataAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshMockDataAPI.swift; sourceTree = "<group>"; };
 		BC1BFD42280E76990024CB73 /* RefreshContainerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshContainerModel.swift; sourceTree = "<group>"; };
@@ -97,10 +101,8 @@
 		BC1BFD69280E76990024CB73 /* SimpleLabelCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLabelCellModel.swift; sourceTree = "<group>"; };
 		BC1BFD6A280E76990024CB73 /* DemosExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemosExtensions.swift; sourceTree = "<group>"; };
 		BC1BFD6B280E76990024CB73 /* DemosLabelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemosLabelCell.swift; sourceTree = "<group>"; };
-		BC1BFD6C280E76990024CB73 /* MGCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGCollectionController.swift; sourceTree = "<group>"; };
 		BC1BFD6D280E76990024CB73 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BC1BFD6E280E76990024CB73 /* DemosData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemosData.swift; sourceTree = "<group>"; };
-		BC1BFD6F280E76990024CB73 /* MGRefreshViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGRefreshViewController.swift; sourceTree = "<group>"; };
 		BC1BFD9A280E86A60024CB73 /* DCFrame */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DCFrame; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,9 +164,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2BCACAE8280EA94B00110F51 /* Reorder */ = {
+			isa = PBXGroup;
+			children = (
+				2BCACAE9280EA94B00110F51 /* ReorderViewController.swift */,
+			);
+			path = Reorder;
+			sourceTree = "<group>";
+		};
 		BC1BFD3E280E76990024CB73 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				2BCACAE8280EA94B00110F51 /* Reorder */,
 				BC1BFD3F280E76990024CB73 /* RefreshAndLoad */,
 				BC1BFD43280E76990024CB73 /* Category */,
 				BC1BFD4A280E76990024CB73 /* ShoppingCart2 */,
@@ -261,15 +272,15 @@
 		BC1BFD66280E76990024CB73 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				2BCACAED280EAB3300110F51 /* DCRefreshViewController.swift */,
+				2BCACAEB280EAB2600110F51 /* DCCollectionController.swift */,
 				BC1BFD67280E76990024CB73 /* DemosContainerModel.swift */,
 				BC1BFD68280E76990024CB73 /* ViewController.swift */,
 				BC1BFD69280E76990024CB73 /* SimpleLabelCellModel.swift */,
 				BC1BFD6A280E76990024CB73 /* DemosExtensions.swift */,
 				BC1BFD6B280E76990024CB73 /* DemosLabelCell.swift */,
-				BC1BFD6C280E76990024CB73 /* MGCollectionController.swift */,
 				BC1BFD6D280E76990024CB73 /* AppDelegate.swift */,
 				BC1BFD6E280E76990024CB73 /* DemosData.swift */,
-				BC1BFD6F280E76990024CB73 /* MGRefreshViewController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -369,16 +380,17 @@
 				BC1BFD81280E76990024CB73 /* GridItemCell.swift in Sources */,
 				BC1BFD7F280E76990024CB73 /* ProductGridViewController.swift in Sources */,
 				BC1BFD83280E76990024CB73 /* GridTitleCell.swift in Sources */,
-				BC1BFD98280E76990024CB73 /* MGRefreshViewController.swift in Sources */,
+				2BCACAEE280EAB3300110F51 /* DCRefreshViewController.swift in Sources */,
 				BC1BFD85280E76990024CB73 /* ShoppingCartTotalView.swift in Sources */,
 				BC1BFD93280E76990024CB73 /* DemosExtensions.swift in Sources */,
 				BC1BFD90280E76990024CB73 /* DemosContainerModel.swift in Sources */,
 				BC1BFD76280E76990024CB73 /* CategoryProductsContainerModel.swift in Sources */,
+				2BCACAEC280EAB2600110F51 /* DCCollectionController.swift in Sources */,
 				BC1BFD74280E76990024CB73 /* CategoryTitleCell.swift in Sources */,
 				BC1BFD77280E76990024CB73 /* CategoryHeaderCell.swift in Sources */,
 				BC1BFD8F280E76990024CB73 /* PhotoAlbumShowAllCell.swift in Sources */,
+				2BCACAEA280EA94B00110F51 /* ReorderViewController.swift in Sources */,
 				BC1BFD75280E76990024CB73 /* CategoryData.swift in Sources */,
-				BC1BFD95280E76990024CB73 /* MGCollectionController.swift in Sources */,
 				BC1BFD7B280E76990024CB73 /* ShoppingCartTotalCell.swift in Sources */,
 				BC1BFD87280E76990024CB73 /* ShoppingCartContainerModel.swift in Sources */,
 				BC1BFD7A280E76990024CB73 /* ShoppingCartViewController2.swift in Sources */,

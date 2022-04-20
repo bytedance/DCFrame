@@ -42,7 +42,7 @@ class RefreshContainerModel: DCRefreshContainerModel {
 
             self.handleData(data)
 
-            self.refreshHandler?.endLoadMore()
+            self.refreshHandler?.endLoadMore(.hasMoreData)
         }
     }
 

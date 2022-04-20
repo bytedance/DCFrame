@@ -9,6 +9,7 @@ import Foundation
 
 public class DCCollectionDataController: NSObject {
     public var objects = [DCCellModel]()
+    public var hoverObjects = [DCCellModel]()
 
     public func objectAtIndexPath(_ indexPath: IndexPath) -> DCCellModel? {
         guard let object = objects[dc_safe: indexPath.item] else {
@@ -22,9 +23,9 @@ public class DCCollectionDataController: NSObject {
     }
 
     public func forEach<T>(_ closure: (_ object: T, _ indexPath: IndexPath) -> Void) {
-        for (rowIndex, object) in objects.enumerated() {
+        for (itemIndex, object) in objects.enumerated() {
             if let _object = object as? T {
-                let indexPath = IndexPath(row: rowIndex, section: 0)
+                let indexPath = IndexPath(item: itemIndex, section: 0)
                 closure(_object, indexPath)
             }
         }

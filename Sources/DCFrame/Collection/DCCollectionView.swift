@@ -20,11 +20,6 @@ open class DCCollectionView: UICollectionView {
         return eventDataController
     }()
 
-    /// Current floating view
-    public var currentHoverView: DCBaseCell? {
-        return hoverViewsManager.currentHoverView
-    }
-
     /// Default color for the `DCSeparatorCell`
     public var cellSeparatorColor: UIColor?
 
@@ -57,10 +52,12 @@ open class DCCollectionView: UICollectionView {
     /// ContainerModel of the current DCCollectionView
     public private(set) var containerModel = DCContainerModel()
     public private(set) var isCollectionViewScrolling = false
+    
+    private(set) var layoutContainerModel = DCContainerModel()
+    private(set) var indexPathsToDeleteForSupplementaryView = [IndexPath]()
+    private(set) var indexPathsToInsertForSupplementaryView = [IndexPath]()
 
     private var p_dataController = DCProtector<DCCollectionDataController>(DCCollectionDataController())
-
-    private var hoverViewsManager = DCHoverViewManager()
 
     private var layoutThrottler = DCThrottler(timeInterval: 0.05)
 
@@ -90,14 +87,17 @@ open class DCCollectionView: UICollectionView {
             contentInsetAdjustmentBehavior = .never
         }
 
-        hoverViewsManager.dcCollectionView = self
-
         initContainerModel(containerModel, parentModel: nil)
     }
 
     /// Load ContainerModel
     /// - Parameter containerModel: ContainerModel to be loaded
     public func loadContainerModel(_ containerModel: DCContainerModel) {
+        #if DEBUG
+        if assert_collectionViewCellForRowing {
+            assert(false, "Synchronously calling loadContainerModel() in cellDidLoad() or cellModelDidUpdate() is prohibited")
+        }
+        #endif
         self.containerModel = containerModel
         DCThrottler.executeInMainThread {
             self.collectionViewReloadData()
@@ -160,8 +160,7 @@ open class DCCollectionView: UICollectionView {
         assert_collectionViewDataWillReload = false
         #endif
 
-        let tmpDataController = DCCollectionDataController()
-        setupDataController(tmpDataController, containerModel)
+        let tmpDataController = getDataController(containerModel)
 
         objc_sync_enter(self)
 
@@ -171,8 +170,22 @@ open class DCCollectionView: UICollectionView {
 
         objc_sync_exit(self)
     }
+    
+    private func getDataController(_ currentContainerModel: DCContainerModel) -> DCCollectionDataController {
+        let dataController = DCCollectionDataController()
+        let layoutCM = handleDataController(dataController, currentContainerModel)
+        layoutContainerModel = layoutCM
+        indexPathsToDeleteForSupplementaryView = [IndexPath]()
+        indexPathsToInsertForSupplementaryView = [IndexPath]()
+        
+        return dataController
+    }
+    
+    private func handleDataController(_ dataController: DCCollectionDataController, _ currentContainerModel: DCContainerModel) -> DCContainerModel {
+        let layoutCM = DCContainerModel()
+        layoutCM.customLayout = currentContainerModel.customLayout
+        layoutCM.layoutContext = currentContainerModel.layoutContext
 
-    private func setupDataController(_ dataController: DCCollectionDataController, _ currentContainerModel: DCContainerModel) {
         func addCellModel(_ model: DCCellModel) {
             model.dcContainerModel = currentContainerModel
             model.dcHandler = self
@@ -181,10 +194,16 @@ open class DCCollectionView: UICollectionView {
             if !model.getIsHidden() {
                 model.indexPath = IndexPath.init(item: dataController.objects.count, section: 0)
                 dataController.addObject(model)
+                layoutCM.addSubmodel(model)
             }
 
             if let cellClass = model.getCellClass() as? UICollectionViewCell.Type {
                 register(cellClass, forCellWithReuseIdentifier: model.reuseIdentifier)
+                if model.getIsHoverTop() {
+                    model.hoverIndexPath = IndexPath.init(item: dataController.hoverObjects.count, section: 0)
+                    dataController.hoverObjects.append(model)
+                    register(cellClass, forSupplementaryViewOfKind: DCCollectionView.elementKindHoverTop, withReuseIdentifier: model.reuseIdentifier)
+                }
             } else {
                 assert(false, "cellClass is not of type UICollectionViewCell")
             }
@@ -204,7 +223,9 @@ open class DCCollectionView: UICollectionView {
             #endif
 
             if !childContainerModel.isHidden {
-                setupDataController(dataController, childContainerModel)
+                let childLayoutCM = handleDataController(dataController, childContainerModel)
+                layoutCM.addSubmodel(childLayoutCM)
+                childLayoutCM.parentContainerModel = layoutCM
             }
         }
 
@@ -215,6 +236,8 @@ open class DCCollectionView: UICollectionView {
                 addContainerModel(containerModel)
             }
         }
+        
+        return layoutCM
     }
 
     private func getCellModel(_ indexPath: IndexPath?) -> DCCellModel? {
@@ -226,11 +249,9 @@ open class DCCollectionView: UICollectionView {
 
     private func collectionViewReloadData() {
         updateDataController()
+
         dcDelegate?.dcCollectionViewWillUpdate?(self)
-
-        hoverViewsManager.updateHoverCells()
         reloadData()
-
         dcDelegate?.dcCollectionViewDidUpdate?(self)
     }
 
@@ -238,8 +259,7 @@ open class DCCollectionView: UICollectionView {
         var deletes = [IndexPath]()
         var inserts = [IndexPath]()
 
-        let newDataController = DCCollectionDataController()
-        setupDataController(newDataController, containerModel)
+        let newDataController = getDataController(containerModel)
 
         var newModelSet = Set<DCCellModel>()
         newDataController.forEach { (model: DCCellModel, _: IndexPath) in
@@ -247,12 +267,21 @@ open class DCCollectionView: UICollectionView {
         }
 
         var oldModelDict = [DCCellModel: IndexPath]()
+        var oldHoverModelDic = [DCCellModel: IndexPath]()
         p_dataController.read {
             $0.forEach { (model: DCCellModel, indexPath: IndexPath) in
                 if !newModelSet.contains(model) {
                     deletes.append(indexPath)
                 }
                 oldModelDict[model] = indexPath
+            }
+            
+            for (itemIndex, model) in $0.hoverObjects.enumerated() {
+                let hoverIndexPath = IndexPath(item: itemIndex, section: 0)
+                if !newModelSet.contains(model) {
+                    indexPathsToDeleteForSupplementaryView.append(hoverIndexPath)
+                }
+                oldHoverModelDic[model] = hoverIndexPath
             }
         }
 
@@ -264,6 +293,17 @@ open class DCCollectionView: UICollectionView {
                 }
             } else {
                 inserts.append(newIndexPath)
+            }
+            
+            if model.getIsHoverTop(), let newHoverIndexPath = model.hoverIndexPath {
+                if let oldHoverIndexPath = oldHoverModelDic[model] {
+                    if oldHoverIndexPath != newHoverIndexPath {
+                        indexPathsToDeleteForSupplementaryView.append(oldHoverIndexPath)
+                        indexPathsToInsertForSupplementaryView.append(newHoverIndexPath)
+                    }
+                } else {
+                    indexPathsToInsertForSupplementaryView.append(newHoverIndexPath)
+                }
             }
         }
 
@@ -298,10 +338,24 @@ open class DCCollectionView: UICollectionView {
 
         if !baseCellModel.isCellModelLoaded || dcCell.isNeedReCreated || isReusing  {
             if !baseCellModel.isCellModelLoaded {
+                
                 baseCellModel.cellModelDidLoad()
-
                 #if DEBUG
                 if baseCellModel.assert_cellModelDidLoad {
+                    assert(false, "super.cellModelDidLoad() has not been called")
+                }
+                #endif
+                
+                dcCell.cellModelDidLoad()
+                #if DEBUG
+                if dcCell.assert_cellModelDidLoad {
+                    assert(false, "super.cellModelDidLoad() has not been called")
+                }
+                #endif
+            } else if dcCell.isNeedReCreated {
+                dcCell.cellModelDidLoad()
+                #if DEBUG
+                if dcCell.assert_cellModelDidLoad {
                     assert(false, "super.cellModelDidLoad() has not been called")
                 }
                 #endif
@@ -348,6 +402,12 @@ extension DCCollectionView: DCBaseOperationable {
     }
 
     final public func needUpdateLayoutAnimated(completion: @escaping () -> Void) {
+        #if DEBUG
+        if assert_collectionViewCellForRowing {
+            assert(false, "Synchronously calling needUpdateLayoutAnimated() in cellDidLoad() or cellModelDidUpdate() is prohibited")
+        }
+        #endif
+
         dcDelegate?.dcBeginAnimateUpdate?(self)
         dcDelegate?.dcCollectionViewWillUpdate?(self)
 
@@ -362,7 +422,6 @@ extension DCCollectionView: DCBaseOperationable {
 
             performBatchUpdates {
                 let diffs = animateDiffRows()
-
                 if diffs.deletes.count > 0 {
                     deleteItems(at: diffs.deletes)
                 }
@@ -377,8 +436,6 @@ extension DCCollectionView: DCBaseOperationable {
             }
 
             objc_sync_exit(self)
-
-            hoverViewsManager.updateHoverCells()
         }
 
         DCThrottler.executeInMainThread {
@@ -393,12 +450,13 @@ extension DCCollectionView: DCBaseOperationable {
                 dcCells.append(dcCell)
             }
         }
-        if let hoverView = hoverViewsManager.currentHoverView {
-            dcCells.append(hoverView)
+        
+        for cell in visibleSupplementaryViews(ofKind: DCCollectionView.elementKindHoverTop) {
+            if let dcCell = cell as? DCBaseCell {
+                dcCells.append(dcCell)
+            }
         }
-        for dcCell in hoverViewsManager.currentAlwaysHoverViews where !dcCell.isHidden {
-            dcCells.append(dcCell)
-        }
+
         return dcCells
     }
 
@@ -419,6 +477,34 @@ extension DCCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return p_dataController.directValue.objects.count
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == DCCollectionView.elementKindHoverTop else {
+            assert(false, "`viewForSupplementaryElementOfKind` is wrong")
+            register(UICollectionReusableView.self, forSupplementaryViewOfKind: kind, withReuseIdentifier: "error_cell")
+            return dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "error_cell", for: indexPath)
+        }
+        
+        guard let model = p_dataController.directValue.hoverObjects[dc_safe: indexPath.item] else {
+            assert(false, "hoverCellModel returned nil")
+            register(UICollectionReusableView.self, forSupplementaryViewOfKind: kind, withReuseIdentifier: "error_cell")
+            return dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "error_cell", for: indexPath)
+        }
+        
+        let cell = dequeueReusableSupplementaryView(ofKind: DCCollectionView.elementKindHoverTop, withReuseIdentifier: model.reuseIdentifier, for: indexPath)
+        if let dcCell = cell as? DCBaseCell {
+        #if DEBUG
+            assert_collectionViewCellForRowing = true
+        #endif
+            
+            updateCell(dcCell, model)
+            
+        #if DEBUG
+            assert_collectionViewCellForRowing = false
+        #endif
+        }
+        return cell
+    }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let spacer = dcDelegate?.dcCollectionView?(collectionView, cellForRowAt: indexPath) {
@@ -431,7 +517,7 @@ extension DCCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
             assert_collectionViewCellForRowing = true
             #endif
 
-            updateCell(dcCell, baseCellModel)
+            updateCell(dcCell, baseCellModel, isHoverTop: baseCellModel.getIsHoverTop())
 
             #if DEBUG
             assert_collectionViewCellForRowing = false
@@ -442,7 +528,7 @@ extension DCCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if let baseCellModel = getCellModel(indexPath) {
-            return baseCellModel.getCellSize()
+            return baseCellModel.getCellSize(collectionViewWidth: collectionView.dc_width)
         }
         return .zero
     }
@@ -459,6 +545,20 @@ extension DCCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
             dcCell.didEndDisplaying()
         }
         dcDelegate?.dcCollectionView?(collectionView, didEndDisplaying: cell, forRowAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        guard elementKind == DCCollectionView.elementKindHoverTop, let dcCell = view as? DCBaseCell else { return }
+        
+        dcCell.willDisplay()
+        dcDelegate?.dcCollectionView?(collectionView, willDisplay: dcCell, forRowAt: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+        guard elementKind == DCCollectionView.elementKindHoverTop, let dcCell = view as? DCBaseCell else { return }
+        
+        dcCell.didEndDisplaying()
+        dcDelegate?.dcCollectionView?(collectionView, didEndDisplaying: dcCell, forRowAt: indexPath)
     }
 
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
@@ -503,8 +603,6 @@ extension DCCollectionView: UICollectionViewDelegate, UICollectionViewDataSource
     // MARK: - UIScrollViewDelegate
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        hoverViewsManager.handleHoverViews()
-
         if scrollView.isDragging || scrollView.isDecelerating {
             self.isCollectionViewScrolling = true
         }
@@ -631,4 +729,8 @@ extension DCCollectionView {
     public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> EDCSubscribeDataAndable {
         return eventDataController.subscribeData(sd, target: self, completion: completion, emptyCall: emptyCall)
     }
+}
+
+extension DCCollectionView {
+    public static let elementKindHoverTop: String = "DCCollectionViewElementKindHoverTop"
 }

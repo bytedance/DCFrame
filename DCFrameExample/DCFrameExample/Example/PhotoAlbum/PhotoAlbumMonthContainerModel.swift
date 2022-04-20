@@ -11,7 +11,8 @@ import DCFrame
 
 class PhotoAlbumMonthContainerModel: DCContainerModel {
     let showAllModel = PhotoAlbumShowAllCellModel().then {
-        $0.cellSize = CGSize(width: 250, height: 20)
+        $0.cellSize = CGSize(width: 80, height: 20)
+        $0.isNewLine = true
     }
     var leftPhotos = [String]()
 

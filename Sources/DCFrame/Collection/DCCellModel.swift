@@ -26,13 +26,18 @@ open class DCCellModel: NSObject, DCModelable {
     /// Whether the current cell is a background cell, the background cell will be sent to back of other cells
     public var isBackgroundCell = false
 
+    /// Whether the current cell is laid out on a new line
+    public var isNewLine = false
+
     /// An identifier for reusing a Cell, default as the class name of the Cell, used by `dequeueReusableCell()` to acquire reusable Cell
     public var reuseIdentifier: String {
         get {
             if let id = p_reuseIdentifier {
                 return id
             }
-            return String(describing: getCellClass())
+            let reuseIdentifier = String(describing: getCellClass())
+            p_reuseIdentifier = reuseIdentifier
+            return reuseIdentifier
         }
         set {
             p_reuseIdentifier = newValue
@@ -45,9 +50,9 @@ open class DCCellModel: NSObject, DCModelable {
 
     /// Boolean for whether the Cell hovers above the view
     public var isHoverTop: Bool = false
-
-    /// Boolean for whether the Cell always hovers above the view. After assigned, other Cells that have `isHoverTop` set to be true would hover below the current Cell
-    public var isAlwaysHoverTop: Bool = false
+    
+    /// The corresponding IndexPath of the hoverTopCell in the CollectionView
+    public var hoverIndexPath: IndexPath?
 
     /// The EDC of the current Model with a default value of the ContainerModel's EDC
     public var eventDataController: DCEventDataController {
@@ -63,7 +68,7 @@ open class DCCellModel: NSObject, DCModelable {
             p_eventDataController = newValue
         }
     }
-    private var p_eventDataController: DCEventDataController?
+    private weak var p_eventDataController: DCEventDataController?
 
     /// Cell object that the current Model belongs to. This parameter will stay nil until Cell is displayed, usage is not recommended
     public weak var dcCell: DCBaseCell?
@@ -114,12 +119,6 @@ open class DCCellModel: NSObject, DCModelable {
                     self.dcCell?.cellModelDidUpdate()
                 }
             }
-
-            if (self.getIsHoverTop() || self.getIsAlwaysHoverTop()), let currentHoverCell = self.dcContainerModel?.dcCollectionView?.currentHoverView {
-                if currentHoverCell.baseCellModel === self {
-                    currentHoverCell.cellModelDidUpdate()
-                }
-            }
         }
     }
 
@@ -157,17 +156,6 @@ open class DCCellModel: NSObject, DCModelable {
     }
 
     open func getCellSize() -> CGSize {
-        if cellSize != .zero {
-            return cellSize
-        }
-
-        let cellHeight = getCellHeight()
-        if let width = dcContainerModel?.dcCollectionView?.dc_width, cellHeight > 0 {
-            return CGSize(width: width, height: getCellHeight())
-        } else {
-            assert(false, "cellSize and cellHeight cannot be smaller than zero")
-        }
-
         return cellSize
     }
 
@@ -178,9 +166,23 @@ open class DCCellModel: NSObject, DCModelable {
     open func getIsHoverTop() -> Bool {
         return isHoverTop
     }
-
-    open func getIsAlwaysHoverTop() -> Bool {
-        return isAlwaysHoverTop
+    
+    func getCellSize(collectionViewWidth: CGFloat) -> CGSize {
+        let cellSize = getCellSize()
+        if cellSize != .zero {
+            return cellSize
+        }
+        
+        let cellHeight = getCellHeight()
+        if cellHeight > 0 {
+            return CGSize(width: collectionViewWidth, height: cellHeight)
+        }
+        
+        if !isBackgroundCell {
+            assert(false, "cellSize and cellHeight cannot be smaller than zero")
+        }
+        
+        return cellSize
     }
 }
 

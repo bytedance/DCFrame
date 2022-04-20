@@ -12,6 +12,7 @@ enum DemosData {
     static let items: [(String, UIViewController.Type)] = [
         ("Simple List", SimpleListViewController.self),
         ("Refreshing & Loading", RefreshViewController.self),
+        ("Reorder", ReorderViewController.self),
         ("Product Grid", ProductGridViewController.self),
         ("Photo Album", PhotoAlbumViewController.self),
         ("Shopping Cart", ShoppingCartViewController.self),
