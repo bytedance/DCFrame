@@ -69,6 +69,17 @@ dependencies: [
 
 We can quickly get started with DCFrame through the Examples. We provide some examples in the project, simply pull the git repo and open 'DCFrameExample.xcodeproj' in the 'DCFrameExample' folder. 
 
+<p align="center">
+  <img src="./Images/refreshing_loading.gif" alt="refreshing_loading" width="200" />
+  <img src="./Images/reorder.gif" alt="reorder" width="200" />
+  <img src="./Images/product_grid.gif" alt="product_grid" width="200" />
+</p>
+<p align="center">
+  <img src="./Images/photo_album.gif" alt="photo_album" width="200" />
+  <img src="./Images/shopping_cart.gif" alt="shopping_cart" width="200" />
+  <img src="./Images/category.gif" alt="category" width="200" />
+</p>
+
 ## License
 
 DCFrame is available under the MIT license. See the LICENSE file for more info.
