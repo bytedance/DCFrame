@@ -26,7 +26,7 @@ final public class DCEventDataController: NSObject {
     }
     private var p_parentEDC = DCProtector<EDCWeakEventDataController>(EDCWeakEventDataController())
 
-    private var childsEDCList = DCProtector<[EDCChildItem]>([EDCChildItem]())
+    private var childEDCList = DCProtector<[EDCChildItem]>([EDCChildItem]())
     private var dataDict = DCProtector<[Int64: Any]>([Int64: Any]())
 
     private var subscribeDataDict = EDCEventDataDict()
@@ -76,23 +76,23 @@ final public class DCEventDataController: NSObject {
         }
 
         childEDC.parentEDC = self
-        childsEDCList.write {
+        childEDCList.write {
             let item = EDCChildItem()
             item.childEDC = childEDC
             $0.append(item)
         }
 
         handleChildEDCQueue.async {
-            self.childsEDCList.write {
+            self.childEDCList.write {
                 $0 = $0.filter({ $0.childEDC != nil })
             }
         }
     }
 
     /// Add multiple EDC child nodes
-    /// - Parameter childsEDC: an array of EDC children
-    public func addChildsEDC(_ childsEDC: [DCEventDataController]) {
-        for item in childsEDC {
+    /// - Parameter multipleChildEDC: an array of EDC children
+    public func addMultipleChildEDC(_ multipleChildEDC: [DCEventDataController]) {
+        for item in multipleChildEDC {
             addChildEDC(item)
         }
     }
@@ -100,7 +100,7 @@ final public class DCEventDataController: NSObject {
     /// Remove a EDC node (after removal, child EDC node can no longer communicate with reponse tree above its parent EDC node)
     /// - Parameter childEDC: the child EDC node to be removed
     public func removeChildEDC(_ childEDC: DCEventDataController) {
-        self.childsEDCList.write {
+        self.childEDCList.write {
             for index in (0..<$0.count).reversed() {
                 if let item = $0[dc_safe: index], item.childEDC === childEDC {
                     childEDC.parentEDC = nil
@@ -112,7 +112,7 @@ final public class DCEventDataController: NSObject {
 
     /// Remove all EDC nodes
     public func removeAllChildEDC() {
-        childsEDCList.write {
+        childEDCList.write {
             for item in $0 {
                 item.childEDC?.parentEDC = nil
             }
@@ -231,7 +231,7 @@ final public class DCEventDataController: NSObject {
             subscribeDataDict.needClear(with: sd)
         }
 
-        for item in childsEDCList.directValue {
+        for item in childEDCList.directValue {
             if let _childEDC = item.childEDC {
                 _childEDC.updateData(sd)
             }
@@ -271,16 +271,16 @@ final public class DCEventDataController: NSObject {
 
     /// Subscribe to an Event and take in the data that comes with the Event
     @discardableResult
-    public func subscribeEvent(_ event: DCEventID, target: NSObject, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvent(_ event: DCEventID, target: NSObject, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndAbility {
         subscribeEventDict.addItem(uniqueID: event, target: target) { (data) in
             completion(data)
         }
-        return DCSubscribeEventAndable(edc: self, target: target)
+        return DCSubscribeEventAndAbility(edc: self, target: target)
     }
 
     /// Subscribe to an Event and take in the data with a specified type that comes with the Event; Will return assertion failure if type is unmatched
     @discardableResult
-    public func subscribeEvent<T>(_ event: DCEventID, target: NSObject, completion: @escaping (T) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvent<T>(_ event: DCEventID, target: NSObject, completion: @escaping (T) -> Void) -> DCSubscribeEventAndAbility {
         return subscribeEvent(event, target: target) { (data) in
             if let _data = data as? T {
                 completion(_data)
@@ -294,35 +294,35 @@ final public class DCEventDataController: NSObject {
 
     /// Subscribe to a set of Events, will be called back if it matches any of the Events; If multiple Events are matched, multiple callbacks will be performed
     @discardableResult
-    public func subscribeEvents(_ events: [DCEventID], target: NSObject, completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents(_ events: [DCEventID], target: NSObject, completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndAbility {
         for event in events {
             subscribeEvent(event, target: target) {
                 completion(event)
             }
         }
-        return DCSubscribeEventAndable(edc: self, target: target)
+        return DCSubscribeEventAndAbility(edc: self, target: target)
     }
 
     /// Subscribe to a set of Events and accept the data that comes with the Events
     @discardableResult
-    public func subscribeEvents(_ events: [DCEventID], target: NSObject, completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents(_ events: [DCEventID], target: NSObject, completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndAbility {
         for event in events {
             subscribeEvent(event, target: target) { (data) in
                 completion(event, data)
             }
         }
-        return DCSubscribeEventAndable(edc: self, target: target)
+        return DCSubscribeEventAndAbility(edc: self, target: target)
     }
 
     /// Subscribe to a set of Events and take in the data with a specified type that comes with the Event; Will return assertion failure if type is unmatched
     @discardableResult
-    public func subscribeEvents<T>(_ events: [DCEventID], target: NSObject, completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents<T>(_ events: [DCEventID], target: NSObject, completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndAbility {
         for event in events {
             subscribeEvent(event, target: target) { (data: T) in
                 completion(event, data)
             }
         }
-        return DCSubscribeEventAndable(edc: self, target: target)
+        return DCSubscribeEventAndAbility(edc: self, target: target)
     }
 
     // MARK: - Subscribe to Data
@@ -334,12 +334,12 @@ final public class DCEventDataController: NSObject {
     ///   - completion: data change notification call back
     /// - Returns: Chainable for repetitive data subscription
     @discardableResult
-    public func subscribeData(_ sd: DCSharedDataID, target: NSObject, completion: @escaping (Any?) -> Void) -> EDCSubscribeDataAndable {
+    public func subscribeData(_ sd: DCSharedDataID, target: NSObject, completion: @escaping (Any?) -> Void) -> DCSubscribeDataAndAbility {
         completion(sharedData(of: sd))
         subscribeDataDict.addItem(uniqueID: sd, target: target) { (data) in
             completion(data)
         }
-        return EDCSubscribeDataAndable(edc: self, target: target)
+        return DCSubscribeDataAndAbility(edc: self, target: target)
     }
 
     /// Subscribe to data with a specified type, will return assertion failure if type unmatched
@@ -349,7 +349,7 @@ final public class DCEventDataController: NSObject {
     ///   - completion: data change notification call back
     /// - Returns: Chainable for repetitive data subscription
     @discardableResult
-    public func subscribeData<T>(_ sd: DCSharedDataID, target: NSObject, completion: @escaping (T) -> Void) -> EDCSubscribeDataAndable {
+    public func subscribeData<T>(_ sd: DCSharedDataID, target: NSObject, completion: @escaping (T) -> Void) -> DCSubscribeDataAndAbility {
         return subscribeData(sd, target: target, completion: completion, emptyCall: nil)
     }
 
@@ -361,7 +361,7 @@ final public class DCEventDataController: NSObject {
     ///   - emptyCall: found nil data call back
     /// - Returns: Chainable for repetitive data subscription
     @discardableResult
-    public func subscribeData<T>(_ sd: DCSharedDataID, target: NSObject, completion: @escaping (T) -> Void, emptyCall: (() -> Void)? = nil) -> EDCSubscribeDataAndable {
+    public func subscribeData<T>(_ sd: DCSharedDataID, target: NSObject, completion: @escaping (T) -> Void, emptyCall: (() -> Void)? = nil) -> DCSubscribeDataAndAbility {
         func check(_ data: Any?) {
             if let data = data as? T {
                 completion(data)
@@ -411,27 +411,29 @@ final public class DCEventDataController: NSObject {
                 $0[uniqueID.ID] = tmpItems
             }
 
+            // The following code can give a prompt when events are frequently added to the same object.
+            // This situation may occur in the cellModelDidUpdate() method.
             handleItemQueue.async {
                 self.dict.write {
-                    if let items = $0[uniqueID.ID] {
-                        var itemSet = Set<NSObject>()
-                        var tmpItems = items
-                        for index in (0..<items.count).reversed() {
-                            if let item = items[dc_safe: index] {
-                                if let target = item.target {
-                                    if itemSet.contains(target) {
-                                        tmpItems.remove(at: index)
-                                        assert(false, "Can't subscribe to the same Event or data repetitively")
-                                    } else {
-                                        itemSet.insert(target)
-                                    }
-                                } else {
-                                    tmpItems.remove(at: index)
-                                }
+                    guard let items = $0[uniqueID.ID] else {  return }
+
+                    var itemSet = Set<NSObject>()
+                    var tmpItems = items
+                    for index in (0..<items.count).reversed() {
+                        guard let item = items[dc_safe: index] else { continue }
+
+                        if let target = item.target {
+                            if itemSet.contains(target) {
+                                tmpItems.remove(at: index)
+                                assert(false, "Can't subscribe to the same Event or data repetitively")
+                            } else {
+                                itemSet.insert(target)
                             }
+                        } else {
+                            tmpItems.remove(at: index)
                         }
-                        $0[uniqueID.ID] = tmpItems
                     }
+                    $0[uniqueID.ID] = tmpItems
                 }
             }
         }
@@ -439,9 +441,9 @@ final public class DCEventDataController: NSObject {
         func needClear(with uniqueID: DCEDCUniqueID) {
             handleItemQueue.async {
                 self.dict.write {
-                    if let items = $0[uniqueID.ID] {
-                        $0[uniqueID.ID] = items.filter({ $0.target != nil })
-                    }
+                    guard let items = $0[uniqueID.ID] else { return }
+
+                    $0[uniqueID.ID] = items.filter({ $0.target != nil })
                 }
             }
         }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public protocol DCBaseOperationable: AnyObject {
+public protocol DCBaseOperationDelegate: AnyObject {
     func needUpdateLayout()
     func needUpdateLayoutAnimated()
     func needUpdateLayoutAnimated(completion: @escaping () -> Void)

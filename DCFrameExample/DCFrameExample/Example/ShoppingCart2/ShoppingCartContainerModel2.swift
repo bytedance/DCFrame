@@ -2,9 +2,6 @@
 //  File2.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import DCFrame
 
@@ -30,10 +27,10 @@ class ShoppingCartContainerModel2: DCContainerModel {
             let storeModel = generateStoreModel(store)
             storeModel.layoutContext.bottomMargin = 20
 
-            addSubmodel(storeModel)
+            addSubModel(storeModel)
         }
 
-        addSubmodel(ShoppingCartTotalCellModel())
+        addSubModel(ShoppingCartTotalCellModel())
     }
 
     private func generateStoreModel(_ store: ShoppingCartStore) -> DCContainerModel {
@@ -42,13 +39,13 @@ class ShoppingCartContainerModel2: DCContainerModel {
         let titleModel = ShoppingCartTitleCellModel()
         titleModel.title = store.title
 
-        containerModel.addSubmodel(titleModel)
+        containerModel.addSubModel(titleModel)
 
         for product in store.products {
             let productModel = ShoppingCartProductCellModel()
             productModel.product = product
 
-            containerModel.addSubmodel(productModel)
+            containerModel.addSubModel(productModel)
         }
 
         return containerModel

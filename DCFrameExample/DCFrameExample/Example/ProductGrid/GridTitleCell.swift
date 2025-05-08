@@ -2,13 +2,9 @@
 //  GridTitleCell.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2021/12/31.
-//  Copyright © 2021 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
-import Then
 
 class GridTitleCellModel: DCCellModel {
     var title = ""
@@ -21,14 +17,14 @@ class GridTitleCellModel: DCCellModel {
 }
 
 class GridTitleCell: DCCell<GridTitleCellModel> {
-    private var titleLabel = UILabel().then {
-        $0.textAlignment = .left
-        $0.font = .boldSystemFont(ofSize: 17)
-        $0.textColor = .darkText
-    }
-
+    private let titleLabel = UILabel()
+    
     override func setupUI() {
         super.setupUI()
+
+        titleLabel.textAlignment = .left
+        titleLabel.font = .boldSystemFont(ofSize: 17)
+        titleLabel.textColor = .darkText
 
         contentView.addSubview(titleLabel)
 

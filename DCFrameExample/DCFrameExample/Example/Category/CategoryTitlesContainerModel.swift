@@ -2,9 +2,6 @@
 //  File.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import DCFrame
 
@@ -24,7 +21,7 @@ class CategoryTitlesContainerModel: DCContainerModel {
     }
 
     func handleData(data: CategoryData) {
-        removeAllSubmodels()
+        removeAllSubModels()
         titleModelMap.removeAll()
 
         for (index, category) in data.categries.directValue.enumerated() {
@@ -37,19 +34,19 @@ class CategoryTitlesContainerModel: DCContainerModel {
 
             titleModelMap[category.title] = model
 
-            addSubmodel(model)
+            addSubModel(model)
         }
 
-        dcHandler?.needUpdateLayout()
+        containerViewHandler?.needUpdateLayout()
     }
 
     func showTitle(_ title: String) {
-        guard let model = titleModelMap[title], let indexPath = model.indexPath, let frame = dcCollectionView?.layoutAttributesForItem(at: indexPath)?.frame else {
+        guard let model = titleModelMap[title], let indexPath = model.indexPath, let frame = dcContainerView?.layoutAttributesForItem(at: indexPath)?.frame else {
             return
         }
 
         selectModel(model)
-        dcCollectionView?.scrollRectToVisible(frame, animated: true)
+        dcContainerView?.scrollRectToVisible(frame, animated: true)
     }
 
     private func selectModel(_ curModel: CategoryTitleCellModel) {

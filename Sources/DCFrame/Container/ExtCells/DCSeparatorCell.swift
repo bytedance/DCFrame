@@ -7,7 +7,7 @@
 
 import UIKit
 
-public final class DCSeparatorModel: DCCellModel {
+public final class DCSeparatorCellModel: DCCellModel {
     public var color: UIColor?
 
     public required init(color: UIColor, height: CGFloat) {
@@ -25,24 +25,24 @@ public final class DCSeparatorModel: DCCellModel {
     public override func getCellHeight() -> CGFloat {
         if cellHeight > 0 {
             return cellHeight
-        } else if let height = dcContainerModel?.dcCollectionView?.cellSeparatorHeight {
+        } else if let height = dcContainerModel?.dcContainerView?.cellSeparatorHeight {
             return height
         } else {
-            return DCCollectionConfig.cellSeparatorHeight
+            return DCContainerConfig.cellSeparatorHeight
         }
     }
 }
 
-public final class DCSeparatorCell: DCCell<DCSeparatorModel> {
+public final class DCSeparatorCell: DCCell<DCSeparatorCellModel> {
     public override func cellModelDidUpdate() {
         super.cellModelDidUpdate()
 
         if let color = cellModel.color {
             backgroundColor = color
-        } else if let color = dcCollectionView?.cellSeparatorColor {
+        } else if let color = dcContainerView?.cellSeparatorColor {
             backgroundColor = color
         } else {
-            backgroundColor = DCCollectionConfig.cellSeparatorColor
+            backgroundColor = DCContainerConfig.cellSeparatorColor
         }
     }
 }

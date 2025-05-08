@@ -2,14 +2,10 @@
 //  SimpleLabelCell.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2020/9/7.
-//  Copyright © 2020 Bytedance. All rights reserved.
-//
 
 import UIKit
 import DCFrame
 import SnapKit
-import Then
 
 class SimpleLabelCellModel: DCCellModel {
     var text: String = ""
@@ -22,14 +18,13 @@ class SimpleLabelCellModel: DCCellModel {
 }
 
 class SimpleLabelCell: DCCell<SimpleLabelCellModel> {
-    let label = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 17)
-    }
-
+    let label = UILabel()
     var line: UIView?
 
     override func setupUI() {
         super.setupUI()
+
+        label.font = UIFont.systemFont(ofSize: 17)
 
         contentView.addSubview(label)
         line = contentView.addBottomLine(leftMargin: 15)

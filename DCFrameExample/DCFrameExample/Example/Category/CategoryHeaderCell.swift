@@ -2,13 +2,9 @@
 //  File.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
-import Then
 
 class CategoryHeaderCellModel: DCCellModel {
     var title = ""
@@ -22,14 +18,14 @@ class CategoryHeaderCellModel: DCCellModel {
 }
 
 class CategoryHeaderCell: DCCell<CategoryHeaderCellModel> {
-    private var titleLabel = UILabel().then {
-        $0.textAlignment = .left
-        $0.font = .boldSystemFont(ofSize: 15)
-        $0.textColor = .gray
-    }
+    private let titleLabel = UILabel()
 
     override func setupUI() {
         super.setupUI()
+
+        titleLabel.textAlignment = .left
+        titleLabel.font = .boldSystemFont(ofSize: 15)
+        titleLabel.textColor = .gray
 
         contentView.addSubview(titleLabel)
 

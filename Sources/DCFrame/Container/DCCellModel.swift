@@ -9,7 +9,7 @@ import UIKit
 
 /// Model belonging to a Cell to provide and handle data
 /// `cellClass` and `cellHeight` initialization are normally required, other protocols and properties can be set as needed
-open class DCCellModel: NSObject, DCModelable {
+open class DCCellModel: NSObject, DCBaseModel {
 
     /// Class of the Cell that the CellModel belongs to
     public var cellClass: AnyClass?
@@ -74,7 +74,7 @@ open class DCCellModel: NSObject, DCModelable {
     public weak var dcCell: DCBaseCell?
 
     /// Protocol that provides a set of common protocols for controling the list
-    public weak var dcHandler: DCBaseOperationable?
+    public weak var containerViewHandler: DCBaseOperationDelegate?
 
     /// The ContainerModel the current Model belongs to
     public weak var dcContainerModel: DCContainerModel?
@@ -124,7 +124,7 @@ open class DCCellModel: NSObject, DCModelable {
 
     /// Get the offset of the current Cell in the CollectionView
     public func getCellOffset() -> CGPoint? {
-        if let collectionView = dcContainerModel?.dcCollectionView, let indexPath = self.indexPath {
+        if let collectionView = dcContainerModel?.dcContainerView, let indexPath = self.indexPath {
             return collectionView.layoutAttributesForItem(at: indexPath)?.frame.origin
         }
         return nil
@@ -222,37 +222,37 @@ extension DCCellModel {
     }
 
     @discardableResult
-    public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvent(event, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvent<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvent<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvent(event, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvents(events, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvents(events, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvents<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvents(events, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> EDCSubscribeDataAndable {
+    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> DCSubscribeDataAndAbility {
         return eventDataController.subscribeData(sd, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> EDCSubscribeDataAndable {
+    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> DCSubscribeDataAndAbility {
         return eventDataController.subscribeData(sd, target: self, completion: completion, emptyCall: emptyCall)
     }
 }

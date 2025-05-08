@@ -24,7 +24,7 @@ public class DCHorizontalScrollCellModel: DCCellModel {
 }
 
 open class DCHorizontalScrollCell: DCCell<DCHorizontalScrollCellModel> {
-    let collectionView = DCCollectionView()
+    let collectionView = DCContainerView()
 
     open override func setupUI() {
         super.setupUI()

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class DCContainerLayoutData {
+public class DCContainerViewLayoutData {
     public var backgroundCellIndexPaths = [IndexPath]()
     public var originHoverAttributes = [UICollectionViewLayoutAttributes]()
     public var hoverAttributes = [UICollectionViewLayoutAttributes]()
@@ -28,7 +28,7 @@ public class DCContainerLayoutData {
     public init() {}
 }
 
-public class DCContainerLayoutContext {
+public class DCContainerModelLayoutContext {
     public var topMargin: CGFloat?
     public var bottomMargin: CGFloat?
     public var leftMargin: CGFloat?

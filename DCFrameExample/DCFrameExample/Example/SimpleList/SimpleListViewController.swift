@@ -2,14 +2,11 @@
 //  SimpleListViewController.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2020/6/28.
-//  Copyright © 2020 Bytedance. All rights reserved.
-//
 
 import UIKit
 import DCFrame
 
-class SimpleListViewController: DCCollectionController {
+class SimpleListViewController: DemosViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,7 +18,7 @@ class SimpleListViewController: DCCollectionController {
             if num == 100 {
                 model.isShowBottomLine = false
             }
-            listContainerModel.addSubmodel(model)
+            listContainerModel.addSubModel(model)
         }
         
         loadContainerModel(listContainerModel)

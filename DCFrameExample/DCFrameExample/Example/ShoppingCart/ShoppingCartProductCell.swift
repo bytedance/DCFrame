@@ -2,13 +2,9 @@
 //  ShoppingCartProductCell.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
-import Then
 
 class ShoppingCartProductCellModel: DCCellModel {
     var product: ShoppingCartStoreProduct?
@@ -23,40 +19,35 @@ class ShoppingCartProductCellModel: DCCellModel {
 class ShoppingCartProductCell: DCCell<ShoppingCartProductCellModel> {
     static let addCount = DCEventID()
 
-    private let titleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 15)
-        $0.textColor = .black
-    }
-
-    private let priceLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 18)
-        $0.textColor = .black
-    }
-
-    private let imageView = UIView().then {
-        $0.backgroundColor = UIColor.systemGray
-    }
-
-    private let countLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 12)
-        $0.textColor = .black
-        $0.textAlignment = .center
-        $0.layer.backgroundColor = UIColor.lightGray.cgColor
-        $0.layer.cornerRadius = 4
-    }
-
-    private let addButton = UIButton().then {
-        $0.setTitle("+", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-    }
-
-    private let reduceButton = UIButton().then {
-        $0.setTitle("-", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-    }
+    private let titleLabel = UILabel()
+    private let priceLabel = UILabel()
+    private let imageView = UIView()
+    private let countLabel = UILabel()
+    private let addButton = UIButton()
+    private let reduceButton = UIButton()
 
     override func setupUI() {
         super.setupUI()
+
+        titleLabel.font = .systemFont(ofSize: 15)
+        titleLabel.textColor = .black
+
+        priceLabel.font = .boldSystemFont(ofSize: 18)
+        priceLabel.textColor = .black
+
+        imageView.backgroundColor = UIColor.systemGray
+
+        countLabel.font = .systemFont(ofSize: 12)
+        countLabel.textColor = .black
+        countLabel.textAlignment = .center
+        countLabel.layer.backgroundColor = UIColor.lightGray.cgColor
+        countLabel.layer.cornerRadius = 4
+
+        addButton.setTitle("+", for: .normal)
+        addButton.setTitleColor(.black, for: .normal)
+
+        reduceButton.setTitle("-", for: .normal)
+        reduceButton.setTitleColor(.black, for: .normal)
 
         contentView.addSubview(titleLabel)
         contentView.addSubview(priceLabel)

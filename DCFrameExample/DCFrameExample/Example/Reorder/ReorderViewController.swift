@@ -9,7 +9,7 @@
 import UIKit
 import DCFrame
 
-class ReorderViewController: DCCollectionController {
+class ReorderViewController: DemosViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -17,39 +17,42 @@ class ReorderViewController: DCCollectionController {
         loadContainerModel(containerModel)
 
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
-        dcCollectionView.addGestureRecognizer(longPressGesture)
-        dcCollectionView.dcDelegate = self
+        containerView.addGestureRecognizer(longPressGesture)
+        containerView.dcDelegate = self
     }
 
     @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            let touchLocation = gesture.location(in: dcCollectionView)
-            guard let selectedIndexPath = dcCollectionView.indexPathForItem(at: touchLocation) else {
+            let touchLocation = gesture.location(in: containerView)
+            guard let selectedIndexPath = containerView.indexPathForItem(at: touchLocation) else {
                 break
             }
-            dcCollectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+            containerView.beginInteractiveMovementForItem(at: selectedIndexPath)
         case .changed:
             if let view = gesture.view {
                 let position = gesture.location(in: view)
-                dcCollectionView.updateInteractiveMovementTargetPosition(position)
+                containerView.updateInteractiveMovementTargetPosition(position)
             }
         case .ended:
-            dcCollectionView.endInteractiveMovement()
+            containerView.endInteractiveMovement()
         default:
-            dcCollectionView.cancelInteractiveMovement()
+            containerView.cancelInteractiveMovement()
         }
     }
 }
 
-extension ReorderViewController: DCCollectionDelegate {
-    func dcCollectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+extension ReorderViewController: DCContainerViewDelegate {
+    func dcContainerView(_ containerView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return true
     }
 
-    func dcCollectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let item = dcCollectionView.dataController.objects[sourceIndexPath.item]
-        dcCollectionView.dataController.objects.remove(at: sourceIndexPath.item)
-        dcCollectionView.dataController.objects.insert(item, at: destinationIndexPath.item)
+    func dcContainerView(_ containerView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard let containerView = containerView as? DCContainerView else {
+            return
+        }
+        let item = containerView.dataController.objects[sourceIndexPath.item]
+        containerView.dataController.objects.remove(at: sourceIndexPath.item)
+        containerView.dataController.objects.insert(item, at: destinationIndexPath.item)
     }
 }

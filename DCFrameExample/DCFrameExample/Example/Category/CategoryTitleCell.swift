@@ -2,13 +2,9 @@
 //  ShoppingCartTitleCell.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
-import Then
 
 class CategoryTitleCellModel: DCCellModel {
     var title = ""
@@ -24,15 +20,15 @@ class CategoryTitleCellModel: DCCellModel {
 class CategoryTitleCell: DCCell<CategoryTitleCellModel> {
     static let didSelect = DCEventID()
 
-    private var titleLabel = UILabel().then {
-        $0.textAlignment = .left
-        $0.font = .systemFont(ofSize: 14)
-        $0.textColor = .darkText
-        $0.numberOfLines = 2
-    }
+    private let titleLabel = UILabel()
 
     override func setupUI() {
         super.setupUI()
+
+        titleLabel.textAlignment = .left
+        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.textColor = .darkText
+        titleLabel.numberOfLines = 2
 
         contentView.addSubview(titleLabel)
 

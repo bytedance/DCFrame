@@ -2,13 +2,9 @@
 //  PhotoAlbumShowAllCell.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2021/12/31.
-//  Copyright © 2021 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
-import Then
 
 class PhotoAlbumShowAllCellModel: DCCellModel {
     var title = "Show All"
@@ -23,14 +19,14 @@ class PhotoAlbumShowAllCellModel: DCCellModel {
 class PhotoAlbumShowAllCell: DCCell<PhotoAlbumShowAllCellModel> {
     static let didSelect = DCEventID()
 
-    private var titleLabel = UILabel().then {
-        $0.textAlignment = .left
-        $0.font = .systemFont(ofSize: 14)
-        $0.textColor = .darkText
-    }
+    private let titleLabel = UILabel()
 
     override func setupUI() {
         super.setupUI()
+
+        titleLabel.textAlignment = .left
+        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.textColor = .darkText
 
         contentView.addSubview(titleLabel)
         contentView.layer.cornerRadius = 5
