@@ -52,7 +52,6 @@
 		BC1B71472DCC899D00F6A354 /* RefreshContainerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1B710A2DCC899D00F6A354 /* RefreshContainerModel.swift */; };
 		BC1B71482DCC899D00F6A354 /* ShoppingCartTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1B71142DCC899D00F6A354 /* ShoppingCartTotalView.swift */; };
 		BC1B71492DCC899D00F6A354 /* GridNewUserContainerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC1B71032DCC899D00F6A354 /* GridNewUserContainerModel.swift */; };
-		BC1BFD9D280E88DF0024CB73 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = BC1BFD9C280E88DF0024CB73 /* Then */; };
 		BC1BFDA0280E89310024CB73 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = BC1BFD9F280E89310024CB73 /* SnapKit */; };
 		BC5C9A39280E8A7D0014C2C2 /* DCFrame in Frameworks */ = {isa = PBXBuildFile; productRef = BC5C9A38280E8A7D0014C2C2 /* DCFrame */; };
 		BC5C9A3C280E8BAB0014C2C2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27696B5C275D14AE00040681 /* LaunchScreen.xib */; };
@@ -116,7 +115,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC5C9A39280E8A7D0014C2C2 /* DCFrame in Frameworks */,
-				BC1BFD9D280E88DF0024CB73 /* Then in Frameworks */,
 				BC1BFDA0280E89310024CB73 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,7 +314,6 @@
 			);
 			name = DCFrameExample;
 			packageProductDependencies = (
-				BC1BFD9C280E88DF0024CB73 /* Then */,
 				BC1BFD9F280E89310024CB73 /* SnapKit */,
 				BC5C9A38280E8A7D0014C2C2 /* DCFrame */,
 			);
@@ -349,7 +346,6 @@
 			);
 			mainGroup = 273A1A31275D142400D37EB9;
 			packageReferences = (
-				BC1BFD9B280E88DF0024CB73 /* XCRemoteSwiftPackageReference "Then" */,
 				BC1BFD9E280E89310024CB73 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 273A1A3B275D142400D37EB9 /* Products */;
@@ -641,14 +637,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		BC1BFD9B280E88DF0024CB73 /* XCRemoteSwiftPackageReference "Then" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/devxoul/Then";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		BC1BFD9E280E89310024CB73 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -660,11 +648,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		BC1BFD9C280E88DF0024CB73 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BC1BFD9B280E88DF0024CB73 /* XCRemoteSwiftPackageReference "Then" */;
-			productName = Then;
-		};
 		BC1BFD9F280E89310024CB73 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BC1BFD9E280E89310024CB73 /* XCRemoteSwiftPackageReference "SnapKit" */;

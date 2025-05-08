@@ -9,15 +9,6 @@
           "revision": "f222cbdf325885926566172f6f5f06af95473158",
           "version": "5.6.0"
         }
-      },
-      {
-        "package": "Then",
-        "repositoryURL": "https://github.com/devxoul/Then",
-        "state": {
-          "branch": null,
-          "revision": "e421a7b3440a271834337694e6050133a3958bc7",
-          "version": "2.7.0"
-        }
       }
     ]
   },
