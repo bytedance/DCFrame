@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class DCCollectionDataController: NSObject {
+public class DCContainerViewDataController: NSObject {
     public var objects = [DCCellModel]()
     public var hoverObjects = [DCCellModel]()
 
@@ -29,5 +29,14 @@ public class DCCollectionDataController: NSObject {
                 closure(_object, indexPath)
             }
         }
+    }
+}
+
+extension Array {
+    subscript (dc_safe index: Int) -> Element? {
+        if index < count && index >= 0 {
+            return self[index]
+        }
+        return nil
     }
 }

@@ -2,9 +2,6 @@
 //  GridPickedContainerModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/7.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
@@ -20,10 +17,10 @@ class GridPickedContainerModel: DCContainerModel {
         return CGSize(width: width, height: width + CGFloat(arc4random() % 50))
     }
 
-    init(with data: GridItemsData) {
-        super.init()
+    override func containerModelDidLoad() {
+        super.containerModelDidLoad()
 
-        handleData(data)
+        handleData(GridsMockData.getPickedData())
     }
 
     private func handleData(_ data: GridItemsData) {
@@ -36,16 +33,16 @@ class GridPickedContainerModel: DCContainerModel {
         containerModel.layoutContext.rightMargin = margin
         containerModel.layoutContext.horizontalInterval = interval
         containerModel.layoutContext.verticalInterval = interval
-        containerModel.customLayout = DCContainerWaterFlowLayout(columnCount: 2)
+        containerModel.customLayout = DCContainerModelWaterFlowLayout(columnCount: 2)
 
         for item in data.items {
             let model = GridItemCellModel()
             model.text = item
             model.color = color
             model.cellSize = cellSize
-            containerModel.addSubmodel(model)
+            containerModel.addSubModel(model)
         }
 
-        addSubmodels([titleModel, containerModel])
+        addSubModels([titleModel, containerModel])
     }
 }

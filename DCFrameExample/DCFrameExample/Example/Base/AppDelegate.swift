@@ -2,9 +2,6 @@
 //  AppDelegate.swift
 //  DCFrame
 //
-//  Created by zhangzhengzhen on 11/29/2021.
-//  Copyright (c) 2021 zhangzhengzhen. All rights reserved.
-//
 
 import UIKit
 
@@ -13,14 +10,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
         window = UIWindow.init(frame: UIScreen.main.bounds)
         let viewController = ViewController()
         let mainNavigationController = UINavigationController.init(rootViewController: viewController)
         window?.rootViewController = mainNavigationController
         window?.backgroundColor = UIColor.white
         window?.makeKeyAndVisible()
+        
         return true
     }
 
@@ -45,4 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+
+
 }
+

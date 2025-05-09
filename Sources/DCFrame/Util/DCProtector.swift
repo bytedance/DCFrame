@@ -7,8 +7,7 @@
 
 import Foundation
 
-/// An `os_unfair_lock_t` wrapper.
-final public class DCAroundLock {
+final public class DCContainerViewAroundLock {
     private let unfairLock: os_unfair_lock_t
 
     public init() {
@@ -50,7 +49,7 @@ final public class DCAroundLock {
 
 /// A thread-safe wrapper around a value.
 final public class DCProtector<T> {
-    private let lock = DCAroundLock()
+    private let lock = DCContainerViewAroundLock()
     private var value: T
 
     public init(_ value: T) {

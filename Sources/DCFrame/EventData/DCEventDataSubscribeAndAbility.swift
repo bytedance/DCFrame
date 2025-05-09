@@ -8,7 +8,7 @@
 import Foundation
 
 /// Base class for chainable subscribe action
-public class DCEventDataSubscribeAndable {
+public class DCEventDataSubscribeBaseAndAbility {
     var edc: DCEventDataController
     var target: NSObject
 
@@ -19,47 +19,47 @@ public class DCEventDataSubscribeAndable {
 }
 
 /// Make subscribeEvent() chainable
-final public class DCSubscribeEventAndable: DCEventDataSubscribeAndable {
+final public class DCSubscribeEventAndAbility: DCEventDataSubscribeBaseAndAbility {
     @discardableResult
-    public func and(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
+    public func and(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndAbility {
         return edc.subscribeEvent(event, target: target, completion: completion)
     }
 
     @discardableResult
-    public func and<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndable {
+    public func and<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndAbility {
         return edc.subscribeEvent(event, target: target, completion: completion)
     }
 
     @discardableResult
-    public func and(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndable {
+    public func and(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndAbility {
         return edc.subscribeEvents(events, target: target, completion: completion)
     }
 
     @discardableResult
-    public func and(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndable {
+    public func and(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndAbility {
         return edc.subscribeEvents(events, target: target, completion: completion)
     }
 
     @discardableResult
-    public func and<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndable {
+    public func and<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndAbility {
         return edc.subscribeEvents(events, target: target, completion: completion)
     }
 }
 
 /// Make subscribeData() chainable
-final public class EDCSubscribeDataAndable: DCEventDataSubscribeAndable {
+final public class DCSubscribeDataAndAbility: DCEventDataSubscribeBaseAndAbility {
     @discardableResult
-    public func and(_ sd: DCSharedDataID, completion: @escaping (Any?) -> Void) -> EDCSubscribeDataAndable {
+    public func and(_ sd: DCSharedDataID, completion: @escaping (Any?) -> Void) -> DCSubscribeDataAndAbility {
         return edc.subscribeData(sd, target: target, completion: completion)
     }
 
     @discardableResult
-    public func and<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> EDCSubscribeDataAndable {
+    public func and<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> DCSubscribeDataAndAbility {
         return edc.subscribeData(sd, target: target, completion: completion)
     }
 
     @discardableResult
-    public func and<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> EDCSubscribeDataAndable {
+    public func and<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> DCSubscribeDataAndAbility {
         return edc.subscribeData(sd, target: target, completion: completion, emptyCall: emptyCall)
     }
 }

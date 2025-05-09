@@ -2,9 +2,6 @@
 //  GridNewUserContainerModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/7.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
@@ -15,10 +12,10 @@ class GridNewUserContainerModel: DCContainerModel {
     let color: UIColor = UIColor(red: 237 / 255.0, green: 73 / 255.0, blue: 86 / 255.0, alpha: 1)
     let cellSize: CGSize = CGSize(width: 150, height: 150)
 
-    init(with data: GridItemsData) {
-        super.init()
-
-        handleData(data)
+    override func containerModelDidLoad() {
+        super.containerModelDidLoad()
+        
+        handleData(GridsMockData.getRewardsData())
     }
 
     private func handleData(_ data: GridItemsData) {
@@ -32,13 +29,13 @@ class GridNewUserContainerModel: DCContainerModel {
             model.text = item
             model.color = color
             model.cellSize = cellSize
-            containerModel.addSubmodel(model)
+            containerModel.addSubModel(model)
         }
 
         containerModel.layoutContext.leftMargin = margin
         containerModel.layoutContext.rightMargin = margin
         containerModel.layoutContext.horizontalInterval = interval
 
-        addSubmodels([titleModel, DCHorizontalScrollCellModel(with: containerModel, height: 150)])
+        addSubModels([titleModel, DCHorizontalScrollCellModel(with: containerModel, height: 150)])
     }
 }

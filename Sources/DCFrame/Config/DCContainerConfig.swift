@@ -8,7 +8,7 @@
 import UIKit
 
 /// Configure default separator height, color, selected cell color, and cell background color
-public enum DCCollectionConfig {
+public enum DCContainerConfig {
     public static var cellSeparatorHeight: CGFloat = 6
     public static var cellSeparatorColor = UIColor(red: 242 / 255.0, green: 242 / 255.0, blue: 242 / 255.0, alpha: 1.0)
     public static var selectedColor = UIColor(red: 242 / 255.0, green: 242 / 255.0, blue: 242 / 255.0, alpha: 1.0)

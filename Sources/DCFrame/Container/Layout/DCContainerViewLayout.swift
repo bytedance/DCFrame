@@ -7,18 +7,18 @@
 
 import UIKit
 
-class DCCollectionViewLayout: UICollectionViewLayout {
-    private var layoutData = DCContainerLayoutData()
+class DCContainerViewLayout: UICollectionViewLayout {
+    private var layoutData = DCContainerViewLayoutData()
 
     override func prepare() {
         super.prepare()
 
-        guard let collectionView = collectionView as? DCCollectionView else {
+        guard let collectionView = collectionView as? DCContainerView else {
             return
         }
         
         let containerModel = collectionView.layoutContainerModel
-        let tmpLayoutData = DCContainerLayoutData()
+        let tmpLayoutData = DCContainerViewLayoutData()
         containerModel.getCustomLayout().layoutAttributes(tmpLayoutData, collectionView, containerModel: containerModel, startOrigin: .zero)
         self.layoutData = tmpLayoutData
 
@@ -48,8 +48,8 @@ class DCCollectionViewLayout: UICollectionViewLayout {
     override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
         let context = super.invalidationContext(forBoundsChange: newBounds)
         
-        if let visibleHoverIndexPaths = (collectionView as? DCCollectionView)?.indexPathsForVisibleSupplementaryElements(ofKind: DCCollectionView.elementKindHoverTop), !visibleHoverIndexPaths.isEmpty {
-            context.invalidateSupplementaryElements(ofKind: DCCollectionView.elementKindHoverTop, at: visibleHoverIndexPaths)
+        if let visibleHoverIndexPaths = (collectionView as? DCContainerView)?.indexPathsForVisibleSupplementaryElements(ofKind: DCContainerView.elementKindHoverTop), !visibleHoverIndexPaths.isEmpty {
+            context.invalidateSupplementaryElements(ofKind: DCContainerView.elementKindHoverTop, at: visibleHoverIndexPaths)
         }
         return context
     }
@@ -57,7 +57,7 @@ class DCCollectionViewLayout: UICollectionViewLayout {
     override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         super.invalidateLayout(with: context)
 
-        guard let indexPaths = context.invalidatedSupplementaryIndexPaths?[DCCollectionView.elementKindHoverTop], !indexPaths.isEmpty else { return }
+        guard let indexPaths = context.invalidatedSupplementaryIndexPaths?[DCContainerView.elementKindHoverTop], !indexPaths.isEmpty else { return }
         
         handleHoverIndexPaths(indexPaths)
     }
@@ -67,25 +67,25 @@ class DCCollectionViewLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard elementKind == DCCollectionView.elementKindHoverTop else { return nil }
+        guard elementKind == DCContainerView.elementKindHoverTop else { return nil }
         
         return layoutData.hoverAttributes[dc_safe: indexPath.item]
     }
     
     override func indexPathsToInsertForSupplementaryView(ofKind elementKind: String) -> [IndexPath] {
-        guard let collectionView = collectionView as? DCCollectionView, elementKind == DCCollectionView.elementKindHoverTop else { return [IndexPath]() }
+        guard let collectionView = collectionView as? DCContainerView, elementKind == DCContainerView.elementKindHoverTop else { return [IndexPath]() }
                 
         return collectionView.indexPathsToInsertForSupplementaryView
     }
     
     override func indexPathsToDeleteForSupplementaryView(ofKind elementKind: String) -> [IndexPath] {
-        guard let collectionView = collectionView as? DCCollectionView, elementKind == DCCollectionView.elementKindHoverTop else { return [IndexPath]() }
+        guard let collectionView = collectionView as? DCContainerView, elementKind == DCContainerView.elementKindHoverTop else { return [IndexPath]() }
                 
         return collectionView.indexPathsToDeleteForSupplementaryView
     }
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let collectionView = collectionView as? DCCollectionView,
+        guard let collectionView = collectionView as? DCContainerView,
               let lastIndex = layoutData.lineAttributesArray.indices.last,
               let firstMatchLineIndex = binSearch(rect, collectionView, start: 0, end: lastIndex) else {
                   return nil
@@ -137,7 +137,7 @@ class DCCollectionViewLayout: UICollectionViewLayout {
     }
     
     private func handleHoverIndexPaths(_ indexPaths: [IndexPath]) {
-        guard let collectionView = collectionView as? DCCollectionView else { return }
+        guard let collectionView = collectionView as? DCContainerView else { return }
         
         if collectionView.scrollDirection == .vertical {
             handleVerticalHover(collectionView, indexPaths)
@@ -146,7 +146,7 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         }
     }
     
-    private func handleVerticalHover(_ collectionView: DCCollectionView, _ indexPaths: [IndexPath]) {
+    private func handleVerticalHover(_ collectionView: DCContainerView, _ indexPaths: [IndexPath]) {
         let offsetY = collectionView.contentOffset.y + (collectionView.hoverViewOffset ?? collectionView.contentInset.top)
         
         var tmpCur: IndexPath?
@@ -186,7 +186,7 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         }
     }
     
-    private func handleHorizontalHover(_ collectionView: DCCollectionView, _ indexPaths: [IndexPath]) {
+    private func handleHorizontalHover(_ collectionView: DCContainerView, _ indexPaths: [IndexPath]) {
         let offsetX = collectionView.contentOffset.x + (collectionView.hoverViewOffset ?? collectionView.contentInset.left)
         
         var tmpCur: IndexPath?
@@ -225,7 +225,7 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         }
     }
     
-    private func binSearch(_ rect: CGRect, _ collectionView: DCCollectionView, start: Int, end: Int, hoverStyle: Bool = false) -> Int? {
+    private func binSearch(_ rect: CGRect, _ collectionView: DCContainerView, start: Int, end: Int, hoverStyle: Bool = false) -> Int? {
         guard end >= start else {
             return nil
         }
@@ -245,7 +245,7 @@ class DCCollectionViewLayout: UICollectionViewLayout {
         if targetFrame.intersects(rect) {
             return mid
         } else {
-            let isAfter = collectionView.scrollDirection == .vertical ? (targetFrame.maxY < rect.minY) : (targetFrame.maxX < rect.minX)
+            let isAfter = collectionView.scrollDirection == .vertical ? (targetFrame.maxY <= rect.minY) : (targetFrame.maxX <= rect.minX)
             if isAfter {
                 return binSearch(rect, collectionView, start: (mid + 1), end: end, hoverStyle: hoverStyle)
             } else {

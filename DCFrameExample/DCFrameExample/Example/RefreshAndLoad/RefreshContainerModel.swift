@@ -2,9 +2,6 @@
 //  RefreshContainerModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2020/6/28.
-//  Copyright © 2020 Bytedance. All rights reserved.
-//
 
 import DCFrame
 
@@ -28,7 +25,7 @@ class RefreshContainerModel: DCRefreshContainerModel {
 
         RefreshMockDataAPI.refreshData { data in
             self.currentOffset = data.count
-            self.removeAllSubmodels()
+            self.removeAllSubModels()
 
             self.handleData(data)
 
@@ -50,9 +47,9 @@ class RefreshContainerModel: DCRefreshContainerModel {
         for text in data {
             let model = SimpleLabelCellModel()
             model.text = text
-            addSubmodel(model)
+            addSubModel(model)
         }
 
-        dcHandler?.needUpdateLayoutAnimated()
+        containerViewHandler?.needUpdateLayoutAnimated()
     }
 }

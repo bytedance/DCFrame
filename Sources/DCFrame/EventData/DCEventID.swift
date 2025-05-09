@@ -33,7 +33,7 @@ public class DCEDCUniqueID: Equatable {
         self.tag = tag
     }
 
-    public static func ==(lhs: DCEDCUniqueID, rhs: DCEDCUniqueID) -> Bool {
+    public static func == (lhs: DCEDCUniqueID, rhs: DCEDCUniqueID) -> Bool {
         return lhs.ID == rhs.ID
     }
 }

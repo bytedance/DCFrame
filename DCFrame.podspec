@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DCFrame'
-  s.version          = '1.1.0'
+  s.version          = '1.1.2'
   s.summary          = 'A powerful UI collection framework'
   s.swift_version    = '5.0'
 

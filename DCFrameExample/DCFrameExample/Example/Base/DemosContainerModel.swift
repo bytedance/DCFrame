@@ -2,11 +2,8 @@
 //  DemosContainerModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2021/12/30.
-//  Copyright © 2021 CocoaPods. All rights reserved.
-//
 
-import Foundation
+import UIKit
 import DCFrame
 
 class DemosContainerModel: DCContainerModel {
@@ -16,12 +13,12 @@ class DemosContainerModel: DCContainerModel {
         loadData()
 
         subscribeEvent(DemosLabelCell.touch) {  [weak self] (cellModel: DemosLabelCellModel) in
-            guard let vcClass = cellModel.vcClass else {
-                return
+            if let vc = cellModel.classInstance as? UIViewController {
+                vc.title = cellModel.text
+                self?.dcViewController?.navigationController?.pushViewController(vc, animated: true)
+            } else if let instance = cellModel.classInstance as? DemosHandleProtocol {
+                instance.cellClicked(self?.dcViewController)
             }
-            let vc = vcClass.init()
-            vc.title = cellModel.text
-            self?.dcViewController?.navigationController?.pushViewController(vc, animated: true)
         }
     }
 
@@ -30,9 +27,9 @@ class DemosContainerModel: DCContainerModel {
             let model = DemosLabelCellModel()
             model.isSelectionStyle = true
             model.text = item.0
-            model.vcClass = item.1
+            model.classInstance = item.1
 
-            addSubmodel(model)
+            addSubModel(model)
         }
     }
 }

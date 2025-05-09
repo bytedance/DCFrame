@@ -2,13 +2,9 @@
 //  ShoppingCartTotalCell.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
-import Then
 
 class ShoppingCartTotalCellModel: DCCellModel {
     static let totalPrice = DCSharedDataID()
@@ -30,13 +26,13 @@ class ShoppingCartTotalCellModel: DCCellModel {
 }
 
 class ShoppingCartTotalCell: DCCell<ShoppingCartTotalCellModel> {
-    private let priceLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 18)
-        $0.textColor = .black
-    }
+    private let priceLabel = UILabel()
 
     override func setupUI() {
         super.setupUI()
+
+        priceLabel.font = .boldSystemFont(ofSize: 18)
+        priceLabel.textColor = .black
 
         contentView.backgroundColor = UIColor(red: 56 / 255.0, green: 151 / 255.0, blue: 240 / 255.0, alpha: 1)
         contentView.addSubview(priceLabel)

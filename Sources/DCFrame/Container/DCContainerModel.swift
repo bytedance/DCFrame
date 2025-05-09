@@ -9,10 +9,10 @@ import UIKit
 
 /// CellModel Container class, abbreviated as ContainerModel
 /// A `DCContainerModel` can include both `DCCellModel` and `DCContainerModel`
-open class DCContainerModel: NSObject, DCModelable {
+open class DCContainerModel: NSObject, DCBaseModel {
 
     /// Array for storing Model; Only getters and setters are allowed, no direct operations on this array
-    public var modelArray: [DCModelable] {
+    public var modelArray: [DCBaseModel] {
         set {
             p_modelArray.write {
                 $0 = newValue
@@ -22,12 +22,12 @@ open class DCContainerModel: NSObject, DCModelable {
             return p_modelArray.directValue
         }
     }
-    private var p_modelArray = DCProtector<[DCModelable]>([DCModelable]())
+    private var p_modelArray = DCProtector<[DCBaseModel]>([DCBaseModel]())
 
     /// The parent of the current ContainerModel
     public weak var parentContainerModel: DCContainerModel?
 
-    /// Display status of the current ContainerModel. If set to true, reloadData() in DCCollectionView will not load this ContainerModel
+    /// Display status of the current ContainerModel. If set to true, reloadData() in DCContainerView will not load this ContainerModel
     public var isHidden: Bool = false
 
     /// EDC of the current ContainerModel, will be reused by CellModels and Cells of this ContainerModel
@@ -38,13 +38,13 @@ open class DCContainerModel: NSObject, DCModelable {
     }()
 
     /// Perform operations on the CollectionView through this parameter, like updating data, scrolling to a specific position, etc
-    public weak var dcHandler: DCBaseOperationable?
+    public weak var containerViewHandler: DCBaseOperationDelegate?
 
-    /// Reference to `dcViewController` feature in `DCContainrCollectionView`
+    /// Reference to `dcViewController` feature in `DCContainerView`
     public weak var dcViewController: UIViewController?
 
-    /// Load the `DCCollectionView` of the current ContainerModel
-    public weak var dcCollectionView: DCCollectionView?
+    /// Load the `DCContainerView` of the current ContainerModel
+    public weak var dcContainerView: DCContainerView?
 
     /// Boolean for whether the current ContainerModel is loaded
     public private(set) var isContainerModelLoaded: Bool = false
@@ -57,7 +57,7 @@ open class DCContainerModel: NSObject, DCModelable {
 
     /// Add a single Model
     /// - Parameter model: Model of type `DCCellModel` or `DCContainerModel`
-    public func addSubmodel(_ model: DCModelable) {
+    public func addSubModel(_ model: DCBaseModel) {
         guard isValidModel(model) else {
             return
         }
@@ -68,15 +68,15 @@ open class DCContainerModel: NSObject, DCModelable {
 
     /// Add a set of Models
     /// - Parameter models: an array of Models of type DCCellModel or DCContainerModel
-    public func addSubmodels(_ models: [DCModelable]) {
+    public func addSubModels(_ models: [DCBaseModel]) {
         for model in models {
-            addSubmodel(model)
+            addSubModel(model)
         }
     }
 
     /// Insert a Model as the first element of the ContainerModel
     /// - Parameter model: Model to be inserted
-    public func insertSubmodelToFirst(_ model: DCModelable) {
+    public func insertSubmodelToFirst(_ model: DCBaseModel) {
         insertSubmodel(model, at: 0)
     }
 
@@ -84,7 +84,7 @@ open class DCContainerModel: NSObject, DCModelable {
     /// - Parameters:
     ///   - model: Model to be inserted
     ///   - index: position of the Model in the ContainerModel
-    public func insertSubmodel(_ model: DCModelable, at index: Int) {
+    public func insertSubmodel(_ model: DCBaseModel, at index: Int) {
         guard isValidModel(model) else {
             return
         }
@@ -97,7 +97,7 @@ open class DCContainerModel: NSObject, DCModelable {
     /// - Parameters:
     ///   - model: Model to be inserted
     ///   - before: the specified Model
-    public func insertSubmodel(_ model: DCModelable, before: DCModelable) {
+    public func insertSubmodel(_ model: DCBaseModel, before: DCBaseModel) {
         guard isValidModel(model) && isValidModel(before) else {
             return
         }
@@ -117,7 +117,7 @@ open class DCContainerModel: NSObject, DCModelable {
     /// - Parameters:
     ///   - model: Model to be inserted
     ///   - after: the specified Model
-    public func insertSubmodel(_ model: DCModelable, after: DCModelable) {
+    public func insertSubmodel(_ model: DCBaseModel, after: DCBaseModel) {
         guard isValidModel(model) && isValidModel(after) else {
             return
         }
@@ -156,7 +156,7 @@ open class DCContainerModel: NSObject, DCModelable {
     }
 
     /// Remove all Models in the ContainerModel
-    public func removeAllSubmodels() {
+    public func removeAllSubModels() {
         p_modelArray.write {
             $0.removeAll()
         }
@@ -194,7 +194,7 @@ open class DCContainerModel: NSObject, DCModelable {
         // override
     }
 
-    /// Called whenever `needReloadData()` is called
+    /// Called whenever `needUpdateLayout()` or `loadContainerModel()` is called
     open func collectionViewDataWillReload() {
         // override
     }
@@ -202,21 +202,21 @@ open class DCContainerModel: NSObject, DCModelable {
     // MARK: - Layout operations
 
     /// The margin or interval of the cell in the current ContainerModel
-    public var layoutContext = DCContainerLayoutContext()
+    public var layoutContext = DCContainerModelLayoutContext()
 
     /// The custom layout of current ContainerModel
-    public var customLayout: DCContainerLayoutable?
+    public var customLayout: DCContainerModelLayoutDelegate?
 
     /// Dynamically calculate and return `layoutContext`
     /// - Returns: Layout context
-    open func getLayoutContext() -> DCContainerLayoutContext? {
+    open func getLayoutContext() -> DCContainerModelLayoutContext? {
         return layoutContext
     }
 
     /// Dynamically calculate and return custom layout
     /// - Returns: Custom layout
-    open func getCustomLayout() -> DCContainerLayoutable {
-        return (customLayout ?? parentContainerModel?.getCustomLayout()) ?? DCContainerDefaultLayout()
+    open func getCustomLayout() -> DCContainerModelLayoutDelegate {
+        return (customLayout ?? parentContainerModel?.getCustomLayout()) ?? DCContainerModelDefaultLayout()
     }
 }
 
@@ -256,37 +256,37 @@ extension DCContainerModel {
     }
 
     @discardableResult
-    public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvent(_ event: DCEventID, completion: @escaping (Any?) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvent(event, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvent<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvent<T>(_ event: DCEventID, completion: @escaping (T) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvent(event, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvents(events, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents(_ events: [DCEventID], completion: @escaping (DCEventID, Any?) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvents(events, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeEvents<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndable {
+    public func subscribeEvents<T>(_ events: [DCEventID], completion: @escaping (DCEventID, T) -> Void) -> DCSubscribeEventAndAbility {
         return eventDataController.subscribeEvents(events, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> EDCSubscribeDataAndable {
+    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void) -> DCSubscribeDataAndAbility {
         return eventDataController.subscribeData(sd, target: self, completion: completion)
     }
 
     @discardableResult
-    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> EDCSubscribeDataAndable {
+    public func subscribeData<T>(_ sd: DCSharedDataID, completion: @escaping (T) -> Void, emptyCall: @escaping () -> Void) -> DCSubscribeDataAndAbility {
         return eventDataController.subscribeData(sd, target: self, completion: completion, emptyCall: emptyCall)
     }
 }

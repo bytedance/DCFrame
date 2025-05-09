@@ -2,22 +2,19 @@
 //  PhotoAlbumMonthContainerModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2021/12/31.
-//  Copyright © 2021 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
 
 class PhotoAlbumMonthContainerModel: DCContainerModel {
-    let showAllModel = PhotoAlbumShowAllCellModel().then {
-        $0.cellSize = CGSize(width: 80, height: 20)
-        $0.isNewLine = true
-    }
+    let showAllModel = PhotoAlbumShowAllCellModel()
     var leftPhotos = [String]()
 
     init(with data: PhotoMonthData) {
         super.init()
+
+        showAllModel.cellSize = CGSize(width: 80, height: 20)
+        showAllModel.isNewLine = true
 
         layoutContext.leftMargin = 100
         layoutContext.horizontalInterval = 5
@@ -42,13 +39,13 @@ class PhotoAlbumMonthContainerModel: DCContainerModel {
                 model.text = item
                 model.color = UIColor(red: 237 / 255.0, green: 73 / 255.0, blue: 86 / 255.0, alpha: 1)
                 model.cellSize = CGSize(width: 80, height: 80)
-                self.addSubmodel(model)
+                self.addSubModel(model)
             }
 
             self.leftPhotos.removeAll()
 
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.6, options: [], animations: {
-                self.dcHandler?.needUpdateLayoutAnimated()
+                self.containerViewHandler?.needUpdateLayoutAnimated()
             })
         }
     }
@@ -58,7 +55,7 @@ class PhotoAlbumMonthContainerModel: DCContainerModel {
         monthTitle.cellSize = CGSize(width: 80, height: 20)
         monthTitle.isBackgroundCell = true
         monthTitle.title = data.month
-        addSubmodel(monthTitle)
+        addSubModel(monthTitle)
 
         for (index, item) in data.photos.enumerated() {
             if index < 6 {
@@ -66,14 +63,14 @@ class PhotoAlbumMonthContainerModel: DCContainerModel {
                 model.text = item
                 model.color = UIColor(red: 56 / 255.0, green: 151 / 255.0, blue: 240 / 255.0, alpha: 1)
                 model.cellSize = CGSize(width: 80, height: 80)
-                addSubmodel(model)
+                addSubModel(model)
             } else {
                 leftPhotos.append(item)
             }
         }
         
         if data.photos.count > 6 {
-            addSubmodel(showAllModel)
+            addSubModel(showAllModel)
         }
     }
 }

@@ -7,12 +7,12 @@
 
 import UIKit
 
-public class DCContainerDefaultLayout: DCContainerLayoutable {
+public class DCContainerModelDefaultLayout: DCContainerModelLayoutDelegate {
     public init() {
         // do nothing
     }
 
-    public func layoutAttributes(_ layoutData: DCContainerLayoutData, _ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) {
+    public func layoutAttributes(_ layoutData: DCContainerViewLayoutData, _ collectionView: DCContainerView, containerModel: DCContainerModel, startOrigin: CGPoint) {
         if collectionView.scrollDirection == .vertical {
             verticalLayout(layoutData, collectionView, containerModel: containerModel, startOrigin: startOrigin)
         } else {
@@ -20,7 +20,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
         }
     }
 
-    private func verticalLayout(_ layoutData: DCContainerLayoutData, _ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) {
+    private func verticalLayout(_ layoutData: DCContainerViewLayoutData, _ collectionView: DCContainerView, containerModel: DCContainerModel, startOrigin: CGPoint) {
         var curOrigin = startOrigin
         curOrigin.y += containerModel.getTopMargin() ?? 0
         layoutData.contentBounds.size.height += containerModel.getTopMargin() ?? 0
@@ -33,13 +33,13 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
         let leftMargin = containerModel.getLeftMargin(true) ?? 0
         let rightMargin = containerModel.getRightMargin(true) ?? 0
         
-        var needResizeCellIndexs = [IndexPath]()
+        var needResizeCellIndex = [IndexPath]()
         var isNewContainerModel = true
 
         func handleModelLayout(_ model: DCCellModel) {
             guard let indexPath = model.indexPath else { return }
 
-            let cellSize = model.getCellSize(collectionViewWidth: collectionView.dc_width)
+            let cellSize = model.getCellSize(collectionViewWidth: collectionView.frame.size.width)
 
             if model.isBackgroundCell {
                 assert(!model.getIsHoverTop(), "The `isBackgroundCell` and `isHoverTop` cannot be set to true at the same time")
@@ -50,7 +50,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
                 layoutData.backgroundCellIndexPaths.append(indexPath)
                 
                 if cellSize == .zero {
-                    needResizeCellIndexs.append(indexPath)
+                    needResizeCellIndex.append(indexPath)
                 } else {
                     layoutData.contentBounds = layoutData.contentBounds.union(attributes.frame)
                 }
@@ -70,7 +70,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
 
                 curFrame.origin = CGPoint(x: tmpLeftMargin, y: curOrigin.y + tmpLineSpacing)
                 
-                layoutData.lineAttributesArray.append(DCContainerLayoutData.LineAttributes(lineFrame: curFrame))
+                layoutData.lineAttributesArray.append(DCContainerViewLayoutData.LineAttributes(lineFrame: curFrame))
             }
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
@@ -80,7 +80,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
             
             if model.getIsHoverTop(), let hoverIndexPath = model.hoverIndexPath {
                 attributes.isHidden = true
-                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCCollectionView.elementKindHoverTop, with: hoverIndexPath)
+                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCContainerView.elementKindHoverTop, with: hoverIndexPath)
                 hoverAttributes.zIndex = 10
                 hoverAttributes.frame = curFrame
                 layoutData.hoverAttributes.append(hoverAttributes)
@@ -116,14 +116,14 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
 
         layoutData.contentBounds.size.height += containerModel.getBottomMargin() ?? 0
         
-        needResizeCellIndexs.forEach { indexPath in
+        needResizeCellIndex.forEach { indexPath in
             if let bgCellAttributes = layoutData.attributes[dc_safe: indexPath.item] {
                 bgCellAttributes.frame.size = CGSize(width: cvSize.width, height: layoutData.contentBounds.size.height - startOrigin.y)
             }
         }
     }
 
-    private func horizontalLayout(_ layoutData: DCContainerLayoutData, _ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) {
+    private func horizontalLayout(_ layoutData: DCContainerViewLayoutData, _ collectionView: DCContainerView, containerModel: DCContainerModel, startOrigin: CGPoint) {
         var curOrigin = startOrigin
         curOrigin.x += containerModel.getLeftMargin() ?? 0
         layoutData.contentBounds.size.width += containerModel.getLeftMargin() ?? 0
@@ -137,12 +137,12 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
         let bottomMargin = containerModel.getBottomMargin(true) ?? 0
         
         var isNewContainerModel = true
-        var needResizeCellIndexs = [IndexPath]()
+        var needResizeCellIndex = [IndexPath]()
 
         func handleModelLayout(_ model: DCCellModel) {
             guard let indexPath = model.indexPath else { return }
 
-            let cellSize = model.getCellSize(collectionViewWidth: collectionView.dc_width)
+            let cellSize = model.getCellSize(collectionViewWidth: collectionView.frame.size.width)
 
             if model.isBackgroundCell {
                 assert(!model.getIsHoverTop(), "The `isBackgroundCell` and `isHoverTop` cannot be set to true at the same time")
@@ -153,7 +153,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
                 layoutData.backgroundCellIndexPaths.append(indexPath)
 
                 if cellSize == .zero {
-                    needResizeCellIndexs.append(indexPath)
+                    needResizeCellIndex.append(indexPath)
                 } else {
                     layoutData.contentBounds = layoutData.contentBounds.union(attributes.frame)
                 }
@@ -174,7 +174,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
 
                 curFrame.origin = CGPoint(x: curOrigin.x + tmpLineSpacing, y: tmpTopMargin)
                 
-                layoutData.lineAttributesArray.append(DCContainerLayoutData.LineAttributes(lineFrame: curFrame))
+                layoutData.lineAttributesArray.append(DCContainerViewLayoutData.LineAttributes(lineFrame: curFrame))
             }
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
@@ -184,7 +184,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
 
             if model.getIsHoverTop(), let hoverIndexPath = model.hoverIndexPath {
                 attributes.isHidden = true
-                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCCollectionView.elementKindHoverTop, with: hoverIndexPath)
+                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCContainerView.elementKindHoverTop, with: hoverIndexPath)
                 hoverAttributes.zIndex = 10
                 hoverAttributes.frame = curFrame
                 layoutData.hoverAttributes.append(hoverAttributes)
@@ -224,7 +224,7 @@ public class DCContainerDefaultLayout: DCContainerLayoutable {
 
         layoutData.contentBounds.size.width += containerModel.getRightMargin() ?? 0
         
-        needResizeCellIndexs.forEach { indexPath in
+        needResizeCellIndex.forEach { indexPath in
             if let bgCellAttributes = layoutData.attributes[dc_safe: indexPath.item] {
                 bgCellAttributes.frame.size = CGSize(width: layoutData.contentBounds.size.width - startOrigin.x, height: cvSize.height)
             }

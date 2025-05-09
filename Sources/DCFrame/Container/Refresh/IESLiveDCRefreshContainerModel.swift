@@ -10,18 +10,18 @@ import Foundation
 open class DCRefreshContainerModel: DCContainerModel {
     public weak var refreshHandler: DCRefreshControlProtocol?
 
-    override public func addSubmodel(_ model: DCModelable) {
+    override public func addSubModel(_ model: DCBaseModel) {
         if let containerModel = model as? DCRefreshContainerModel {
             containerModel.refreshHandler = self.refreshHandler
         }
-        super.addSubmodel(model)
+        super.addSubModel(model)
     }
 
-    public func refreshSubmodelHandler() {
+    public func refreshSubModelHandler() {
         for item in modelArray {
             if let containerModel = item as? DCRefreshContainerModel {
                 containerModel.refreshHandler = self.refreshHandler
-                containerModel.refreshSubmodelHandler()
+                containerModel.refreshSubModelHandler()
             }
         }
     }

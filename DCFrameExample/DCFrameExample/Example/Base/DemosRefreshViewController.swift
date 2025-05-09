@@ -1,15 +1,12 @@
 //
 //  DCRefreshViewController.swift
-//  DCFrame_Example
-//
-//  Created by 张政桢 on 2020/6/28.
-//  Copyright © 2020 Bytedance. All rights reserved.
+//  DCContainerView_Example
 //
 
 import UIKit
 import DCFrame
 
-class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol, DCCollectionDelegate {
+class DemosRefreshViewController: DemosViewController {
 
     public private(set) var isLoadMoreOpen = true
     public private(set) var isRereshOpen = true
@@ -21,7 +18,7 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
     private weak var scrollView: UIScrollView?
 
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .gray)
+        let view = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         return view
     }()
 
@@ -30,8 +27,8 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        dcCollectionView.dcDelegate = self
-        originalInsets = dcCollectionView.contentInset
+        containerView.dcDelegate = self
+        originalInsets = containerView.contentInset
         setLoadMore(true)
     }
 
@@ -40,7 +37,7 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
         if let containerModel = containerModel as? DCRefreshContainerModel {
             refreshContainerModel = containerModel
             refreshContainerModel?.refreshHandler = self
-            refreshContainerModel?.refreshSubmodelHandler()
+            refreshContainerModel?.refreshSubModelHandler()
         }
     }
 
@@ -53,7 +50,54 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
         isRefreshing = true
         refreshContainerModel?.refresh()
     }
+}
 
+extension DemosRefreshViewController: DCRefreshControlProtocol {
+    final public func setRefresh(_ isOpen: Bool) {
+        isRefreshing = false
+        isRereshOpen = isOpen
+    }
+
+    final public func setLoadMore(_ isOpen: Bool) {
+        isLoadMoreOpen = isOpen
+        isLoading = false
+        hasMoreData = true
+
+        if let originalInsets = self.originalInsets {
+            containerView.contentInset.bottom = originalInsets.bottom + (isOpen ? 50 : 0)
+            self.originalInsets = containerView.contentInset
+        }
+    }
+
+    final public func endRefresh() {
+        if !isRefreshing {
+            return
+        }
+        isRefreshing = false
+
+        containerView.setContentOffset(CGPoint(x: 0, y: -DemoUtil.navbarHeight()), animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            if let insets = self.originalInsets {
+                self.containerView.contentInset = insets
+            }
+            self.activityIndicator.removeFromSuperview()
+        }
+    }
+
+    final public func endLoadMore(_ state: DCEndLoadMoreState) {
+        if !isLoading {
+            return
+        }
+        isLoading = false
+        activityIndicator.removeFromSuperview()
+    }
+
+    final public func beginRefreshing() {
+        //
+    }
+}
+
+extension DemosRefreshViewController: DCContainerViewDelegate {
     func dcScrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let originalInsets = self.originalInsets else {
             return
@@ -80,51 +124,9 @@ class DCRefreshViewController: DCCollectionController, DCRefreshControlProtocol,
             activityIndicator.center = CGPoint(x: scrollView.bounds.midX, y: -25)
             if upDistance < -50 {
                 activityIndicator.startAnimating()
-                dcCollectionView.contentInset.top = originalInsets.top + 50
+                containerView.contentInset.top = originalInsets.top + 50
                 refresh()
             }
         }
-    }
-
-    final public func setRefresh(_ isOpen: Bool) {
-        isRefreshing = false
-        isRereshOpen = isOpen
-    }
-
-    final public func setLoadMore(_ isOpen: Bool) {
-        isLoadMoreOpen = isOpen
-        isLoading = false
-        hasMoreData = true
-
-        if let originalInsets = self.originalInsets {
-            dcCollectionView.contentInset.bottom = originalInsets.bottom + (isOpen ? 50 : 0)
-        }
-    }
-
-    final public func endRefresh() {
-        if !isRefreshing {
-            return
-        }
-        isRefreshing = false
-
-        dcCollectionView.setContentOffset(CGPoint(x: 0, y: -navbarHeight()), animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            if let insets = self.originalInsets {
-                self.dcCollectionView.contentInset = insets
-            }
-            self.activityIndicator.removeFromSuperview()
-        }
-    }
-
-    final public func endLoadMore(_ state: DCEndLoadMoreState) {
-        if !isLoading {
-            return
-        }
-        isLoading = false
-        activityIndicator.removeFromSuperview()
-    }
-
-    final public func beginRefreshing() {
-        //
     }
 }

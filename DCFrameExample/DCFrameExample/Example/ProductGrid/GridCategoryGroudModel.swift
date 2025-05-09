@@ -2,9 +2,6 @@
 //  GridTrendingGroudModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/7.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
@@ -41,9 +38,9 @@ class GridCategoryGroudModel: DCContainerModel {
             model.text = item
             model.color = color
             model.cellSize = cellSize
-            containerModel.addSubmodel(model)
+            containerModel.addSubModel(model)
         }
 
-        addSubmodels([titleModel, containerModel])
+        addSubModels([titleModel, containerModel])
     }
 }

@@ -2,9 +2,6 @@
 //  ShoppingCartContainerModel.swift
 //  DCFrame_Example
 //
-//  Created by 张政桢 on 2022/1/5.
-//  Copyright © 2022 CocoaPods. All rights reserved.
-//
 
 import UIKit
 import DCFrame
@@ -21,7 +18,7 @@ class CategoryProductsContainerModel: DCContainerModel {
     func handleData(data: CategoryData) {
         headerModelMap.removeAll()
         headerModels.removeAll()
-        removeAllSubmodels()
+        removeAllSubModels()
 
         for (index, category) in data.categries.directValue.enumerated() {
             let headerModel = CategoryHeaderCellModel()
@@ -46,13 +43,13 @@ class CategoryProductsContainerModel: DCContainerModel {
                 model.text = item
                 model.color = UIColor(red: 56 / 255.0, green: 151 / 255.0, blue: 240 / 255.0, alpha: 1)
                 model.cellSize = CGSize(width: 80, height: 80)
-                containerMoel.addSubmodel(model)
+                containerMoel.addSubModel(model)
             }
 
-            addSubmodels([headerModel, containerMoel])
+            addSubModels([headerModel, containerMoel])
         }
 
-        dcHandler?.needUpdateLayout()
+        containerViewHandler?.needUpdateLayout()
     }
 
     override func containerModelDidLoad() {
@@ -74,12 +71,12 @@ class CategoryProductsContainerModel: DCContainerModel {
             return
         }
 
-        dcCollectionView?.scrollToItem(at: indexPath, at: .top, animated: true)
+        dcContainerView?.scrollToItem(at: indexPath, at: .top, animated: true)
     }
 
     private func getCurrentTitle(_ offsetY: CGFloat) -> String? {
         for model in headerModels.reversed() {
-            if let indexPath = model.indexPath, let y = dcCollectionView?.layoutAttributesForItem(at: indexPath)?.frame.origin.y {
+            if let indexPath = model.indexPath, let y = dcContainerView?.layoutAttributesForItem(at: indexPath)?.frame.origin.y {
                 if y <= offsetY {
                     return model.title
                 }

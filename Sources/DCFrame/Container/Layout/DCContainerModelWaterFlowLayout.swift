@@ -7,14 +7,14 @@
 
 import UIKit
 
-public class DCContainerWaterFlowLayout: DCContainerLayoutable {
+public class DCContainerModelWaterFlowLayout: DCContainerModelLayoutDelegate {
     public init(columnCount: Int = 2) {
         fixedColumnCount = columnCount
     }
 
     public var fixedColumnCount = 2
 
-    public func layoutAttributes(_ layoutData: DCContainerLayoutData, _ collectionView: DCCollectionView, containerModel: DCContainerModel, startOrigin: CGPoint) {
+    public func layoutAttributes(_ layoutData: DCContainerViewLayoutData, _ collectionView: DCContainerView, containerModel: DCContainerModel, startOrigin: CGPoint) {
         assert(collectionView.scrollDirection == .vertical, "WaterFlowLayout does not support horizontal")
 
         var curOrigin = startOrigin
@@ -34,12 +34,12 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
         var preLineItemCount = 0
         
         var isNewContainerModel = true
-        var needResizeCellIndexs = [IndexPath]()
+        var needResizeCellIndex = [IndexPath]()
 
         func handleModelLayout(_ model: DCCellModel) {
             guard let indexPath = model.indexPath else { return }
 
-            let cellSize = model.getCellSize(collectionViewWidth: collectionView.dc_width)
+            let cellSize = model.getCellSize(collectionViewWidth: collectionView.frame.size.width)
 
             if model.isBackgroundCell {
                 assert(!model.getIsHoverTop(), "The `isBackgroundCell` and `isHoverTop` cannot be set to true at the same time")
@@ -50,7 +50,7 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
                 layoutData.backgroundCellIndexPaths.append(indexPath)
                 
                 if cellSize == .zero {
-                    needResizeCellIndexs.append(indexPath)
+                    needResizeCellIndex.append(indexPath)
                 } else {
                     layoutData.contentBounds = layoutData.contentBounds.union(attributes.frame)
                 }
@@ -70,7 +70,7 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
                 assert((curFrame.maxX + rightMargin) <= cvSize.width, "The item width exceeds the width of the `CollectionView`")
             } else {
                 var minYIndex = 0
-                var minFrame = preLineFrames[minYIndex]
+                var minFrame = preLineFrames[dc_safe: minYIndex] ?? CGRect.zero
                 for (index, frame) in preLineFrames.enumerated() where index > 0 {
                     if minFrame.maxY > frame.maxY {
                         minFrame = frame
@@ -86,7 +86,7 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
             
             let isNewLine = (preLineItemCount >= fixedColumnCount && curFrame.maxY > preLineFrameMaxY) || isNewContainerModel
             if isNewLine {
-                layoutData.lineAttributesArray.append(DCContainerLayoutData.LineAttributes(lineFrame: curFrame))
+                layoutData.lineAttributesArray.append(DCContainerViewLayoutData.LineAttributes(lineFrame: curFrame))
                 preLineItemCount = 0
             }
 
@@ -97,7 +97,7 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
             
             if model.getIsHoverTop(), let hoverIndexPath = model.hoverIndexPath {
                 attributes.isHidden = true
-                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCCollectionView.elementKindHoverTop, with: hoverIndexPath)
+                let hoverAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: DCContainerView.elementKindHoverTop, with: hoverIndexPath)
                 hoverAttributes.zIndex = 10
                 hoverAttributes.frame = curFrame
                 layoutData.hoverAttributes.append(hoverAttributes)
@@ -139,7 +139,7 @@ public class DCContainerWaterFlowLayout: DCContainerLayoutable {
 
         layoutData.contentBounds.size.height += containerModel.getBottomMargin() ?? 0
         
-        needResizeCellIndexs.forEach { indexPath in
+        needResizeCellIndex.forEach { indexPath in
             if let bgCellAttributes = layoutData.attributes[dc_safe: indexPath.item] {
                 bgCellAttributes.frame.size = CGSize(width: cvSize.width, height: layoutData.contentBounds.size.height - startOrigin.y)
             }
